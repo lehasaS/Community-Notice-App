@@ -1,15 +1,19 @@
 package com.inform.communitynoticeapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -25,6 +29,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
+
+
+
         validate = new validateInput(this);
 
         //[START] login Part
@@ -38,6 +47,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         signUpText.setOnClickListener(this);
         //[END] Login Part
     }
+
+
+
+
+
+
+
 
     @Override
     public void onClick(View view) {
@@ -64,6 +80,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     //Used to get user info e.g. email, password, etc.
                     Toast.makeText(MainActivity.this, "You have Logged in successfully!", Toast.LENGTH_SHORT).show();
                     //TO DO: take user to next page
+                    Intent post_ = new Intent(MainActivity.this, posts.class);
+                    startActivity(post_);
+
+
+
                 }else{
                     Toast.makeText(MainActivity.this, "Error has occurred: "+task.getException(), Toast.LENGTH_SHORT).show();
                 }
@@ -75,6 +96,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Toast.makeText(this,"Signup Here", Toast.LENGTH_SHORT ).show();
         Intent signUp = new Intent(MainActivity.this, SignUp.class);
         startActivity(signUp);
+
     }
 
     @Override

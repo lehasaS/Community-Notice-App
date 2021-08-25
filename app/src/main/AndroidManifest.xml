@@ -10,6 +10,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CommunityNoticeApp">
         <activity
+            android:name=".profile"
+            android:exported="true" />
+        <activity
+            android:name=".board"
+            android:exported="true" />
+        <activity
+            android:name=".posts"
+            android:exported="true" />
+        <activity
             android:name=".SignUp"
             android:exported="true" />
         <activity
