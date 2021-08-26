@@ -64,6 +64,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     //Used to get user info e.g. email, password, etc.
                     Toast.makeText(MainActivity.this, "You have Logged in successfully!", Toast.LENGTH_SHORT).show();
                     //TO DO: take user to next page
+                    Intent post = new Intent(MainActivity.this, posts.class);
+                    startActivity(post);
                 }else{
                     Toast.makeText(MainActivity.this, "Error has occurred: "+task.getException(), Toast.LENGTH_SHORT).show();
                 }
