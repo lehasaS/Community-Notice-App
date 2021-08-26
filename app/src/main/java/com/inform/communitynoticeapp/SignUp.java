@@ -42,6 +42,7 @@ public class SignUp extends AppCompatActivity {
             handleSignUpBtnClick();
         });
         //[END] Signup Part
+
     }
 
     private void handleSignUpBtnClick() {
@@ -74,6 +75,7 @@ public class SignUp extends AppCompatActivity {
         }
 
     }
+
 
     private void saveNameInFirebase(FirebaseUser users){
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
