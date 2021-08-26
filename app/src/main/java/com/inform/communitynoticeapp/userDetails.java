@@ -1,23 +1,14 @@
 package com.inform.communitynoticeapp;
 
 public class userDetails {
-    private String password, email, username;
+    private String email, username;
 
     public userDetails(){
 
     }
-    public  userDetails(String usernamme, String email, String password){
+    public  userDetails(String usernamme, String email){
         this.username=usernamme;
         this.email=email;
-        this.password=password;
-    }
-
-    public String getPassword(){
-        return password;
-    }
-
-    public void setPassword(String password){
-        this.password=password;
     }
 
     public String getEmail(){
@@ -28,9 +19,7 @@ public class userDetails {
         this.email=email;
     }
 
-    public String getUsername(){
-        return password;
-    }
+    public String getUsername(){return username;}
 
     public void setUsername(){
         this.username=username;

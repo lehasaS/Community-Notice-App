@@ -94,7 +94,7 @@ public class board extends AppCompatActivity {
     private void readPost() {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference postRef = firebaseDatabase.getReference().child("Users").child(currentUser.getUid()).child("Posts");
+        DatabaseReference postRef = firebaseDatabase.getReference().child("Posts").child(currentUser.getUid());
 
         postRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -103,9 +103,6 @@ public class board extends AppCompatActivity {
                 createPost post;
                 for(DataSnapshot content: snapshot.getChildren()){
                     post = content.getValue(createPost.class);
-                    //Toast.makeText(noticeBoard.this, "Post: "+ post.getPost(), Toast.LENGTH_SHORT).show();
-                    Log.i("my post", post.getPost());
-
                     createPostArrayList.add(post);
                 }
                 postAdapter = new postAdapter(createPostArrayList, context);
@@ -125,7 +122,7 @@ public class board extends AppCompatActivity {
 
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference rootRef = firebaseDatabase.getReference();
-        DatabaseReference postRef = rootRef.child("Users").child(currentUser.getUid()).child("Posts");
+        DatabaseReference postRef = rootRef.child("Posts").child(currentUser.getUid());
         DatabaseReference newRef = postRef.push();
 
         createPost post = new createPost(newRef.child(currentUser.getUid()).getKey(), text);

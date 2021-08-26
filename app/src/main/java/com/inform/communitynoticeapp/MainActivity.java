@@ -58,12 +58,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         email = emailET.getText().toString();
 
         if(validate.checkEmailValid(email) && validate.checkPasswordValid(password)){
-            //Toast.makeText(this,"Input correct", Toast.LENGTH_SHORT ).show();
             userAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(task -> {
                 if(task.isSuccessful()){
                     //Used to get user info e.g. email, password, etc.
                     Toast.makeText(MainActivity.this, "You have Logged in successfully!", Toast.LENGTH_SHORT).show();
-                    //TO DO: take user to next page
                     Intent post = new Intent(MainActivity.this, posts.class);
                     startActivity(post);
                 }else{

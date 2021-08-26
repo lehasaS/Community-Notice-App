@@ -11,7 +11,7 @@
         android:layout_width="280dp"
         android:layout_height="48dp"
         android:ems="10"
-        android:hint="email address"
+        android:hint="@string/email_address"
         android:inputType="textEmailAddress"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -24,12 +24,12 @@
         android:id="@+id/signUp_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="SIGNUP"
+        android:text="@string/signup"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/password_Again"
+        app:layout_constraintEnd_toEndOf="@+id/password_again_ET"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password_Again"
+        app:layout_constraintTop_toBottomOf="@+id/password_again_ET"
         app:layout_constraintVertical_bias="0.137" />
 
     <EditText
@@ -37,7 +37,7 @@
         android:layout_width="280dp"
         android:layout_height="48dp"
         android:ems="10"
-        android:hint="password"
+        android:hint="@string/password"
         android:inputType="textPassword"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/email_ET"
@@ -47,12 +47,12 @@
         app:layout_constraintVertical_bias="0.104" />
 
     <EditText
-        android:id="@+id/password_Again"
+        android:id="@+id/password_again_ET"
         android:layout_width="280dp"
         android:layout_height="48dp"
         android:layout_marginTop="24dp"
         android:ems="10"
-        android:hint="enter password again"
+        android:hint="@string/enter_password_again"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="@+id/password_ET"
         app:layout_constraintTop_toBottomOf="@+id/password_ET" />
@@ -62,7 +62,7 @@
         android:layout_width="280dp"
         android:layout_height="48dp"
         android:ems="10"
-        android:hint="username"
+        android:hint="@string/username"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toTopOf="@+id/email_ET"
         app:layout_constraintEnd_toEndOf="@+id/email_ET"

@@ -7,9 +7,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -21,7 +18,7 @@ public class SignUp extends AppCompatActivity {
     private validateInput validate;
     private Button signUpBtn;
     private String password, email, passwordAgain, username;
-    private userDetails user;
+    private static userDetails userCurrent;
     private FirebaseAuth userAuth;
 
     @Override
@@ -34,7 +31,7 @@ public class SignUp extends AppCompatActivity {
         emailET = findViewById(R.id.email_ET);
         usernameET= findViewById(R.id.username_ET);
         passwordET = findViewById(R.id.password_ET);
-        passwordAgainET = findViewById(R.id.password_Again);
+        passwordAgainET = findViewById(R.id.password_again_ET);
         signUpBtn = findViewById(R.id.signUp_btn);
         userAuth = FirebaseAuth.getInstance();
         signUpBtn.setOnClickListener(view -> {
@@ -50,7 +47,6 @@ public class SignUp extends AppCompatActivity {
         password = passwordET.getText().toString();
         passwordAgain = passwordAgainET.getText().toString();
         username = usernameET.getText().toString();
-        user = new userDetails(username, email, password);
 
         if(!(username.equals(""))){
             if(validate.checkEmailValid(email) && validate.checkPasswordValid(password) ){
@@ -61,6 +57,7 @@ public class SignUp extends AppCompatActivity {
                             //Usaed to get user info e.g. email, password, etc.
                             FirebaseUser currentUser = userAuth.getCurrentUser();
                             Toast.makeText(SignUp.this, "You have signed up successfully!", Toast.LENGTH_SHORT).show();
+                            userCurrent = new userDetails(username, email);
                             saveNameInFirebase(currentUser);
                         }else{
                             Toast.makeText(SignUp.this, "Error has occurred"+task.getException(), Toast.LENGTH_SHORT).show();
@@ -82,6 +79,6 @@ public class SignUp extends AppCompatActivity {
         DatabaseReference rootRef = firebaseDatabase.getReference();
         DatabaseReference nameRef = rootRef.child("Users").child(users.getUid());
         DatabaseReference newRef = nameRef.push();
-        newRef.setValue(user);
+        newRef.setValue(userCurrent);
     }
 }
