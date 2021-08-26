@@ -3,14 +3,15 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/lehas/AndroidStudioProjects/communityNoticeApp/app/src/main/res/drawable/message_ic.xml" value="0.221875" />
-        <entry key="..\:/Users/lehas/AndroidStudioProjects/communityNoticeApp/app/src/main/res/drawable/post_ic.xml" value="0.221875" />
-        <entry key="..\:/Users/lehas/AndroidStudioProjects/communityNoticeApp/app/src/main/res/drawable/profile_ic.xml" value="0.221875" />
         <entry key="..\:/Users/lehas/AndroidStudioProjects/communityNoticeApp/app/src/main/res/layout/activity_board.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/lehas/AndroidStudioProjects/communityNoticeApp/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/lehas/AndroidStudioProjects/communityNoticeApp/app/src/main/res/layout/activity_posts.xml" value="0.20572916666666666" />
-        <entry key="..\:/Users/lehas/AndroidStudioProjects/communityNoticeApp/app/src/main/res/layout/activity_profile.xml" value="0.20572916666666666" />
         <entry key="..\:/Users/lehas/AndroidStudioProjects/communityNoticeApp/app/src/main/res/layout/activity_sign_up.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/reake/AndroidStudioProjects/csc3003s_capstone/app/src/main/res/layout/activity_board.xml" value="0.225" />
+        <entry key="..\:/Users/reake/AndroidStudioProjects/csc3003s_capstone/app/src/main/res/layout/activity_main.xml" value="0.11041666666666666" />
+        <entry key="..\:/Users/reake/AndroidStudioProjects/csc3003s_capstone/app/src/main/res/layout/activity_posts.xml" value="0.225" />
+        <entry key="..\:/Users/reake/AndroidStudioProjects/csc3003s_capstone/app/src/main/res/layout/activity_profile.xml" value="0.11041666666666666" />
+        <entry key="..\:/Users/reake/AndroidStudioProjects/csc3003s_capstone/app/src/main/res/layout/activity_sign_up.xml" value="0.11041666666666666" />
+        <entry key="..\:/Users/reake/AndroidStudioProjects/csc3003s_capstone/app/src/main/res/layout/post_card.xml" value="0.11041666666666666" />
       </map>
     </option>
   </component>
@@ -19,12 +20,5 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
-  </component>
-  <component name="VisualizationToolProject">
-    <option name="state">
-      <ProjectState>
-        <option name="scale" value="0.36666666666666664" />
-      </ProjectState>
-    </option>
   </component>
 </project>

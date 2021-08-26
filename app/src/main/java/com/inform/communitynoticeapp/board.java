@@ -33,8 +33,6 @@ public class board extends AppCompatActivity {
     private ArrayList<createPost> createPostArrayList;
     private postAdapter postAdapter;
     private Context context;
-    private EditText typeET;
-    private Button postBtn;
 
     public board(){
         super(R.layout.activity_board);
@@ -74,14 +72,8 @@ public class board extends AppCompatActivity {
             }
         });
 
-        typeET=findViewById(R.id.type_ET);
-        postBtn=findViewById(R.id.post_Btn);
         context=this;
         createPostArrayList = new ArrayList<>();
-
-        postBtn.setOnClickListener(view -> {
-            addPost();
-        });
 
         recyclerView= findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -94,7 +86,7 @@ public class board extends AppCompatActivity {
     private void readPost() {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference postRef = firebaseDatabase.getReference().child("Posts").child(currentUser.getUid());
+        DatabaseReference postRef = firebaseDatabase.getReference().child("Posts").getRef();
 
         postRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -112,28 +104,6 @@ public class board extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
-    }
-
-    private void addPost() {
-        String text = typeET.getText().toString();
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference rootRef = firebaseDatabase.getReference();
-        DatabaseReference postRef = rootRef.child("Posts").child(currentUser.getUid());
-        DatabaseReference newRef = postRef.push();
-
-        createPost post = new createPost(newRef.child(currentUser.getUid()).getKey(), text);
-        newRef.setValue(post).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if(task.isSuccessful()){
-                    Toast.makeText(board.this, "Post Submitted", Toast.LENGTH_SHORT).show();
-                }else{
-                    Toast.makeText(board.this, "Some error occurred: "+task.getException(), Toast.LENGTH_SHORT).show();
-                }
             }
         });
     }
