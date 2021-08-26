@@ -94,7 +94,7 @@ public class board extends AppCompatActivity {
     private void readPost() {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference postRef = firebaseDatabase.getReference().child("Posts").child(currentUser.getUid());
+        DatabaseReference postRef = firebaseDatabase.getReference().child("Posts").getRef();
 
         postRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -122,7 +122,7 @@ public class board extends AppCompatActivity {
 
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference rootRef = firebaseDatabase.getReference();
-        DatabaseReference postRef = rootRef.child("Posts").child(currentUser.getUid());
+        DatabaseReference postRef = rootRef.child("Posts").getRef();
         DatabaseReference newRef = postRef.push();
 
         createPost post = new createPost(newRef.child(currentUser.getUid()).getKey(), text);
