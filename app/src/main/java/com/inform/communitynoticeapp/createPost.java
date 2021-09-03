@@ -20,4 +20,12 @@ public class createPost {
     public String getPost() {
         return post;
     }
+
+    public void setPost(String post) {
+        this.post = post;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
 }
