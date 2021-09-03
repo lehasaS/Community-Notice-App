@@ -18,7 +18,7 @@
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.472" />
+        app:layout_constraintVertical_bias="0.386" />
 
     <Button
         android:id="@+id/signUp_btn"
@@ -41,10 +41,10 @@
         android:inputType="textPassword"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/email_ET"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/email_ET"
         app:layout_constraintTop_toBottomOf="@+id/email_ET"
-        app:layout_constraintVertical_bias="0.104" />
+        app:layout_constraintVertical_bias="0.235" />
 
     <EditText
         android:id="@+id/password_again_ET"
@@ -66,8 +66,21 @@
         android:inputType="textPersonName"
         app:layout_constraintBottom_toTopOf="@+id/email_ET"
         app:layout_constraintEnd_toEndOf="@+id/email_ET"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/email_ET"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.82" />
+        app:layout_constraintVertical_bias="0.898" />
+
+    <EditText
+        android:id="@+id/community_groupET"
+        android:layout_width="280dp"
+        android:layout_height="48dp"
+        android:ems="10"
+        android:hint="community name"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/password_ET"
+        app:layout_constraintEnd_toEndOf="@+id/email_ET"
+        app:layout_constraintStart_toStartOf="@+id/email_ET"
+        app:layout_constraintTop_toBottomOf="@+id/email_ET" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

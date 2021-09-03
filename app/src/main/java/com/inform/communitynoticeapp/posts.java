@@ -19,6 +19,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class posts extends AppCompatActivity {
 
     private EditText typeET;
@@ -70,7 +73,11 @@ public class posts extends AppCompatActivity {
 
     }
 
-    private void addPost() {
+    private void addPost(){
+        //Date date = new Date();
+        //SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        //String dateNow = dateFormat.format(date);
+
         String text = typeET.getText().toString();
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -79,7 +86,7 @@ public class posts extends AppCompatActivity {
         DatabaseReference postRef = rootRef.child("Posts").getRef();
         DatabaseReference newRef = postRef.push();
 
-        createPost post = new createPost(newRef.child(currentUser.getUid()).getKey(), text);
+        createPost post = new createPost(currentUser.getDisplayName(), text);
         newRef.setValue(post).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
