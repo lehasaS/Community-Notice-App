@@ -72,7 +72,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void handleSignUpClick() {
-        Toast.makeText(this,"Signup Here", Toast.LENGTH_SHORT ).show();
         Intent signUp = new Intent(MainActivity.this, SignUp.class);
         startActivity(signUp);
     }
