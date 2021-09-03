@@ -42,18 +42,18 @@ public class SignUp extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up);
 
         communities= new ArrayList<String>(Arrays.asList("Mowbray", "Cape Town", "Rondebosch", "Wynberg", "Claremont"));
-        /*FirebaseDatabase.getInstance().getReference().addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(!(snapshot.hasChild("Communities"))) {
-                    addCommunitiesToFirebase();
+                    //addCommunitiesToFirebase();
                 }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });*/
+        });
 
         validate = new validateInput(this);
         //[START] Signup Part
