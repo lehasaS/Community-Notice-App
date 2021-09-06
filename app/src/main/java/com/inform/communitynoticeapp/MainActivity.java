@@ -2,6 +2,7 @@ package com.inform.communitynoticeapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -16,10 +17,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     EditText emailET, passwordET;
     private validateInput validate;
-    private Button loginBtn;
-    private TextView signUpText;
-    private String password, email;
     private FirebaseAuth userAuth;
+    private View progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,14 +30,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         emailET = findViewById(R.id.email_ET);
         passwordET = findViewById(R.id.password_ET);
         userAuth = FirebaseAuth.getInstance();
-        loginBtn = findViewById(R.id.login_btn);
-        signUpText = findViewById(R.id.signUp_TV);
-
+        Button loginBtn = findViewById(R.id.login_btn);
+        TextView signUpText = findViewById(R.id.signUp_TV);
+        progressBar = findViewById(R.id.progressBar);
         loginBtn.setOnClickListener(this);
         signUpText.setOnClickListener(this);
         //[END] Login Part
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
         int id = view.getId();
@@ -54,17 +54,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void handleLoginBtnClick() {
-        password = passwordET.getText().toString();
-        email = emailET.getText().toString();
+        showProgressBar();
+        String password = passwordET.getText().toString();
+        String email = emailET.getText().toString();
 
         if(validate.checkEmailValid(email) && validate.checkPasswordValid(password)){
-            userAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(task -> {
+            userAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
                 if(task.isSuccessful()){
                     //Used to get user info e.g. email, password, etc.
                     Toast.makeText(MainActivity.this, "You have Logged in successfully!", Toast.LENGTH_SHORT).show();
                     Intent post = new Intent(MainActivity.this, posts.class);
                     startActivity(post);
                 }else{
+                    hideProgressBar();
                     Toast.makeText(MainActivity.this, "Error has occurred: "+task.getException(), Toast.LENGTH_SHORT).show();
                 }
             });
@@ -74,6 +76,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void handleSignUpClick() {
         Intent signUp = new Intent(MainActivity.this, SignUp.class);
         startActivity(signUp);
+    }
+
+    private void hideProgressBar() {
+        progressBar.setVisibility(View.INVISIBLE);
+    }
+
+    private void showProgressBar() {
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
