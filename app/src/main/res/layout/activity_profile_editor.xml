@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="visible">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/post_ET"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/bottom_navigation"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="-58dp"
+        android:layout_marginEnd="-1dp"
+        android:layout_marginBottom="58dp">
+
+
+        <EditText
+            android:id="@+id/new_role_"
+            android:layout_width="141dp"
+            android:layout_height="38dp"
+            android:layout_marginTop="60dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="new role"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.059"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/new_username" />
+
+        <EditText
+            android:id="@+id/new_community"
+            android:layout_width="156dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="new community "
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.047"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/new_username" />
+
+        <Button
+            android:id="@+id/upload_button"
+            android:layout_width="168dp"
+            android:layout_height="38dp"
+            android:layout_marginStart="40dp"
+            android:background="@color/blue_200"
+            android:text="Upload picture"
+            android:textColor="#212121"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/imageView2"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.237" />
+
+        <Button
+            android:id="@+id/save_changes_button"
+            android:layout_width="160dp"
+            android:layout_height="51dp"
+            android:background="@color/blue_200"
+            android:text="save changes"
+            android:textColor="#212121"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.418"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/newPost_TV"
+            app:layout_constraintVertical_bias="0.973" />
+
+        <TextView
+            android:id="@+id/newPost_TV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Edit_Profile"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.009" />
+
+        <TextView
+            android:id="@+id/welcomeMessage_TV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hi!"
+            android:textColor="@color/blue_200"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/newPost_TV"
+            app:layout_constraintVertical_bias="0.033" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="91dp"
+            android:layout_height="91dp"
+            android:layout_marginTop="128dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.037"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/persona_ic" />
+
+        <EditText
+            android:id="@+id/new_username"
+            android:layout_width="145dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="20dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="new username"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.06"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+
+        <LinearLayout
+            android:layout_width="168dp"
+            android:layout_height="128dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.065"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/new_role_"
+            app:layout_constraintVertical_bias="0.0">
+
+            <TextView
+                android:id="@+id/update_email"
+                android:layout_width="139dp"
+                android:layout_height="39dp"
+                android:layout_marginTop="31dp"
+                android:text="update email" />
+
+            <TextView
+                android:id="@+id/update_password"
+                android:layout_width="141dp"
+                android:layout_height="38dp"
+                android:text="update password " />
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="?android:attr/windowBackground"
+        app:menu="@menu/bottom_navigation"
+
+        />
+
+</RelativeLayout>

@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Zazi">
         <activity
+            android:name=".profile_editor"
+            android:exported="true" />
+        <activity
             android:name=".MainActivity"
             android:exported="true" />
         <activity

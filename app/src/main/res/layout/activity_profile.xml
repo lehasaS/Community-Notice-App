@@ -1,27 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragment_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:visibility="visible">
 
-    <FrameLayout
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/post_ET"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/bottom_navigation"
-
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:id="@+id/textView"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="@string/profile_display"
-        android:textColor="#E8F5E9"
-        android:textSize="30sp"
-        android:textStyle="bold" />
+        android:layout_above="@id/bottom_navigation"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="60dp">
 
+        <TextView
+            android:id="@+id/com_name"
+            android:layout_width="150dp"
+            android:layout_height="28dp"
+            android:text="Community Name"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.08"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/name"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <Button
+            android:id="@+id/logout_button"
+            android:layout_width="168dp"
+            android:layout_height="38dp"
+            android:layout_marginBottom="16dp"
+            android:background="@color/blue_200"
+            android:text="logout_button"
+            android:textColor="#212121"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.267"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/bio"
+            android:layout_width="81dp"
+            android:layout_height="31dp"
+            android:text=" Bio"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.063"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/role"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <Button
+            android:id="@+id/save_changes_button"
+            android:layout_width="169dp"
+            android:layout_height="48dp"
+            android:background="@color/blue_200"
+            android:text="EDIT PROFILE"
+            android:textColor="#212121"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.268"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/newPost_TV"
+            app:layout_constraintVertical_bias="0.885" />
+
+        <TextView
+            android:id="@+id/role"
+            android:layout_width="81dp"
+            android:layout_height="31dp"
+            android:text=" Role "
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.063"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/com_name"
+            app:layout_constraintVertical_bias="0.006" />
+
+        <TextView
+            android:id="@+id/newPost_TV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="User Profile"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.009" />
+
+        <TextView
+            android:id="@+id/welcomeMessage_TV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hi!"
+            android:textColor="@color/blue_200"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/newPost_TV"
+            app:layout_constraintVertical_bias="0.033" />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="147dp"
+            android:layout_height="29dp"
+            android:text="name"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.08"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.408" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="114dp"
+            android:layout_height="126dp"
+            app:layout_constraintBottom_toTopOf="@+id/name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.056"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.828"
+            app:srcCompat="@drawable/persona_ic" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
