@@ -10,15 +10,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Zazi">
         <activity
-            android:name=".changePassword"
-            android:exported="true" />
-        <activity
-            android:name=".change_email"
-            android:exported="true" />
-        <activity
-            android:name=".editProfile"
-            android:exported="true" />
-        <activity
             android:name=".MainActivity"
             android:exported="true" />
         <activity
