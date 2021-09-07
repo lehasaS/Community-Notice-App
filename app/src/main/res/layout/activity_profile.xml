@@ -23,70 +23,59 @@
         android:layout_marginBottom="60dp">
 
         <TextView
-            android:id="@+id/com_name"
-            android:layout_width="150dp"
-            android:layout_height="28dp"
+            android:id="@+id/communityNameTV"
+            android:layout_width="180dp"
+            android:layout_height="30dp"
             android:text="Community Name"
+            android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.08"
+            app:layout_constraintHorizontal_bias="0.082"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/name"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toBottomOf="@+id/usernameTV"
+            app:layout_constraintVertical_bias="0.061" />
 
         <Button
-            android:id="@+id/logout_button"
-            android:layout_width="168dp"
-            android:layout_height="38dp"
-            android:layout_marginBottom="16dp"
+            android:id="@+id/logout_Btn"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
             android:background="@color/blue_200"
-            android:text="logout_button"
+            android:text="Logout Button"
             android:textColor="#212121"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.267"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <TextView
-            android:id="@+id/bio"
-            android:layout_width="81dp"
-            android:layout_height="31dp"
-            android:text=" Bio"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.063"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/role"
-            app:layout_constraintVertical_bias="0.0" />
-
         <Button
-            android:id="@+id/save_changes_button"
-            android:layout_width="169dp"
+            android:id="@+id/editProfile_Btn"
+            android:layout_width="match_parent"
             android:layout_height="48dp"
             android:background="@color/blue_200"
             android:text="EDIT PROFILE"
             android:textColor="#212121"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.268"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/newPost_TV"
-            app:layout_constraintVertical_bias="0.885" />
+            app:layout_constraintTop_toBottomOf="@+id/editProfile"
+            app:layout_constraintVertical_bias="0.889" />
 
         <TextView
-            android:id="@+id/role"
-            android:layout_width="81dp"
-            android:layout_height="31dp"
+            android:id="@+id/roleTV"
+            android:layout_width="180dp"
+            android:layout_height="30dp"
             android:text=" Role "
+            android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.063"
+            app:layout_constraintHorizontal_bias="0.082"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/com_name"
-            app:layout_constraintVertical_bias="0.006" />
+            app:layout_constraintTop_toBottomOf="@+id/communityNameTV"
+            app:layout_constraintVertical_bias="0.072" />
 
         <TextView
-            android:id="@+id/newPost_TV"
+            android:id="@+id/editProfile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="User Profile"
@@ -110,26 +99,27 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/newPost_TV"
+            app:layout_constraintTop_toBottomOf="@+id/editProfile"
             app:layout_constraintVertical_bias="0.033" />
 
         <TextView
-            android:id="@+id/name"
-            android:layout_width="147dp"
-            android:layout_height="29dp"
-            android:text="name"
+            android:id="@+id/usernameTV"
+            android:layout_width="180dp"
+            android:layout_height="30dp"
+            android:text="Username"
+            android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.08"
+            app:layout_constraintHorizontal_bias="0.082"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.408" />
+            app:layout_constraintVertical_bias="0.419" />
 
         <ImageView
             android:id="@+id/imageView2"
             android:layout_width="114dp"
             android:layout_height="126dp"
-            app:layout_constraintBottom_toTopOf="@+id/name"
+            app:layout_constraintBottom_toTopOf="@+id/usernameTV"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.056"
             app:layout_constraintStart_toStartOf="parent"

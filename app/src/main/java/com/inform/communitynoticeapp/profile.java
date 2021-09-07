@@ -31,8 +31,8 @@ public class profile extends AppCompatActivity implements View.OnClickListener {
 
         userAuth= FirebaseAuth.getInstance();
         TextView welcomeMessageTV = findViewById(R.id.welcomeMessage_TV);
-        Button logoutBtn = findViewById(R.id.logout_button);
-        Button editButton = findViewById(R.id.save_changes_button);
+        Button logoutBtn = findViewById(R.id.logout_Btn);
+        Button editButton = findViewById(R.id.editProfile_Btn);
         logoutBtn.setOnClickListener(this);
         editButton.setOnClickListener(this);
         FirebaseUser user = userAuth.getCurrentUser();
@@ -79,24 +79,16 @@ public class profile extends AppCompatActivity implements View.OnClickListener {
         int id = view.getId();
 
         switch (id){
-            case R.id.logout_button:
+            case R.id.logout_Btn:
                 showLogoutDialog();
                 break;
-            case R.id.save_changes_button:
-                Intent edit_ = new Intent(profile.this,profile_editor.class);
-                startActivity(edit_);
+            case R.id.editProfile_Btn:
+                Intent editProfile = new Intent(profile.this, profileEditor.class);
+                startActivity(editProfile);
                 break;
+
         }
     }
-
-
-
-
-
-
-
-
-
 
     private void showLogoutDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

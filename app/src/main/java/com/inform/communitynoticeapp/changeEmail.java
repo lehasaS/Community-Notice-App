@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class change_email extends AppCompatActivity {
+public class changeEmail extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
