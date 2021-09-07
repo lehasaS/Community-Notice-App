@@ -13,4 +13,11 @@
     <string name="what_s_on_your_mind">What\'s on your mind?</string>
     <string name="my_username">[My_Username]</string>
     <string name="Greeting">\"Hi, \"</string>
+    <string name="update_email">Update email</string>
+    <string name="edit_profile">Edit_Profile</string>
+    <string name="hi">Hi!</string>
+    <string name="new_community">New Community</string>
+    <string name="update_password">Update Password</string>
+    <string name="upload_picture">Upload picture</string>
+    <string name="save_changes">save changes</string>
 </resources>
