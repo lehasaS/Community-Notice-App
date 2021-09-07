@@ -21,6 +21,7 @@ import com.google.firebase.functions.FirebaseFunctions;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 
 public class board extends AppCompatActivity {
@@ -76,7 +77,7 @@ public class board extends AppCompatActivity {
         readPost();
     }
 
-    private void readPost() {
+    private void readPost(){
 
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference postRef = firebaseDatabase.getReference().child("Posts").getRef();
@@ -91,6 +92,7 @@ public class board extends AppCompatActivity {
                     createPostArrayList.add(post);
                 }
 
+                Collections.reverse(createPostArrayList);
                 postAdapter = new postAdapter(createPostArrayList, context);
                 recyclerView.setAdapter(postAdapter);
             }
