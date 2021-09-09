@@ -96,7 +96,7 @@ public class profile extends AppCompatActivity implements View.OnClickListener {
         builder.setPositiveButton("Yes", (dialog, id) -> {
             userAuth.signOut();
             ((Activity) context).finish();
-            Intent login = new Intent(profile.this, MainActivity.class);
+            Intent login = new Intent(profile.this, LogIn.class);
             startActivity(login);
 
         });

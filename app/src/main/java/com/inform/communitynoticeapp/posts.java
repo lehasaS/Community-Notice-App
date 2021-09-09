@@ -1,5 +1,6 @@
 package com.inform.communitynoticeapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -15,8 +16,11 @@ import android.widget.Toast;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -24,6 +28,7 @@ import java.util.Date;
 public class posts extends AppCompatActivity implements View.OnClickListener {
 
     private EditText typeET;
+    private final dataBaseFirebase firebase = dataBaseFirebase.getInstance();
 
     @SuppressLint("NonConstantResourceId")
     @Override
@@ -31,10 +36,10 @@ public class posts extends AppCompatActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_posts);
         TextView usernameTV = findViewById(R.id.username_TV);
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        assert user != null;
-        usernameTV.setText(user.getDisplayName());
+        usernameTV.setText(firebase.getUser().getDisplayName());
         TextView communityTV = findViewById(R.id.commGroup_TV);
+
+
         typeET=findViewById(R.id.type_ET);
         Button postBtn = findViewById(R.id.post_Btn);
         ImageView takePhoto = findViewById(R.id.takePhoto_IV);
@@ -79,16 +84,8 @@ public class posts extends AppCompatActivity implements View.OnClickListener {
         String dateNow = dateFormat.format(date);
 
         String text = typeET.getText().toString();
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference rootRef = firebaseDatabase.getReference();
-        DatabaseReference postRef = rootRef.child("Posts").getRef();
-        DatabaseReference newRef = postRef.push();
-
-        assert currentUser != null;
-        createPost post = new createPost(currentUser.getDisplayName(), text, dateNow);
-        newRef.setValue(post).addOnCompleteListener(task -> {
+        firebase.addPostsToFirebase(text, dateNow).addOnCompleteListener(task -> {
             if(task.isSuccessful()){
                 Toast.makeText(posts.this, "Post Submitted", Toast.LENGTH_SHORT).show();
             }else{

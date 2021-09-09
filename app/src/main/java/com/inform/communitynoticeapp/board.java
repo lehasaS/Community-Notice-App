@@ -1,6 +1,5 @@
 package com.inform.communitynoticeapp;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -8,28 +7,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.functions.FirebaseFunctions;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
 
 public class board extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private ArrayList<createPost> createPostArrayList;
+    private ArrayList<createPost> createPostArrayList, postArrayList;
     private postAdapter postAdapter;
     private Context context;
+    private final dataBaseFirebase firebase = dataBaseFirebase.getInstance();
 
     public board(){
         super(R.layout.activity_board);
@@ -78,30 +66,9 @@ public class board extends AppCompatActivity {
     }
 
     private void readPost(){
-
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference postRef = firebaseDatabase.getReference().child("Posts").getRef();
-        postRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                //Datasnapshot contains {PostID1: {user, post}}
-                createPost post;
-                for(DataSnapshot content: snapshot.getChildren()){
-                    post = content.getValue(createPost.class);
-                    post.setPost(post.getPost());
-                    createPostArrayList.add(post);
-                }
-
-                Collections.reverse(createPostArrayList);
-                postAdapter = new postAdapter(createPostArrayList, context);
-                recyclerView.setAdapter(postAdapter);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+        postArrayList=firebase.readPostsFromFirebase(createPostArrayList);
+        postAdapter = new postAdapter(postArrayList, context);
+        recyclerView.setAdapter(postAdapter);
     }
 
 
