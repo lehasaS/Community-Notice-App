@@ -58,7 +58,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editProfile"
+            app:layout_constraintTop_toBottomOf="@+id/editPassword"
             app:layout_constraintVertical_bias="0.889" />
 
         <TextView
@@ -75,7 +75,7 @@
             app:layout_constraintVertical_bias="0.072" />
 
         <TextView
-            android:id="@+id/editProfile"
+            android:id="@+id/editPassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="User Profile"
@@ -99,7 +99,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editProfile"
+            app:layout_constraintTop_toBottomOf="@+id/editPassword"
             app:layout_constraintVertical_bias="0.033" />
 
         <TextView

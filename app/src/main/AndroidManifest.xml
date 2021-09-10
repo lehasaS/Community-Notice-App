@@ -13,7 +13,7 @@
             android:name=".profileEditor"
             android:exported="true" />
         <activity
-            android:name=".MainActivity"
+            android:name=".LogIn"
             android:exported="true" />
         <activity
             android:name=".profile"

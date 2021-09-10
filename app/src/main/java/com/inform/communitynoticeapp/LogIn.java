@@ -1,5 +1,6 @@
 package com.inform.communitynoticeapp;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -11,14 +12,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
-
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class LogIn extends AppCompatActivity implements View.OnClickListener {
 
     EditText emailET, passwordET;
     private validateInput validate;
-    private FirebaseAuth userAuth;
     private View progressBar;
+    private final dataBaseFirebase firebase = dataBaseFirebase.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,7 +28,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //[START] login Part
         emailET = findViewById(R.id.email_ET);
         passwordET = findViewById(R.id.password_ET);
-        userAuth = FirebaseAuth.getInstance();
         Button loginBtn = findViewById(R.id.login_btn);
         TextView signUpText = findViewById(R.id.signUp_TV);
         progressBar = findViewById(R.id.progressBar);
@@ -53,28 +51,41 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    public void showVerifyDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Please verify your email!");
+        builder.setPositiveButton("OK", (dialog, id) -> {
+            dialog.dismiss();
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
     private void handleLoginBtnClick() {
         showProgressBar();
         String password = passwordET.getText().toString();
         String email = emailET.getText().toString();
+        firebase.checkIfEmailIsVerified();
 
         if(validate.checkEmailValid(email) && validate.checkPasswordValid(password)){
-            userAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
-                if(task.isSuccessful()){
+            firebase.signInUser(email, password).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
                     //Used to get user info e.g. email, password, etc.
-                    Toast.makeText(MainActivity.this, "You have Logged in successfully!", Toast.LENGTH_SHORT).show();
-                    Intent post = new Intent(MainActivity.this, posts.class);
+                    Toast.makeText(LogIn.this, "You have Logged in successfully!", Toast.LENGTH_SHORT).show();
+                    Intent post = new Intent(LogIn.this, posts.class);
                     startActivity(post);
-                }else{
+                } else {
                     hideProgressBar();
-                    Toast.makeText(MainActivity.this, "Error has occurred: "+task.getException(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LogIn.this, "Error has occurred: " + task.getException(), Toast.LENGTH_SHORT).show();
                 }
             });
+        }else {
+            hideProgressBar();
         }
     }
 
     private void handleSignUpClick() {
-        Intent signUp = new Intent(MainActivity.this, SignUp.class);
+        Intent signUp = new Intent(LogIn.this, SignUp.class);
         startActivity(signUp);
     }
 
