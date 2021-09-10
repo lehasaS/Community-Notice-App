@@ -48,7 +48,7 @@ public class dataBaseFirebase  {
     }
 
     public FirebaseUser getUser(){
-        FirebaseUser user = userAuth.getInstance().getCurrentUser();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         assert user != null;
         return user;
     }
@@ -116,7 +116,8 @@ public class dataBaseFirebase  {
         return userAuth.signInWithEmailAndPassword(email, password);
     }
 
-    public ArrayList<createPost> readPostsFromFirebase(ArrayList<createPost> createPostArrayList){
+    public ArrayList<createPost> readPostsFromFirebase(){
+        ArrayList<createPost> createPostArrayList = new ArrayList<>();
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference postRef = firebaseDatabase.getReference().child("Posts").getRef();
         postRef.addValueEventListener(new ValueEventListener() {
@@ -126,19 +127,24 @@ public class dataBaseFirebase  {
                 createPost post;
                 for(DataSnapshot content: snapshot.getChildren()){
                     post = content.getValue(createPost.class);
-                    assert post != null;
-                    post.setPost(post.getPost());
+                    Objects.requireNonNull(post).setPost(post.getPost());
                     createPostArrayList.add(0,post);
                 }
-
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
         return createPostArrayList;
+    }
+
+    public Task<Void> updateEmail(String email){
+        return userAuth.getCurrentUser().updateEmail(email);
+    }
+
+    public Task<Void> updatePassword(String password){
+        return userAuth.getCurrentUser().updatePassword(password);
     }
 
     public Task<Void> addPostsToFirebase(String text, String dateNow){

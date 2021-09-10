@@ -91,6 +91,7 @@ public class posts extends AppCompatActivity implements View.OnClickListener {
             }else{
                 Toast.makeText(posts.this, "Some error occurred: "+task.getException(), Toast.LENGTH_SHORT).show();
             }
+            typeET.setText("");
         });
     }
 

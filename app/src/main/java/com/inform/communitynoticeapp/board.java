@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -14,8 +16,6 @@ import java.util.ArrayList;
 public class board extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private ArrayList<createPost> createPostArrayList, postArrayList;
-    private postAdapter postAdapter;
     private Context context;
     private final dataBaseFirebase firebase = dataBaseFirebase.getInstance();
 
@@ -55,7 +55,7 @@ public class board extends AppCompatActivity {
         });
 
         context=this;
-        createPostArrayList = new ArrayList<>();
+
 
         recyclerView= findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -63,11 +63,11 @@ public class board extends AppCompatActivity {
         recyclerView.setLayoutManager(linearLayoutManager);
 
         readPost();
+        Toast.makeText(board.this, "Reading done", Toast.LENGTH_SHORT).show();
     }
 
     private void readPost(){
-        postArrayList=firebase.readPostsFromFirebase(createPostArrayList);
-        postAdapter = new postAdapter(postArrayList, context);
+        postAdapter postAdapter = new postAdapter(firebase.readPostsFromFirebase(), context);
         recyclerView.setAdapter(postAdapter);
     }
 
