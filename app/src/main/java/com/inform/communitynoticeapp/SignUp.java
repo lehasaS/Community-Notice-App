@@ -70,7 +70,7 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
                        //Used to get user info e.g. email, password, etc.
                        firebase.sendVerificationEmail().addOnCompleteListener(task1 -> {
                            if(task1.isSuccessful()){
-                               firebase.ChangeUserName(username);
+                               firebase.updateUsername(username);
                                Toast.makeText(SignUp.this, "You have signed up successfully!", Toast.LENGTH_SHORT).show();
                                firebase.saveNameInFirebase(role, userCurrent);
                                Intent login = new Intent(SignUp.this, LogIn.class);
