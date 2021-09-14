@@ -14,10 +14,10 @@
         android:hint="@string/email_address"
         android:inputType="textEmailAddress"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/username_ET"
+        app:layout_constraintEnd_toEndOf="@+id/dispName_ET"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/username_ET"
-        app:layout_constraintTop_toBottomOf="@+id/username_ET"
+        app:layout_constraintStart_toStartOf="@+id/dispName_ET"
+        app:layout_constraintTop_toBottomOf="@+id/dispName_ET"
         app:layout_constraintVertical_bias="0.060000002" />
 
     <Button
@@ -62,11 +62,11 @@
         app:layout_constraintVertical_bias="0.021" />
 
     <EditText
-        android:id="@+id/username_ET"
+        android:id="@+id/dispName_ET"
         android:layout_width="280dp"
         android:layout_height="48dp"
         android:ems="10"
-        android:hint="@string/username"
+        android:hint="@string/disp_name"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

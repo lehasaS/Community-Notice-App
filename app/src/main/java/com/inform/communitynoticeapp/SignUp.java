@@ -13,19 +13,16 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    EditText emailET, passwordET, passwordAgainET, usernameET, communityET;
+    EditText emailET, passwordET, passwordAgainET, dispNameET, communityET;
     private validateInput validate;
     private String passwordAgain;
-    private String username;
+    private String dispName;
     private String community;
     private String role;
     private userDetails userCurrent;
-    private ArrayList<String> communities;
+    //private ArrayList<String> communities;
     private final dataBaseFirebase firebase = dataBaseFirebase.getInstance();
 
 
@@ -33,14 +30,14 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-        communities=new ArrayList<>(Arrays.asList("Mowbray", "Cape Town", "Rondebosch", "Claremont"));
-        firebase.addCommunitiesToFirebase(communities);
+        //communities=new ArrayList<>(Arrays.asList("Mowbray", "Cape Town", "Rondebosch", "Claremont"));
+        //firebase.addCommunitiesToFirebase(communities);
         validate = new validateInput(this);
 
         //[START] Signup Part
         Spinner roles = findViewById(R.id.spinner);
         emailET = findViewById(R.id.email_ET);
-        usernameET= findViewById(R.id.username_ET);
+        dispNameET = findViewById(R.id.dispName_ET);
         passwordET = findViewById(R.id.password_ET);
         communityET = findViewById(R.id.community_groupET);
         passwordAgainET = findViewById(R.id.password_again_ET);
@@ -55,24 +52,26 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
 
 
     private void handleSignUpBtnClick() {
+
         String email = emailET.getText().toString();
         String password = passwordET.getText().toString();
         passwordAgain = passwordAgainET.getText().toString();
-        username = usernameET.getText().toString();
+        dispName = dispNameET.getText().toString();
         community = communityET.getText().toString();
-        userCurrent = new userDetails(username, email, community);
+        userCurrent = new userDetails(dispName, email, community, role);
 
-        if(validate.checkEmailValid(email) && validate.checkPasswordValid(password) ){
-            if(checkUsername(username) && checkCommunity(community) && checkRole(role) && checkPassword(password)) {
+        if(validate.checkEmailValid(email) && validate.checkNewPasswordValid(password, passwordAgain) ){
+            if(validate.checkDispName(dispName) && validate.checkCommunity(community) && validate.checkRole(role)/* && checkPassword(password)*/) {
                 //signup user
+
                firebase.signUpUser(email, password).addOnCompleteListener(task -> {
                    if (task.isSuccessful()) {
                        //Used to get user info e.g. email, password, etc.
                        firebase.sendVerificationEmail().addOnCompleteListener(task1 -> {
                            if(task1.isSuccessful()){
-                               firebase.updateUsername(username);
+                               firebase.updateDispName(dispName);
                                Toast.makeText(SignUp.this, "You have signed up successfully!", Toast.LENGTH_SHORT).show();
-                               firebase.saveNameInFirebase(role, userCurrent);
+                               firebase.saveNameInFirebase(userCurrent);
                                Intent login = new Intent(SignUp.this, LogIn.class);
                                startActivity(login);
                            }else {
@@ -87,47 +86,6 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
             }
         }
 
-    }
-
-    public boolean checkUsername(@NonNull String username){
-        boolean val=true;
-        if(username.equals("")){
-            Toast.makeText(this, "Enter username", Toast.LENGTH_SHORT).show();
-            val = false;
-        }
-        return val;
-    }
-
-    public boolean checkRole(@NonNull String role){
-        boolean val=true;
-        if(role.equals("")){
-            Toast.makeText(this, "Select a role", Toast.LENGTH_SHORT).show();
-            val=false;
-        }
-        return val;
-    }
-
-    public boolean checkCommunity(@NonNull String communit){
-        boolean val=true;
-        if(communit.equals("")){
-            Toast.makeText(this, "Enter your community name ", Toast.LENGTH_SHORT).show();
-            val = false;
-        }
-
-        if(!(communities.contains(community))){
-            Toast.makeText(this, "This community group does not exist", Toast.LENGTH_SHORT).show();
-            val=false;
-        }
-        return val;
-    }
-
-    public boolean checkPassword(@NonNull String password){
-        boolean val = true;
-        if(!(passwordAgain.equals(password))){
-            Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show();
-            val=false;
-        }
-        return val;
     }
 
     @Override

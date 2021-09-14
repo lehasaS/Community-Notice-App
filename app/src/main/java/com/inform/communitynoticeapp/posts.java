@@ -1,6 +1,5 @@
 package com.inform.communitynoticeapp;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -14,13 +13,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -35,8 +27,8 @@ public class posts extends AppCompatActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_posts);
-        TextView usernameTV = findViewById(R.id.username_TV);
-        usernameTV.setText(firebase.getUser().getDisplayName());
+        TextView dispNameTV = findViewById(R.id.dispName_TV);
+        dispNameTV.setText(firebase.getUser().getDisplayName());
         TextView communityTV = findViewById(R.id.commGroup_TV);
 
         typeET=findViewById(R.id.type_ET);

@@ -102,7 +102,7 @@
             tools:srcCompat="@tools:sample/avatars" />
 
         <TextView
-            android:id="@+id/username_TV"
+            android:id="@+id/dispName_TV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
@@ -124,7 +124,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.057"
             app:layout_constraintStart_toEndOf="@+id/userPhoto"
-            app:layout_constraintTop_toBottomOf="@+id/username_TV"
+            app:layout_constraintTop_toBottomOf="@+id/dispName_TV"
             app:layout_constraintVertical_bias="0.208" />
 
         <ImageView
