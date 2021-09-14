@@ -21,8 +21,9 @@
         <entry key="..\:/Users/reake/AndroidStudioProjects/csc3003s_capstone/app/src/main/res/layout/activity_board.xml" value="0.225" />
         <entry key="..\:/Users/reake/AndroidStudioProjects/csc3003s_capstone/app/src/main/res/layout/activity_main.xml" value="0.11041666666666666" />
         <entry key="..\:/Users/reake/AndroidStudioProjects/csc3003s_capstone/app/src/main/res/layout/activity_posts.xml" value="0.225" />
-        <entry key="..\:/Users/reake/AndroidStudioProjects/csc3003s_capstone/app/src/main/res/layout/activity_profile.xml" value="0.11041666666666666" />
-        <entry key="..\:/Users/reake/AndroidStudioProjects/csc3003s_capstone/app/src/main/res/layout/activity_sign_up.xml" value="0.11041666666666666" />
+        <entry key="..\:/Users/reake/AndroidStudioProjects/csc3003s_capstone/app/src/main/res/layout/activity_profile.xml" value="0.21" />
+        <entry key="..\:/Users/reake/AndroidStudioProjects/csc3003s_capstone/app/src/main/res/layout/activity_profile_editor.xml" value="0.25" />
+        <entry key="..\:/Users/reake/AndroidStudioProjects/csc3003s_capstone/app/src/main/res/layout/activity_sign_up.xml" value="0.21" />
         <entry key="..\:/Users/reake/AndroidStudioProjects/csc3003s_capstone/app/src/main/res/layout/post_card.xml" value="0.11041666666666666" />
       </map>
     </option>

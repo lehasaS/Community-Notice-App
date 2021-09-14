@@ -66,7 +66,7 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
         String password = passwordET.getText().toString();
         String email = emailET.getText().toString();
 
-        if(validate.checkEmailValid(email) && validate.checkPasswordValid(password)){
+        if(validate.checkEmailValid(email) && validate.checkOldPasswordValid(password)){
             firebase.signInUser(email, password).addOnCompleteListener(task -> {
                 if(firebase.checkIfEmailIsVerified()){
                     if (task.isSuccessful()) {

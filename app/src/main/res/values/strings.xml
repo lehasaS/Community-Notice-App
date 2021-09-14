@@ -6,11 +6,11 @@
     <string name="email_address">email address</string>
     <string name="signup">SIGNUP</string>
     <string name="enter_password_again">enter password again</string>
-    <string name="username">username</string>
+    <string name="disp_name">display name</string>
     <string name="user_profile">User Profile</string>
     <string name="create_post">Create Post</string>
     <string name="post">Post</string>
     <string name="what_s_on_your_mind">What\'s on your mind?</string>
     <string name="my_username">[My_Username]</string>
-    <string name="Greeting">\"Hi, \"</string>
+    <string name="Greeting">Hi, </string>
 </resources>

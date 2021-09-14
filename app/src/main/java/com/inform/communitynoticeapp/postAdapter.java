@@ -22,11 +22,11 @@ public class postAdapter extends RecyclerView.Adapter<postAdapter.ViewHolder> {
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
-        TextView userName, post, dateTime;
+        TextView dispName, post, dateTime;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             post=itemView.findViewById(R.id.post_content);
-            userName=itemView.findViewById(R.id.user_name);
+            dispName =itemView.findViewById(R.id.user_name);
             dateTime=itemView.findViewById(R.id.dateTime_TV);
         }
     }
@@ -40,7 +40,7 @@ public class postAdapter extends RecyclerView.Adapter<postAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.userName.setText(postList.get(position).getUser());
+        holder.dispName.setText(postList.get(position).getUser());
         holder.post.setText(postList.get(position).getPost());
         holder.dateTime.setText(postList.get(position).getDateTime());
 

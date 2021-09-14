@@ -4,7 +4,9 @@ import android.net.Uri;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -14,22 +16,29 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.ObjectStreamException;
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.UUID;
 
 public class dataBaseFirebase {
 
     private final FirebaseAuth userAuth = FirebaseAuth.getInstance();
     private final ArrayList<createPost> createPostArrayList = new ArrayList<>();
     private static final dataBaseFirebase instance = new dataBaseFirebase();
+    private FirebaseStorage storage;
+    private StorageReference storageRef;
 
     private dataBaseFirebase(){
         if(instance!=null){
             throw new IllegalStateException("Firebase database instance is already created");
         }
+        storage = FirebaseStorage.getInstance();
+        storageRef = storage.getReference();
     }
 
     public static dataBaseFirebase getInstance(){
@@ -54,6 +63,10 @@ public class dataBaseFirebase {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         assert user != null;
         return user;
+    }
+
+    public Uri getDisplayPic() {
+        return getUser().getPhotoUrl();
     }
 
     private DatabaseReference getRootRef(){
@@ -86,8 +99,8 @@ public class dataBaseFirebase {
         }
     }
 
-    public void saveNameInFirebase(String role, userDetails userCurrent){
-        DatabaseReference nameRef = this.getRootRef().child("Users").child(role).child(Objects.requireNonNull(userAuth.getUid()));
+    public void saveNameInFirebase(userDetails userCurrent){
+        DatabaseReference nameRef = this.getRootRef().child("Users").child(Objects.requireNonNull(userAuth.getUid()));
         nameRef.setValue(userCurrent);
     }
 
@@ -107,9 +120,9 @@ public class dataBaseFirebase {
         return Objects.requireNonNull(userAuth.getCurrentUser()).isEmailVerified();
     }
 
-    public void updateUsername(String username){
+    public void updateDispName(String dispName){
         FirebaseUser currentUser = userAuth.getCurrentUser();
-        UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder().setDisplayName(username).build();
+        UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder().setDisplayName(dispName).build();
         assert currentUser != null;
         currentUser.updateProfile(profileChangeRequest);
     }
@@ -123,8 +136,15 @@ public class dataBaseFirebase {
     }
 
     public void updateDisplayPicture(Uri photoUri){
+        final String randomKey = UUID.randomUUID().toString();
+        StorageReference pictureRef = storageRef.child("profilePics/" + randomKey);
+        pictureRef.putFile(photoUri);
         UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder().setPhotoUri(photoUri).build();
         this.getUser().updateProfile(profileChangeRequest);
+    }
+
+    public void updateCommunity(String community) {
+        getRootRef().child("Users").child(getUser().getUid()).child("community").setValue(community);
     }
 
     public DatabaseReference readPostsFromFirebase(){
@@ -136,6 +156,12 @@ public class dataBaseFirebase {
         DatabaseReference newRef = postRef.push();
         createPost post = new createPost(this.getUser().getDisplayName(), text, dateNow);
         return newRef.setValue(post);
+    }
+
+    public void uploadPicture(Uri imgUri) {
+        final String randomKey = UUID.randomUUID().toString();
+        StorageReference pictureRef = storageRef.child("images/" + randomKey);
+        pictureRef.putFile(imgUri);
     }
 
 }

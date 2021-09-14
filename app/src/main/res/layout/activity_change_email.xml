@@ -10,85 +10,73 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/post_ET"
-        android:layout_width="400dp"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginStart="3dp"
-        android:layout_marginTop="6dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="-5dp">
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="0dp">
 
         <Button
             android:id="@+id/edit_profile_button"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginBottom="4dp"
             android:background="@color/blue_200"
             android:text="save changes"
             android:textColor="#212121"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/newPost_TV"
-            app:layout_constraintVertical_bias="0.991" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-            android:id="@+id/newPost_TV"
+            android:id="@+id/editPassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/update_email"
+            android:text="Edit Email"
             android:textSize="30sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/edit_profile_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.009" />
+            app:layout_constraintVertical_bias="0.004" />
 
         <EditText
-            android:id="@+id/editTextTextPersonName6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="152dp"
+            android:id="@+id/enterEmailET"
+            android:layout_width="280dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="200dp"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Enter email"
-            app:layout_constraintBottom_toTopOf="@+id/edit_profile_button"
+            android:text="enter email"
+            app:layout_constraintBottom_toTopOf="@+id/enterEmailAgainET"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.531"
+            app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/newPost_TV"
-            app:layout_constraintVertical_bias="0.089" />
+            app:layout_constraintTop_toBottomOf="@+id/editPassword" />
 
         <EditText
-            android:id="@+id/editTextTextPersonName7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/enterEmailAgainET"
+            android:layout_width="280dp"
+            android:layout_height="48dp"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Enter email again"
+            android:text="eneter email again"
             app:layout_constraintBottom_toTopOf="@+id/edit_profile_button"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.531"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName6"
-            app:layout_constraintVertical_bias="0.218" />
+            app:layout_constraintTop_toBottomOf="@+id/editPassword" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="?android:attr/windowBackground"
-        app:menu="@menu/bottom_navigation"
-
-        />
-
 </RelativeLayout>
+
+

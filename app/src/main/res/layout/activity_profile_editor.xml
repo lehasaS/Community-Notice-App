@@ -10,99 +10,68 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/post_ET"
-        android:layout_width="411dp"
-        android:layout_height="729dp"
+        android:layout_width="wrap_content"
+        android:layout_height="672dp"
         android:layout_above="@id/bottom_navigation"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="-1dp"
-        android:layout_marginTop="49dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginBottom="8dp">
-
-        <TextView
-            android:id="@+id/update_email"
-            android:layout_width="150dp"
-            android:layout_height="28dp"
-            android:text="Update email"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.068"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/new_name"
-            app:layout_constraintVertical_bias="0.358" />
-
-        <TextView
-            android:id="@+id/new_comm_name"
-            android:layout_width="150dp"
-            android:layout_height="28dp"
-            android:text="New Community"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.08"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/new_name"
-            app:layout_constraintVertical_bias="0.0" />
+        android:layout_centerVertical="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="-1dp"
+        android:layout_marginBottom="59dp">
 
         <Button
-            android:id="@+id/upload_button"
+            android:id="@+id/upload_pic_Btn"
             android:layout_width="168dp"
             android:layout_height="38dp"
+            android:layout_marginStart="40dp"
             android:background="@color/blue_200"
             android:text="Upload picture"
             android:textColor="#212121"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.572"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/newPost_TV"
-            app:layout_constraintVertical_bias="0.267" />
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/profile_pic_IV"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.279" />
 
-        <TextView
-            android:id="@+id/new_bio"
-            android:layout_width="81dp"
-            android:layout_height="31dp"
-            android:text="New Bio"
-            app:layout_constraintBottom_toBottomOf="parent"
+        <EditText
+            android:id="@+id/new_community_ET"
+            android:layout_width="200dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="12dp"
+            android:ems="10"
+            android:hint="new community "
+            android:inputType="textPersonName"
+            app:layout_constraintBottom_toTopOf="@+id/editProfile_Btn"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.063"
+            app:layout_constraintHorizontal_bias="0.075"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/new_role"
+            app:layout_constraintTop_toBottomOf="@+id/new_username_ET"
             app:layout_constraintVertical_bias="0.0" />
 
         <Button
-            android:id="@+id/edit_profile_button"
-            android:layout_width="280dp"
-            android:layout_height="wrap_content"
+            android:id="@+id/editProfile_Btn"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
             android:background="@color/blue_200"
             android:text="save changes"
             android:textColor="#212121"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.204"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/newPost_TV"
-            app:layout_constraintVertical_bias="0.872" />
+            app:layout_constraintTop_toBottomOf="@+id/editProfile_TV"
+            app:layout_constraintVertical_bias="1.0" />
 
         <TextView
-            android:id="@+id/new_role"
-            android:layout_width="81dp"
-            android:layout_height="31dp"
-            android:text="New Role "
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.063"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/new_comm_name"
-            app:layout_constraintVertical_bias="0.006" />
-
-        <TextView
-            android:id="@+id/newPost_TV"
+            android:id="@+id/editProfile_TV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Edit_Profile"
+            android:text="Edit Profile"
             android:textSize="30sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -123,43 +92,79 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/newPost_TV"
+            app:layout_constraintTop_toBottomOf="@+id/editProfile_TV"
             app:layout_constraintVertical_bias="0.033" />
 
-        <TextView
-            android:id="@+id/new_name"
-            android:layout_width="147dp"
-            android:layout_height="29dp"
-            android:text="New Username "
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.08"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.408" />
-
         <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="114dp"
-            android:layout_height="126dp"
-            app:layout_constraintBottom_toTopOf="@+id/new_name"
+            android:id="@+id/profile_pic_IV"
+            android:layout_width="109dp"
+            android:layout_height="103dp"
+            android:layout_marginTop="112dp"
+            app:layout_constraintBottom_toTopOf="@+id/editProfile_Btn"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.056"
+            app:layout_constraintHorizontal_bias="0.052"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.828"
+            app:layout_constraintVertical_bias="0.0"
             app:srcCompat="@drawable/persona_ic" />
 
-        <TextView
-            android:id="@+id/update_password"
-            android:layout_width="150dp"
-            android:layout_height="31dp"
-            android:layout_marginTop="12dp"
-            android:text="Update Password "
+        <EditText
+            android:id="@+id/new_username_ET"
+            android:layout_width="200dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="20dp"
+            android:ems="10"
+            android:hint="@string/disp_name"
+            android:inputType="textPersonName"
+            app:layout_constraintBottom_toTopOf="@+id/editProfile_Btn"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.068"
+            app:layout_constraintHorizontal_bias="0.075"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/update_email" />
+            app:layout_constraintTop_toBottomOf="@+id/profile_pic_IV"
+            app:layout_constraintVertical_bias="0.029" />
+
+        <TextView
+            android:id="@+id/updatePassword_TV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Update Password"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/updateEmail_TV"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.062"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/new_role_spin"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/updateEmail_TV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Update Email"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/editProfile_Btn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.054"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/new_role_spin"
+            app:layout_constraintVertical_bias="0.372" />
+
+        <Spinner
+            android:id="@+id/new_role_spin"
+            android:layout_width="280dp"
+            android:layout_height="48dp"
+            android:spinnerMode="dropdown"
+            android:ems="10"
+            android:hint="new role"
+            android:inputType="textPersonName"
+            app:layout_constraintBottom_toTopOf="@+id/editProfile_Btn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.121"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/new_username_ET"
+            app:layout_constraintVertical_bias="0.243" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
