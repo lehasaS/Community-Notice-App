@@ -39,7 +39,6 @@ public class posts extends AppCompatActivity implements View.OnClickListener {
         usernameTV.setText(firebase.getUser().getDisplayName());
         TextView communityTV = findViewById(R.id.commGroup_TV);
 
-
         typeET=findViewById(R.id.type_ET);
         Button postBtn = findViewById(R.id.post_Btn);
         ImageView takePhoto = findViewById(R.id.takePhoto_IV);
@@ -91,6 +90,7 @@ public class posts extends AppCompatActivity implements View.OnClickListener {
             }else{
                 Toast.makeText(posts.this, "Some error occurred: "+task.getException(), Toast.LENGTH_SHORT).show();
             }
+            typeET.setText("");
         });
     }
 
