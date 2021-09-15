@@ -3,6 +3,7 @@ package com.inform.communitynoticeapp;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,11 +18,8 @@ public class profileEditor extends AppCompatActivity implements View.OnClickList
 
     private EditText dispNameET, communityET;
     private ImageView profilePicIV;
-    private String dispName, community;
-    private userDetails userCurrent;
     private final dataBaseFirebase firebase = dataBaseFirebase.getInstance();
     private validateInput validate;
-    private Uri imageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,30 +35,25 @@ public class profileEditor extends AppCompatActivity implements View.OnClickList
         TextView updatePassword = findViewById(R.id.updatePassword_TV);
         Button saveBtn = findViewById(R.id.editProfile_Btn);
 
-
         updateEmail.setOnClickListener(this);
         updatePassword.setOnClickListener(this);
         saveBtn.setOnClickListener(view -> handleSaveBtnClick());
         uploadPicBtn.setOnClickListener(view -> handlePicBtnClick());
 
-        Toast.makeText(this, firebase.getDisplayPic().toString(), Toast.LENGTH_SHORT).show();
-
-        //profilePicIV.setImageURI(firebase.getDisplayPic());
-
-
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
         int id = view.getId();
 
         switch (id){
             case R.id.updateEmail_TV:
-                Intent updateEmail = new Intent(profileEditor.this, changeEmail.class);
+                Intent updateEmail = new Intent(profileEditor.this, updateEmail.class);
                 startActivity(updateEmail);
 
             case R.id.updatePassword_TV:
-                Intent updatePassword = new Intent(profileEditor.this, changePassword.class);
+                Intent updatePassword = new Intent(profileEditor.this, updatePassword.class);
                 startActivity(updatePassword);
                 break;
         }
@@ -68,18 +61,15 @@ public class profileEditor extends AppCompatActivity implements View.OnClickList
     }
 
     private void handleSaveBtnClick() {
-        dispName = dispNameET.getText().toString();
-        //Toast.makeText(this, "New username: " + username /*+ " New community: " + community*/, Toast.LENGTH_SHORT).show();
-
-        community = communityET.getText().toString();
-        //Toast.makeText(this, /*"New username: " + username +*/ " New community: " + community, Toast.LENGTH_SHORT).show();
-
-
+        String dispName = dispNameET.getText().toString();
+        String community = communityET.getText().toString();
         if (validate.checkDispName(dispName) && validate.checkCommunity(community)) {
             firebase.updateDispName(dispName);
             firebase.updateCommunity(community);
             Toast.makeText(this, "Profile updated successfully!", Toast.LENGTH_SHORT).show();
         }
+        Intent profile = new Intent(profileEditor.this, profile.class);
+        startActivity(profile);
     }
 
     private void handlePicBtnClick() {
@@ -93,7 +83,7 @@ public class profileEditor extends AppCompatActivity implements View.OnClickList
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode==1 && resultCode==RESULT_OK && data!=null && data.getData()!=null) {
-            imageUri = data.getData();
+            Uri imageUri = data.getData();
             profilePicIV.setImageURI(imageUri);
             firebase.updateDisplayPicture(imageUri);
         }

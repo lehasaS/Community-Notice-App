@@ -3,27 +3,38 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/lehas/AndroidStudioProjects/communityNoticeApp/app/src/main/res/drawable/back_icon.xml" value="0.2703125" />
+        <entry key="..\:/Users/lehas/AndroidStudioProjects/communityNoticeApp/app/src/main/res/drawable/flag.xml" value="0.2703125" />
+        <entry key="..\:/Users/lehas/AndroidStudioProjects/communityNoticeApp/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2703125" />
+        <entry key="..\:/Users/lehas/AndroidStudioProjects/communityNoticeApp/app/src/main/res/drawable/ic_mtrl_checked_circle.xml" value="0.439453125" />
+        <entry key="..\:/Users/lehas/AndroidStudioProjects/communityNoticeApp/app/src/main/res/drawable/media.xml" value="0.2703125" />
+        <entry key="..\:/Users/lehas/AndroidStudioProjects/communityNoticeApp/app/src/main/res/drawable/message_ic.xml" value="0.2703125" />
+        <entry key="..\:/Users/lehas/AndroidStudioProjects/communityNoticeApp/app/src/main/res/drawable/persona_ic.xml" value="0.2703125" />
+        <entry key="..\:/Users/lehas/AndroidStudioProjects/communityNoticeApp/app/src/main/res/drawable/post_ic.xml" value="0.2703125" />
         <entry key="..\:/Users/lehas/AndroidStudioProjects/communityNoticeApp/app/src/main/res/layout/activity_board.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/lehas/AndroidStudioProjects/communityNoticeApp/app/src/main/res/layout/activity_change_email.xml" value="0.2477355072463768" />
         <entry key="..\:/Users/lehas/AndroidStudioProjects/communityNoticeApp/app/src/main/res/layout/activity_change_password.xml" value="0.2477355072463768" />
         <entry key="..\:/Users/lehas/AndroidStudioProjects/communityNoticeApp/app/src/main/res/layout/activity_dummy.xml" value="0.1265625" />
         <entry key="..\:/Users/lehas/AndroidStudioProjects/communityNoticeApp/app/src/main/res/layout/activity_edit_profile.xml" value="0.2" />
         <entry key="..\:/Users/lehas/AndroidStudioProjects/communityNoticeApp/app/src/main/res/layout/activity_main.xml" value="0.4" />
+        <entry key="..\:/Users/lehas/AndroidStudioProjects/communityNoticeApp/app/src/main/res/layout/activity_message_board.xml" value="0.22554347826086957" />
+        <entry key="..\:/Users/lehas/AndroidStudioProjects/communityNoticeApp/app/src/main/res/layout/activity_notice_board.xml" value="0.22554347826086957" />
         <entry key="..\:/Users/lehas/AndroidStudioProjects/communityNoticeApp/app/src/main/res/layout/activity_posts.xml" value="0.264" />
-        <entry key="..\:/Users/lehas/AndroidStudioProjects/communityNoticeApp/app/src/main/res/layout/activity_profile.xml" value="0.4" />
+        <entry key="..\:/Users/lehas/AndroidStudioProjects/communityNoticeApp/app/src/main/res/layout/activity_profile.xml" value="0.3352272727272727" />
         <entry key="..\:/Users/lehas/AndroidStudioProjects/communityNoticeApp/app/src/main/res/layout/activity_profile_editor.xml" value="0.24320652173913043" />
         <entry key="..\:/Users/lehas/AndroidStudioProjects/communityNoticeApp/app/src/main/res/layout/activity_sign_up.xml" value="0.2" />
         <entry key="..\:/Users/lehas/AndroidStudioProjects/communityNoticeApp/app/src/main/res/layout/activity_splash.xml" value="0.24010416666666667" />
+        <entry key="..\:/Users/lehas/AndroidStudioProjects/communityNoticeApp/app/src/main/res/layout/activity_update_email.xml" value="0.23007246376811594" />
+        <entry key="..\:/Users/lehas/AndroidStudioProjects/communityNoticeApp/app/src/main/res/layout/activity_update_password.xml" value="0.23007246376811594" />
         <entry key="..\:/Users/lehas/AndroidStudioProjects/communityNoticeApp/app/src/main/res/layout/dummy.xml" value="0.24320652173913043" />
-        <entry key="..\:/Users/lehas/AndroidStudioProjects/communityNoticeApp/app/src/main/res/layout/post_card.xml" value="0.536" />
+        <entry key="..\:/Users/lehas/AndroidStudioProjects/communityNoticeApp/app/src/main/res/layout/post_card.xml" value="0.4" />
         <entry key="..\:/Users/lehas/AndroidStudioProjects/communityNoticeApp/app/src/main/res/menu/bottom_navigation.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/lehas/AndroidStudioProjects/communityNoticeApp/app/src/main/res/xml/roles_array.xml" value="0.1859375" />
         <entry key="..\:/Users/reake/AndroidStudioProjects/csc3003s_capstone/app/src/main/res/layout/activity_board.xml" value="0.225" />
         <entry key="..\:/Users/reake/AndroidStudioProjects/csc3003s_capstone/app/src/main/res/layout/activity_main.xml" value="0.11041666666666666" />
         <entry key="..\:/Users/reake/AndroidStudioProjects/csc3003s_capstone/app/src/main/res/layout/activity_posts.xml" value="0.225" />
-        <entry key="..\:/Users/reake/AndroidStudioProjects/csc3003s_capstone/app/src/main/res/layout/activity_profile.xml" value="0.21" />
-        <entry key="..\:/Users/reake/AndroidStudioProjects/csc3003s_capstone/app/src/main/res/layout/activity_profile_editor.xml" value="0.25" />
-        <entry key="..\:/Users/reake/AndroidStudioProjects/csc3003s_capstone/app/src/main/res/layout/activity_sign_up.xml" value="0.21" />
+        <entry key="..\:/Users/reake/AndroidStudioProjects/csc3003s_capstone/app/src/main/res/layout/activity_profile.xml" value="0.11041666666666666" />
+        <entry key="..\:/Users/reake/AndroidStudioProjects/csc3003s_capstone/app/src/main/res/layout/activity_sign_up.xml" value="0.11041666666666666" />
         <entry key="..\:/Users/reake/AndroidStudioProjects/csc3003s_capstone/app/src/main/res/layout/post_card.xml" value="0.11041666666666666" />
       </map>
     </option>

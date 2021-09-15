@@ -66,13 +66,13 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
         String password = passwordET.getText().toString();
         String email = emailET.getText().toString();
 
-        if(validate.checkEmailValid(email) && validate.checkOldPasswordValid(password)){
+        if(validate.checkEmailValid(email) && validate.checkEnteredPasswordValid(password)){
             firebase.signInUser(email, password).addOnCompleteListener(task -> {
                 if(firebase.checkIfEmailIsVerified()){
                     if (task.isSuccessful()) {
                         //Used to get user info e.g. email, password, etc.
                         Toast.makeText(LogIn.this, "You have Logged in successfully!", Toast.LENGTH_SHORT).show();
-                        Intent post = new Intent(LogIn.this, posts.class);
+                        Intent post = new Intent(LogIn.this, noticeBoard.class);
                         startActivity(post);
                     } else {
                         hideProgressBar();

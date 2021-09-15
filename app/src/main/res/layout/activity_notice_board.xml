@@ -23,10 +23,6 @@
         android:textStyle="bold" />-->
 
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"/>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/post_ET"
         android:layout_width="match_parent"

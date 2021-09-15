@@ -4,9 +4,7 @@ import android.net.Uri;
 
 import androidx.annotation.NonNull;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -18,26 +16,23 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.io.ObjectStreamException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.UUID;
 
-public class dataBaseFirebase {
+public class dataBaseFirebase implements Cloneable, Serializable {
 
     private final FirebaseAuth userAuth = FirebaseAuth.getInstance();
-    private final ArrayList<createPost> createPostArrayList = new ArrayList<>();
     private static final dataBaseFirebase instance = new dataBaseFirebase();
-    private FirebaseStorage storage;
-    private StorageReference storageRef;
-
+    private final StorageReference storageRef;
     private dataBaseFirebase(){
         if(instance!=null){
             throw new IllegalStateException("Firebase database instance is already created");
         }
-        storage = FirebaseStorage.getInstance();
+        FirebaseStorage storage = FirebaseStorage.getInstance();
         storageRef = storage.getReference();
     }
 
@@ -55,8 +50,13 @@ public class dataBaseFirebase {
     }
 
     @NonNull
+    @Override
     public Object clone() throws CloneNotSupportedException{
         throw new CloneNotSupportedException();
+    }
+
+    public FirebaseAuth getUserAuth(){
+        return userAuth;
     }
 
     public FirebaseUser getUser(){
@@ -64,6 +64,7 @@ public class dataBaseFirebase {
         assert user != null;
         return user;
     }
+
 
     public Uri getDisplayPic() {
         return getUser().getPhotoUrl();
@@ -127,6 +128,11 @@ public class dataBaseFirebase {
         currentUser.updateProfile(profileChangeRequest);
     }
 
+
+    public DatabaseReference getUserDetailsRef(){
+        return getRootRef().child("Users").child(getUser().getUid()).getRef();
+    }
+
     public Task<Void> updateEmail(String email){
         return Objects.requireNonNull(userAuth.getCurrentUser()).updateEmail(email);
     }
@@ -136,9 +142,9 @@ public class dataBaseFirebase {
     }
 
     public void updateDisplayPicture(Uri photoUri){
-        final String randomKey = UUID.randomUUID().toString();
-        StorageReference pictureRef = storageRef.child("profilePics/" + randomKey);
-        pictureRef.putFile(photoUri);
+        //final String randomKey = UUID.randomUUID().toString();
+        //StorageReference pictureRef = storageRef.child("profilePics/" + randomKey);
+        //pictureRef.putFile(photoUri);
         UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder().setPhotoUri(photoUri).build();
         this.getUser().updateProfile(profileChangeRequest);
     }
@@ -148,7 +154,7 @@ public class dataBaseFirebase {
     }
 
     public DatabaseReference readPostsFromFirebase(){
-        return this.getRootRef().child("Posts").getRef();
+        return this.getRootRef().child("Posts").orderByValue().getRef();
     }
 
     public Task<Void> addPostsToFirebase(String text, String dateNow){

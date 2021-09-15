@@ -1,9 +1,16 @@
 package com.inform.communitynoticeapp;
 
+import static com.inform.communitynoticeapp.R.id.nav_createPost;
+import static com.inform.communitynoticeapp.R.id.nav_messageBoard;
+import static com.inform.communitynoticeapp.R.id.nav_noticeBoard;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +20,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -30,11 +40,24 @@ public class posts extends AppCompatActivity implements View.OnClickListener {
         TextView dispNameTV = findViewById(R.id.dispName_TV);
         dispNameTV.setText(firebase.getUser().getDisplayName());
         TextView communityTV = findViewById(R.id.commGroup_TV);
-
         typeET=findViewById(R.id.type_ET);
         Button postBtn = findViewById(R.id.post_Btn);
         ImageView takePhoto = findViewById(R.id.takePhoto_IV);
         ImageView galleryPhoto = findViewById(R.id.addPhoto_IV);
+
+        firebase.getUserDetailsRef().addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                userDetails details = snapshot.getValue(userDetails.class);
+                assert details != null;
+                communityTV.setText(details.getCommunity());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
         takePhoto.setOnClickListener(this);
         galleryPhoto.setOnClickListener(this);
@@ -43,18 +66,23 @@ public class posts extends AppCompatActivity implements View.OnClickListener {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         //set posts selected
-        bottomNavigationView.setSelectedItemId(R.id.nav_post);
+        bottomNavigationView.setSelectedItemId(nav_createPost);
 
         //perform itemSelectedListener
-        bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
-            switch (menuItem.getItemId())
+        bottomNavigationView.setOnItemSelectedListener(item ->{
+            switch (item.getItemId())
             {
-                case R.id.nav_board:
-                    startActivity(new Intent(getApplicationContext(),board.class));
+                case nav_noticeBoard:
+                    startActivity(new Intent(getApplicationContext(),noticeBoard.class));
                     overridePendingTransition(0,0);
                     return true;
 
-                case R.id.nav_post:
+                case nav_createPost:
+                    return true;
+
+                case nav_messageBoard:
+                    startActivity(new Intent(getApplicationContext(),messageBoard.class));
+                    overridePendingTransition(0,0);
                     return true;
 
                 case R.id.nav_profile:
@@ -71,7 +99,7 @@ public class posts extends AppCompatActivity implements View.OnClickListener {
 
     private void addPost(){
         Date date = new Date();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM 'at' HH:mm");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM 'at' HH:mm");
         String dateNow = dateFormat.format(date);
 
         String text = typeET.getText().toString();
@@ -107,5 +135,17 @@ public class posts extends AppCompatActivity implements View.OnClickListener {
     }
 
     private void handleAddingPhoto() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, 1);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==1 && resultCode==RESULT_OK && data!=null && data.getData()!=null) {
+            Uri imageUri = data.getData();
+            firebase.uploadPicture(imageUri);
+        }
     }
 }

@@ -17,9 +17,7 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
 
     EditText emailET, passwordET, passwordAgainET, dispNameET, communityET;
     private validateInput validate;
-    private String passwordAgain;
     private String dispName;
-    private String community;
     private String role;
     private userDetails userCurrent;
     //private ArrayList<String> communities;
@@ -52,18 +50,16 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
 
 
     private void handleSignUpBtnClick() {
-
         String email = emailET.getText().toString();
         String password = passwordET.getText().toString();
-        passwordAgain = passwordAgainET.getText().toString();
+        String passwordAgain = passwordAgainET.getText().toString();
         dispName = dispNameET.getText().toString();
-        community = communityET.getText().toString();
+        String community = communityET.getText().toString();
         userCurrent = new userDetails(dispName, email, community, role);
 
-        if(validate.checkEmailValid(email) && validate.checkNewPasswordValid(password, passwordAgain) ){
+        if(validate.checkEmailValid(email) && validate.checkPasswordValid(password, passwordAgain) ){
             if(validate.checkDispName(dispName) && validate.checkCommunity(community) && validate.checkRole(role)/* && checkPassword(password)*/) {
                 //signup user
-
                firebase.signUpUser(email, password).addOnCompleteListener(task -> {
                    if (task.isSuccessful()) {
                        //Used to get user info e.g. email, password, etc.

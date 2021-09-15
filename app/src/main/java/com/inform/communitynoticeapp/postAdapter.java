@@ -13,12 +13,14 @@ import java.util.ArrayList;
 
 public class postAdapter extends RecyclerView.Adapter<postAdapter.ViewHolder> {
     private final ArrayList<createPost> postList;
+    private final Context context;
     //adapter takes an object of view holder class, we make our own view holder class
     //instead of using RecyclerView.ViewHolder
     //We want to define our own text view in the posts.
 
     public postAdapter(ArrayList<createPost> posts, Context context){
         this.postList=posts;
+        this.context=context;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
@@ -43,7 +45,6 @@ public class postAdapter extends RecyclerView.Adapter<postAdapter.ViewHolder> {
         holder.dispName.setText(postList.get(position).getUser());
         holder.post.setText(postList.get(position).getPost());
         holder.dateTime.setText(postList.get(position).getDateTime());
-
     }
 
     @Override

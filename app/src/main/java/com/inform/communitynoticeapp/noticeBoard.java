@@ -1,10 +1,15 @@
 package com.inform.communitynoticeapp;
 
+import static com.inform.communitynoticeapp.R.id.nav_createPost;
+import static com.inform.communitynoticeapp.R.id.nav_messageBoard;
+import static com.inform.communitynoticeapp.R.id.nav_noticeBoard;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,37 +23,43 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 
-public class board extends AppCompatActivity {
+public class noticeBoard extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private Context context;
     private ArrayList<createPost> createPostArrayList;
     private final dataBaseFirebase firebase = dataBaseFirebase.getInstance();
 
-    public board(){
-        super(R.layout.activity_board);
+    public noticeBoard(){
+        super(R.layout.activity_notice_board);
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_board);
+        setContentView(R.layout.activity_notice_board);
 
         //initialize And Assign Variable
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         //set posts selected
-        bottomNavigationView.setSelectedItemId(R.id.nav_board);
+        bottomNavigationView.setSelectedItemId(nav_noticeBoard);
 
         //perform itemSelectedListener
-        bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
-            switch (menuItem.getItemId())
+        bottomNavigationView.setOnItemSelectedListener(item ->{
+            switch (item.getItemId())
             {
-                case R.id.nav_board:
+                case nav_noticeBoard:
                     return true;
 
-                case R.id.nav_post:
+                case nav_createPost:
                     startActivity(new Intent(getApplicationContext(),posts.class));
+                    overridePendingTransition(0,0);
+                    return true;
+
+                case nav_messageBoard:
+                    startActivity(new Intent(getApplicationContext(),messageBoard.class));
                     overridePendingTransition(0,0);
                     return true;
 

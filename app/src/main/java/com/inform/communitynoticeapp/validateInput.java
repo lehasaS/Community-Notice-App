@@ -31,7 +31,7 @@ public class validateInput {
         }
     }
 
-    public boolean checkNewPasswordValid(@NonNull String password, @NonNull String passwordAgain){
+    public boolean checkPasswordValid(@NonNull String password, @NonNull String passwordAgain){
         if(password.length()==0){
             Toast.makeText(context,"Please enter a password", Toast.LENGTH_SHORT ).show();
             return false;
@@ -46,7 +46,7 @@ public class validateInput {
         }
     }
 
-    public boolean checkOldPasswordValid(@NonNull String password){
+    public boolean checkEnteredPasswordValid(@NonNull String password){
         if(password.length()==0){
             Toast.makeText(context,"Please enter your password", Toast.LENGTH_SHORT ).show();
             return false;
