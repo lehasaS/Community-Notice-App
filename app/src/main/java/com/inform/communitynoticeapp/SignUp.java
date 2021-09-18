@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -12,6 +13,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -66,8 +70,9 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
                        firebase.sendVerificationEmail().addOnCompleteListener(task1 -> {
                            if(task1.isSuccessful()){
                                firebase.updateDispName(dispName);
-                               Toast.makeText(SignUp.this, "You have signed up successfully!", Toast.LENGTH_SHORT).show();
                                firebase.saveNameInFirebase(userCurrent);
+                               setDefaultPic();
+                               Toast.makeText(SignUp.this, "You have signed up successfully!", Toast.LENGTH_SHORT).show();
                                Intent login = new Intent(SignUp.this, LogIn.class);
                                startActivity(login);
                            }else {
@@ -96,5 +101,14 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
         Toast.makeText(SignUp.this, "Select a role", Toast.LENGTH_SHORT).show();
+    }
+
+    public void setDefaultPic() {
+        firebase.getStorageRef().child("profilePics/defaultPic.jpg").getDownloadUrl().addOnSuccessListener(defaultPicUri -> {
+            UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder()
+                    .setPhotoUri(defaultPicUri)
+                    .build();
+            firebase.getUser().updateProfile(profileChangeRequest);
+        });
     }
 }

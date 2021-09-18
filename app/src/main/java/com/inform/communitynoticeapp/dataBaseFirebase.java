@@ -65,6 +65,10 @@ public class dataBaseFirebase implements Cloneable, Serializable {
         return user;
     }
 
+    public StorageReference getStorageRef() {
+        return storageRef;
+    }
+
 
     public Uri getDisplayPic() {
         return getUser().getPhotoUrl();
@@ -128,6 +132,10 @@ public class dataBaseFirebase implements Cloneable, Serializable {
         currentUser.updateProfile(profileChangeRequest);
     }
 
+    public String getDisplayName() {
+        return getUser().getDisplayName();
+    }
+
 
     public DatabaseReference getUserDetailsRef(){
         return getRootRef().child("Users").child(getUser().getUid()).getRef();
@@ -147,6 +155,10 @@ public class dataBaseFirebase implements Cloneable, Serializable {
         //pictureRef.putFile(photoUri);
         UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder().setPhotoUri(photoUri).build();
         this.getUser().updateProfile(profileChangeRequest);
+    }
+
+    public Uri getDisplayPicture() {
+        return getUser().getPhotoUrl();
     }
 
     public void updateCommunity(String community) {
