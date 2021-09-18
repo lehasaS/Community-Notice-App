@@ -40,7 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:background="@color/blue_200"
-            android:text="@string/logout_button"
+            android:text="@string/logout"
             android:textColor="#212121"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

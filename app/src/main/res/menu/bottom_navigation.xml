@@ -9,10 +9,6 @@
         android:title="Notice Board" />
 
     <item
-        android:id="@+id/nav_createPost"
-        android:icon="@drawable/post_ic"
-        android:title="@string/create_post" />
-    <item
         android:id="@+id/nav_messageBoard"
         android:icon="@drawable/message_ic"
         android:title="@string/message_board" />

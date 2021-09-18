@@ -1,6 +1,4 @@
 package com.inform.communitynoticeapp;
-
-import static com.inform.communitynoticeapp.R.id.nav_createPost;
 import static com.inform.communitynoticeapp.R.id.nav_messageBoard;
 import static com.inform.communitynoticeapp.R.id.nav_noticeBoard;
 
@@ -13,8 +11,11 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -23,11 +24,12 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 
-public class noticeBoard extends AppCompatActivity {
+public class noticeBoard extends AppCompatActivity implements View.OnClickListener {
 
     private RecyclerView recyclerView;
     private Context context;
     private ArrayList<createPost> createPostArrayList;
+    private FloatingActionButton addPost;
     private final dataBaseFirebase firebase = dataBaseFirebase.getInstance();
 
     public noticeBoard(){
@@ -53,11 +55,6 @@ public class noticeBoard extends AppCompatActivity {
                 case nav_noticeBoard:
                     return true;
 
-                case nav_createPost:
-                    startActivity(new Intent(getApplicationContext(),posts.class));
-                    overridePendingTransition(0,0);
-                    return true;
-
                 case nav_messageBoard:
                     startActivity(new Intent(getApplicationContext(),messageBoard.class));
                     overridePendingTransition(0,0);
@@ -72,7 +69,9 @@ public class noticeBoard extends AppCompatActivity {
         });
 
         context=this;
+        addPost=findViewById(R.id.floating_action_button);
 
+        addPost.setOnClickListener(this);
 
         recyclerView= findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -84,7 +83,7 @@ public class noticeBoard extends AppCompatActivity {
     }
 
     private void readPost(){
-        firebase.readPostsFromFirebase().addValueEventListener(new ValueEventListener() {
+        firebase.readPostForNoticeBoard().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 createPost post;
@@ -95,6 +94,7 @@ public class noticeBoard extends AppCompatActivity {
                 }
                 postAdapter postAdapter = new postAdapter(createPostArrayList, context);
                 recyclerView.setAdapter(postAdapter);
+                createPostArrayList=null;
             }
 
             @Override
@@ -106,5 +106,13 @@ public class noticeBoard extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onClick(View view) {
+        int id = view.getId();
 
+        if(id==R.id.floating_action_button){
+            Intent addPost = new Intent(noticeBoard.this, posts.class);
+            startActivity(addPost);
+        }
+    }
 }

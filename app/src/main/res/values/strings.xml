@@ -9,11 +9,9 @@
     <string name="disp_name">display name</string>
     <string name="user_profile">User Profile</string>
     <string name="create_post">Create Post</string>
-    <string name="post">Post</string>
     <string name="what_s_on_your_mind">What\'s on your mind?</string>
     <string name="my_username">[My_Username]</string>
     <string name="Greeting">Hi, </string>
-    <string name="message_board">Message Board</string>
     <string name="logout_button">Logout Button</string>
     <string name="community_name">Community Name</string>
     <string name="edit_profile">EDIT PROFILE</string>
@@ -23,6 +21,10 @@
     <string name="title">Title</string>
     <string name="date">Date</string>
     <string name="post_content">Post Content</string>
-    <string name="action_1">Bookmark</string>
+    <string name="action_1">Respond</string>
     <string name="action_2">Respond</string>
+    <string name="button_fab">Fab button</string>
+    <string name="message_board">Message Board</string>
+    <string name="post">Post</string>
+    <string name="logout">logout</string>
 </resources>

@@ -1,5 +1,7 @@
 package com.inform.communitynoticeapp;
 
+import com.google.firebase.database.Exclude;
+
 public class createPost {
 
     private String post;
@@ -35,5 +37,15 @@ public class createPost {
 
     public void setUser(String user) {
         this.user = user;
+    }
+
+    @Exclude
+    public boolean setSelected(boolean b) {
+        return b;
+    }
+
+    @Exclude
+    public boolean isSelected() {
+        return true;
     }
 }

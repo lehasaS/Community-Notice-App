@@ -1,11 +1,8 @@
 package com.inform.communitynoticeapp;
 
-import static com.inform.communitynoticeapp.R.id.nav_createPost;
-import static com.inform.communitynoticeapp.R.id.nav_messageBoard;
-import static com.inform.communitynoticeapp.R.id.nav_noticeBoard;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -19,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -62,55 +58,30 @@ public class posts extends AppCompatActivity implements View.OnClickListener {
         takePhoto.setOnClickListener(this);
         galleryPhoto.setOnClickListener(this);
 
-        //initialize And Assign Variable
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-
-        //set posts selected
-        bottomNavigationView.setSelectedItemId(nav_createPost);
-
-        //perform itemSelectedListener
-        bottomNavigationView.setOnItemSelectedListener(item ->{
-            switch (item.getItemId())
-            {
-                case nav_noticeBoard:
-                    startActivity(new Intent(getApplicationContext(),noticeBoard.class));
-                    overridePendingTransition(0,0);
-                    return true;
-
-                case nav_createPost:
-                    return true;
-
-                case nav_messageBoard:
-                    startActivity(new Intent(getApplicationContext(),messageBoard.class));
-                    overridePendingTransition(0,0);
-                    return true;
-
-                case R.id.nav_profile:
-                    startActivity(new Intent(getApplicationContext(),profile.class));
-                    overridePendingTransition(0,0);
-                    return true;
-            }
-            return false;
-        });
-
-        postBtn.setOnClickListener(view -> addPost());
+        postBtn.setOnClickListener(view -> checkRole());
 
     }
 
-    private void addPost(){
-        Date date = new Date();
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM 'at' HH:mm");
-        String dateNow = dateFormat.format(date);
-
-        String text = typeET.getText().toString();
-
-        firebase.addPostsToFirebase(text, dateNow).addOnCompleteListener(task -> {
-            if(task.isSuccessful()){
-                Toast.makeText(posts.this, "Post Submitted", Toast.LENGTH_SHORT).show();
-            }else{
-                Toast.makeText(posts.this, "Some error occurred: "+task.getException(), Toast.LENGTH_SHORT).show();
+    private void checkRole(){
+        firebase.getUserDetailsRef().addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                userDetails details = snapshot.getValue(userDetails.class);
+                assert details != null;
+                if(details.getRole().equals("Community Member")){
+                    //tell user you cant post here
+                    //askUserToPost();
+                    postToMessageBoard();
+                }
+                else{
+                    askWhereToPost();
+                }
             }
-            typeET.setText("");
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(posts.this, "Some error occurred: "+error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
@@ -128,6 +99,65 @@ public class posts extends AppCompatActivity implements View.OnClickListener {
                 handleAddingPhoto();
                 break;
         }
+    }
+
+    private void askWhereToPost() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Post To?");
+        builder.setPositiveButton("Message Board", (dialog, id) -> {
+            postToMessageBoard();
+        });
+        builder.setNegativeButton("Notice Board", (dialog, id) -> {
+            postToNoticeBoard();
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private void postToMessageBoard() {
+        Date date = new Date();
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM 'at' HH:mm");
+        String dateNow = dateFormat.format(date);
+
+        String text = typeET.getText().toString();
+
+        firebase.addPostToMessageBoardNode(text, dateNow).addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                Toast.makeText(posts.this, "Post Submitted", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(posts.this, "Some error occurred: "+task.getException(), Toast.LENGTH_SHORT).show();
+            }
+            typeET.setText("");
+        });
+        goToMessageBoard();
+    }
+
+    private void goToMessageBoard() {
+        Intent goToMessageBoard = new Intent(posts.this, messageBoard.class);
+        startActivity(goToMessageBoard);
+    }
+
+    private void postToNoticeBoard() {
+        Date date = new Date();
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM 'at' HH:mm");
+        String dateNow = dateFormat.format(date);
+
+        String text = typeET.getText().toString();
+
+        firebase.addPostToNoticeBoardNode(text, dateNow).addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                Toast.makeText(posts.this, "Post Submitted", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(posts.this, "Some error occurred: "+task.getException(), Toast.LENGTH_SHORT).show();
+            }
+            typeET.setText("");
+        });
+       goToNoticeBoard();
+    }
+
+    private void goToNoticeBoard() {
+        Intent goToNoticeBoard = new Intent(posts.this, noticeBoard.class);
+        startActivity(goToNoticeBoard);
     }
 
     //TODO: Handle taking photos and also storing them in firebase

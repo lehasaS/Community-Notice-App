@@ -19,6 +19,19 @@
     app:cardCornerRadius="30dp"
     android:background="?attr/selectableItemBackgroundBorderless">
 
+    <!--
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="280dp"
+        android:id="@+id/bookmark"
+        app:srcCompat="@drawable/ic_mtrl_checked_circle"
+        android:visibility="invisible"
+        android:checked="true"
+        android:layout_alignBottom="@+id/tvSuggestTime"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true" />-->
+
     <LinearLayout
         android:layout_width="343dp"
         android:layout_height="wrap_content"
@@ -74,12 +87,13 @@
                 android:layout_marginRight="8dp"
                 android:text="@string/action_1" />
 
+            <!--
             <com.google.android.material.button.MaterialButton
                 style="?attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="90dp"
-                android:text="@string/action_2" />
+                android:text="@string/action_2" /> -->
         </LinearLayout>
 
     </LinearLayout>

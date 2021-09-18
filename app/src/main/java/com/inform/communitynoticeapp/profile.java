@@ -1,6 +1,5 @@
 package com.inform.communitynoticeapp;
 
-import static com.inform.communitynoticeapp.R.id.nav_createPost;
 import static com.inform.communitynoticeapp.R.id.nav_messageBoard;
 import static com.inform.communitynoticeapp.R.id.nav_noticeBoard;
 
@@ -75,11 +74,6 @@ public class profile extends AppCompatActivity implements View.OnClickListener {
             {
                 case nav_noticeBoard:
                     startActivity(new Intent(getApplicationContext(),noticeBoard.class));
-                    overridePendingTransition(0,0);
-                    return true;
-
-                case nav_createPost:
-                    startActivity(new Intent(getApplicationContext(),posts.class));
                     overridePendingTransition(0,0);
                     return true;
 

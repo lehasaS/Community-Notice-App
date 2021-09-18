@@ -153,12 +153,23 @@ public class dataBaseFirebase implements Cloneable, Serializable {
         getRootRef().child("Users").child(getUser().getUid()).child("community").setValue(community);
     }
 
-    public DatabaseReference readPostsFromFirebase(){
-        return this.getRootRef().child("Posts").orderByValue().getRef();
+    public DatabaseReference readPostForNoticeBoard(){
+        return this.getRootRef().child("Posts").child("NoticeBoard").orderByValue().getRef();
     }
 
-    public Task<Void> addPostsToFirebase(String text, String dateNow){
-        DatabaseReference postRef = this.getRootRef().child("Posts").getRef();
+    public DatabaseReference readPostForMessageBoard(){
+        return this.getRootRef().child("Posts").child("MessageBoard").orderByValue().getRef();
+    }
+
+    public Task<Void> addPostToNoticeBoardNode(String text, String dateNow){
+        DatabaseReference postRef = this.getRootRef().child("Posts").child("NoticeBoard").getRef();
+        DatabaseReference newRef = postRef.push();
+        createPost post = new createPost(this.getUser().getDisplayName(), text, dateNow);
+        return newRef.setValue(post);
+    }
+
+    public Task<Void> addPostToMessageBoardNode(String text, String dateNow){
+        DatabaseReference postRef = this.getRootRef().child("Posts").child("MessageBoard").getRef();
         DatabaseReference newRef = postRef.push();
         createPost post = new createPost(this.getUser().getDisplayName(), text, dateNow);
         return newRef.setValue(post);
