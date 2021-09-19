@@ -1,74 +1,42 @@
 package com.inform.communitynoticeapp;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ImageView;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import com.google.android.material.textfield.TextInputLayout;
 
-import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-
-import java.util.UUID;
+import java.util.Objects;
 
 public class profileEditor extends AppCompatActivity implements View.OnClickListener {
 
-    private EditText dispNameET, communityET;
+    private TextInputLayout dispNameTI, communityTI;
     private ImageView profilePicIV;
     private final dataBaseFirebase firebase = dataBaseFirebase.getInstance();
     private validateInput validate;
-    private FirebaseStorage storage = FirebaseStorage.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_editor);
-        validate = new validateInput(this);
 
         profilePicIV = findViewById(R.id.profile_pic_IV);
-        dispNameET = findViewById(R.id.new_username_ET);
-        communityET = findViewById(R.id.new_community_ET);
+        dispNameTI = findViewById(R.id.display_Name_TI);
+        communityTI = findViewById(R.id.newCommunityTI);
+        validate = new validateInput(this,null, null, null, dispNameTI, communityTI);
         Button uploadPicBtn = findViewById(R.id.upload_pic_Btn);
         TextView updateEmail = findViewById(R.id.updateEmail_TV);
         TextView updatePassword = findViewById(R.id.updatePassword_TV);
         Button saveBtn = findViewById(R.id.editProfile_Btn);
-
-        showProfilePic();
-        dispNameET.setText(firebase.getDisplayName());
-
-        firebase.getUserDetailsRef().addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                userDetails details = snapshot.getValue(userDetails.class);
-                assert details != null;
-                communityET.setText(details.getCommunity());
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
 
         updateEmail.setOnClickListener(this);
         updatePassword.setOnClickListener(this);
@@ -96,9 +64,9 @@ public class profileEditor extends AppCompatActivity implements View.OnClickList
     }
 
     private void handleSaveBtnClick() {
-        String dispName = dispNameET.getText().toString();
-        String community = communityET.getText().toString();
-        if (validate.checkDispName(dispName) && validate.checkCommunity(community)) {
+        String dispName = Objects.requireNonNull(dispNameTI.getEditText()).getText().toString();
+        String community = Objects.requireNonNull(communityTI.getEditText()).getText().toString();
+        if (validate.checkDisplayName(dispName).equals("valid") && validate.checkCommunity(community).equals("valid")) {
             firebase.updateDispName(dispName);
             firebase.updateCommunity(community);
             Toast.makeText(this, "Profile updated successfully!", Toast.LENGTH_SHORT).show();
@@ -111,78 +79,16 @@ public class profileEditor extends AppCompatActivity implements View.OnClickList
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        //startActivityForResult(intent, 1);
-        uploadPicActivityResultLauncher.launch(intent);
+        startActivityForResult(intent, 1);
     }
 
-    /*@Override
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode==1 && resultCode==RESULT_OK && data!=null && data.getData()!=null) {
             Uri imageUri = data.getData();
             profilePicIV.setImageURI(imageUri);
-            Toast.makeText(this, "Image URI: " + imageUri.toString(), Toast.LENGTH_SHORT).show();
             firebase.updateDisplayPicture(imageUri);
         }
-    }*/
-
-    ActivityResultLauncher<Intent> uploadPicActivityResultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                if (result.getResultCode() == Activity.RESULT_OK) {
-                    Intent data = result.getData();
-                    Uri imageUri = data.getData();
-                    //firebase.updateDisplayPicture(imageUri);
-                    setProfilePic(imageUri);
-                }
-            });
-
-    /*public void openSomeActivityForResult() {
-        Intent intent = new Intent(this, SomeActivity.class);
-        uploadPicActivityResultLauncher.launch(intent);
-    }*/
-
-    public void setProfilePic(Uri photoUri) {
-        //Toast.makeText(this, "Photo URI: " + photoUri.toString(), Toast.LENGTH_SHORT).show();
-
-        final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("Uploading image...");
-        progressDialog.show();
-
-        final String randomKey = UUID.randomUUID().toString();
-        StorageReference pictureRef = firebase.getStorageRef().child("profilePics/" + randomKey);
-        pictureRef.putFile(photoUri).addOnProgressListener(snapshot -> {
-            double progressPercent = (100.00 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
-            progressDialog.setMessage("Upload is " + (int) progressPercent + "% complete.");
-        }).addOnFailureListener(e -> {
-            progressDialog.dismiss();
-            Toast.makeText(this, "Upload failed. Error occurred: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-        }).addOnSuccessListener(taskSnapshot -> {
-            pictureRef.getDownloadUrl().addOnSuccessListener(pictureUri -> {
-                UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder()
-                        .setPhotoUri(pictureUri)
-                        .build();
-                firebase.getUser().updateProfile(profileChangeRequest);
-                showProfilePic();
-            }).addOnFailureListener(e -> {
-                Toast.makeText(this, "An error occurred: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-            });
-            progressDialog.dismiss();
-            Toast.makeText(this, "Image uploaded successfully!", Toast.LENGTH_SHORT).show();
-        });
     }
-
-    public void showProfilePic() {
-        String photoUrl = firebase.getDisplayPicture().toString();
-
-        StorageReference photoRef = storage.getReferenceFromUrl(photoUrl);
-
-        final long ONE_MEGABYTE = 1024 * 1024;
-        photoRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(bytes -> {
-            Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-            profilePicIV.setImageBitmap(bmp);
-        }).addOnFailureListener(exception ->
-                Toast.makeText(getApplicationContext(), "No Such file or Path found!!", Toast.LENGTH_LONG).show());
-    }
-
 }

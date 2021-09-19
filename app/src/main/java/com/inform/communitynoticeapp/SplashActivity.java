@@ -24,22 +24,18 @@ public class SplashActivity extends AppCompatActivity {
 
         Handler handler = new Handler();
 
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if(currentUser!=null) {
-                    //user is already logged in.
-
-                    Intent homeIntent = new Intent(SplashActivity.this, noticeBoard.class);
-                    startActivity(homeIntent);
-                }
-                else {
-                    //user is not logged in, then show login activity.
-                    Intent loginIntent = new Intent(SplashActivity.this, LogIn.class);
-                    startActivity(loginIntent);
-                }
-
+        handler.postDelayed(() -> {
+            if(currentUser!=null) {
+                //user is already logged in.
+                Intent homeIntent = new Intent(SplashActivity.this, noticeBoard.class);
+                startActivity(homeIntent);
             }
+            else {
+                //user is not logged in, then show login activity.
+                Intent loginIntent = new Intent(SplashActivity.this, LogIn.class);
+                startActivity(loginIntent);
+            }
+
         },3000); //1.5 sec
 
     }

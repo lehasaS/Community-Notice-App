@@ -1,30 +1,24 @@
 package com.inform.communitynoticeapp;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.android.material.textfield.TextInputLayout;
 
-public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+import java.util.Objects;
 
-    EditText emailET, passwordET, passwordAgainET, dispNameET, communityET;
+public class SignUp extends AppCompatActivity {
+
+    private TextInputLayout emailTI, passwordTI, passwordAgainTI, displayNameTI, communityTI;
     private validateInput validate;
     private String dispName;
-    private String role;
     private userDetails userCurrent;
-    //private ArrayList<String> communities;
     private final dataBaseFirebase firebase = dataBaseFirebase.getInstance();
 
 
@@ -32,21 +26,20 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-        //communities=new ArrayList<>(Arrays.asList("Mowbray", "Cape Town", "Rondebosch", "Claremont"));
-        //firebase.addCommunitiesToFirebase(communities);
-        validate = new validateInput(this);
+        String[] communityArray = new String[]{"Mowbray", "Cape Town", "Rondebosch", "Claremont"};
 
         //[START] Signup Part
-        Spinner roles = findViewById(R.id.spinner);
-        emailET = findViewById(R.id.email_ET);
-        dispNameET = findViewById(R.id.dispName_ET);
-        passwordET = findViewById(R.id.password_ET);
-        communityET = findViewById(R.id.community_groupET);
-        passwordAgainET = findViewById(R.id.password_again_ET);
-        Button signUpBtn = findViewById(R.id.signUp_btn);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.roles_array, android.R.layout.simple_spinner_dropdown_item);
-        roles.setAdapter(adapter);
-        roles.setOnItemSelectedListener(this);
+        emailTI = findViewById(R.id.emailTI);
+        displayNameTI = findViewById(R.id.displayNameTI);
+        passwordTI = findViewById(R.id.passwordTI);
+        passwordAgainTI = findViewById(R.id.passwordAgainTI);
+        communityTI = findViewById(R.id.communityTI);
+        Button signUpBtn = findViewById(R.id.signUp_btn2);
+        validate=new validateInput(this, emailTI, passwordTI, passwordAgainTI, displayNameTI, communityTI);
+
+        ArrayAdapter<String> communities = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, communityArray);
+        AutoCompleteTextView textView = (AutoCompleteTextView) findViewById(R.id.autoCompleteCommunity);
+        textView.setAdapter(communities);
         signUpBtn.setOnClickListener(view -> handleSignUpBtnClick());
         //[END] Signup Part
 
@@ -54,15 +47,16 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
 
 
     private void handleSignUpBtnClick() {
-        String email = emailET.getText().toString();
-        String password = passwordET.getText().toString();
-        String passwordAgain = passwordAgainET.getText().toString();
-        dispName = dispNameET.getText().toString();
-        String community = communityET.getText().toString();
+        dispName = Objects.requireNonNull(displayNameTI.getEditText()).getText().toString();
+        String email = Objects.requireNonNull(emailTI.getEditText()).getText().toString();
+        String password = Objects.requireNonNull(passwordTI.getEditText()).getText().toString();
+        String passwordAgain = Objects.requireNonNull(passwordAgainTI.getEditText()).getText().toString();
+        String community = Objects.requireNonNull(communityTI.getEditText()).getText().toString();
+        String role = "Community Member";//default role
         userCurrent = new userDetails(dispName, email, community, role);
 
-        if(validate.checkEmailValid(email) && validate.checkPasswordValid(password, passwordAgain) ){
-            if(validate.checkDispName(dispName) && validate.checkCommunity(community) && validate.checkRole(role)/* && checkPassword(password)*/) {
+        if(validate.checkEmailValid(email).equals("valid") && validate.checkPasswordValid(password, passwordAgain).equals("valid") ){
+            if(validate.checkDisplayName(dispName).equals("valid") && validate.checkCommunity(community).equals("valid")) {
                 //signup user
                firebase.signUpUser(email, password).addOnCompleteListener(task -> {
                    if (task.isSuccessful()) {
@@ -70,9 +64,8 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
                        firebase.sendVerificationEmail().addOnCompleteListener(task1 -> {
                            if(task1.isSuccessful()){
                                firebase.updateDispName(dispName);
-                               firebase.saveNameInFirebase(userCurrent);
-                               setDefaultPic();
                                Toast.makeText(SignUp.this, "You have signed up successfully!", Toast.LENGTH_SHORT).show();
+                               firebase.saveNameInFirebase(userCurrent);
                                Intent login = new Intent(SignUp.this, LogIn.class);
                                startActivity(login);
                            }else {
@@ -87,28 +80,5 @@ public class SignUp extends AppCompatActivity implements AdapterView.OnItemSelec
             }
         }
 
-    }
-
-    @Override
-    public void onItemSelected(@NonNull AdapterView<?> adapterView, View view, int i, long l) {
-        role = (String) adapterView.getItemAtPosition(i);
-
-        if(role.equals("Choose Role")){
-            role="";
-        }
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-        Toast.makeText(SignUp.this, "Select a role", Toast.LENGTH_SHORT).show();
-    }
-
-    public void setDefaultPic() {
-        firebase.getStorageRef().child("profilePics/defaultPic.jpg").getDownloadUrl().addOnSuccessListener(defaultPicUri -> {
-            UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder()
-                    .setPhotoUri(defaultPicUri)
-                    .build();
-            firebase.getUser().updateProfile(profileChangeRequest);
-        });
     }
 }
