@@ -19,9 +19,13 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -51,7 +55,20 @@ public class profileEditor extends AppCompatActivity implements View.OnClickList
 
         showProfilePic();
         dispNameET.setText(firebase.getDisplayName());
-        //communityET.setText(firebase.getCommunity());
+
+        firebase.getUserDetailsRef().addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                userDetails details = snapshot.getValue(userDetails.class);
+                assert details != null;
+                communityET.setText(details.getCommunity());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
         updateEmail.setOnClickListener(this);
         updatePassword.setOnClickListener(this);
@@ -111,16 +128,12 @@ public class profileEditor extends AppCompatActivity implements View.OnClickList
 
     ActivityResultLauncher<Intent> uploadPicActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    if (result.getResultCode() == Activity.RESULT_OK) {
-                        Intent data = result.getData();
-                        Uri imageUri = data.getData();
-                        //firebase.updateDisplayPicture(imageUri);
-                        setProfilePic(imageUri);
-                        showProfilePic();
-                    }
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Intent data = result.getData();
+                    Uri imageUri = data.getData();
+                    //firebase.updateDisplayPicture(imageUri);
+                    setProfilePic(imageUri);
                 }
             });
 
@@ -146,24 +159,22 @@ public class profileEditor extends AppCompatActivity implements View.OnClickList
             Toast.makeText(this, "Upload failed. Error occurred: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }).addOnSuccessListener(taskSnapshot -> {
             pictureRef.getDownloadUrl().addOnSuccessListener(pictureUri -> {
-                //Toast.makeText(this, "Picture URI: " + pictureUri.toString(), Toast.LENGTH_SHORT).show();
                 UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder()
                         .setPhotoUri(pictureUri)
                         .build();
                 firebase.getUser().updateProfile(profileChangeRequest);
+                showProfilePic();
             }).addOnFailureListener(e -> {
                 Toast.makeText(this, "An error occurred: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             });
             progressDialog.dismiss();
             Toast.makeText(this, "Image uploaded successfully!", Toast.LENGTH_SHORT).show();
         });
-        //Toast.makeText(this, "Picture reference: " + pictureRef.toString(), Toast.LENGTH_SHORT).show();
-
     }
+
     public void showProfilePic() {
         String photoUrl = firebase.getDisplayPicture().toString();
 
-        // Create a reference to a file from a Google Cloud Storage URI
         StorageReference photoRef = storage.getReferenceFromUrl(photoUrl);
 
         final long ONE_MEGABYTE = 1024 * 1024;
@@ -173,4 +184,5 @@ public class profileEditor extends AppCompatActivity implements View.OnClickList
         }).addOnFailureListener(exception ->
                 Toast.makeText(getApplicationContext(), "No Such file or Path found!!", Toast.LENGTH_LONG).show());
     }
+
 }

@@ -31,7 +31,7 @@ import com.google.firebase.storage.StorageReference;
 public class profile extends AppCompatActivity implements View.OnClickListener {
 
     private final dataBaseFirebase firebase=dataBaseFirebase.getInstance();
-    private FirebaseStorage storage = FirebaseStorage.getInstance();
+    private final FirebaseStorage storage = FirebaseStorage.getInstance();
     private Context context;
     ImageView profilePicture;
 
@@ -134,7 +134,6 @@ public class profile extends AppCompatActivity implements View.OnClickListener {
     public void showProfilePic() {
         String photoUrl = firebase.getDisplayPicture().toString();
 
-        // Create a reference to a file from a Google Cloud Storage URI
         StorageReference photoRef = storage.getReferenceFromUrl(photoUrl);
 
         final long ONE_MEGABYTE = 1024 * 1024;

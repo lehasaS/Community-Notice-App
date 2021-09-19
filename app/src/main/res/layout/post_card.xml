@@ -46,7 +46,7 @@
 
 
             <TextView
-                android:id="@+id/user_name"
+                android:id="@+id/display_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/title"
@@ -69,6 +69,13 @@
                 android:text="@string/post_content"
                 android:textAppearance="?attr/textAppearanceBody2"
                 android:textColor="?android:attr/textColorSecondary" />
+
+            <ImageView
+                android:id="@+id/postPic_IV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:srcCompat="@android:drawable/ic_menu_gallery" />
         </LinearLayout>
 
         <!-- Buttons -->
