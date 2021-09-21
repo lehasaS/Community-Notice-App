@@ -8,16 +8,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.textfield.TextInputLayout;
-
-import java.util.Objects;
-
 public class LogIn extends AppCompatActivity implements View.OnClickListener {
 
-    private TextInputLayout emailTI, passwordTI;
+    EditText emailET, passwordET;
     private validateInput validate;
     private View progressBar;
     private final dataBaseFirebase firebase = dataBaseFirebase.getInstance();
@@ -26,10 +23,11 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
 
+        validate = new validateInput(this);
+
         //[START] login Part
-        emailTI = findViewById(R.id.email_TI);
-        passwordTI = findViewById(R.id.password_TI);
-        validate = new validateInput(this,emailTI, passwordTI, null, null, null);
+        emailET = findViewById(R.id.email_ET);
+        passwordET = findViewById(R.id.password_ET);
         Button loginBtn = findViewById(R.id.login_btn);
         TextView signUpText = findViewById(R.id.signUp_TV);
         progressBar = findViewById(R.id.progressBar);
@@ -56,17 +54,19 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
     public void showVerifyDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Please verify your email!");
-        builder.setPositiveButton("OK", (dialog, id) -> dialog.dismiss());
+        builder.setPositiveButton("OK", (dialog, id) -> {
+            dialog.dismiss();
+        });
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
 
     private void handleLoginBtnClick() {
         showProgressBar();
-        String email = Objects.requireNonNull(emailTI.getEditText()).getText().toString();
-        String password = Objects.requireNonNull(passwordTI.getEditText()).getText().toString();
+        String password = passwordET.getText().toString();
+        String email = emailET.getText().toString();
 
-        if(validate.checkEmailValid(email).equals("valid") && validate.checkEnteredPasswordValid(password).equals("valid")){
+        if(validate.checkEmailValid(email) && validate.checkEnteredPasswordValid(password)){
             firebase.signInUser(email, password).addOnCompleteListener(task -> {
                 if(firebase.checkIfEmailIsVerified()){
                     if (task.isSuccessful()) {

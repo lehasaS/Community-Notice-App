@@ -1,12 +1,12 @@
 <resources>
     <string name="app_name">Zazi</string>
     <string name="don_t_have_an_account_signup">Don\'t have an account? SIGNUP</string>
-    <string name="password">Password</string>
+    <string name="password">password</string>
     <string name="login">LOGIN</string>
-    <string name="email_address">Email address</string>
+    <string name="email_address">email address</string>
     <string name="signup">SIGNUP</string>
-    <string name="enter_password_again">Enter password again</string>
-    <string name="disp_name">Display name</string>
+    <string name="enter_password_again">enter password again</string>
+    <string name="disp_name">display name</string>
     <string name="user_profile">User Profile</string>
     <string name="create_post">Create Post</string>
     <string name="what_s_on_your_mind">What\'s on your mind?</string>
@@ -27,20 +27,4 @@
     <string name="message_board">Message Board</string>
     <string name="post">Post</string>
     <string name="logout">logout</string>
-    <string name="new_community">New community</string>
-    <string name="welcome_back">Welcome back!</string>
-    <string name="get_new_updates_around_you">Get new updates around you</string>
-    <string name="new_email">New email</string>
-    <string name="confirm_email">Confirm email</string>
-    <string name="new_password">New Password</string>
-    <string name="confirm_password">Confirm Password</string>
-    <string name="join_us">Join Us!</string>
-    <string name="know_what_s_happening_around_you">Know what\'s happening around you!</string>
-    <string name="upload_picture">Upload picture</string>
-    <string name="save_changes">save changes</string>
-    <string name="todo">TODO</string>
-    <string name="update_password">Update Password</string>
-    <string name="update_email">Update Email</string>
-    <string name="what_s_going_on">What\'s going on?</string>
-    <string name="notice_board">Notice Board</string>
 </resources>

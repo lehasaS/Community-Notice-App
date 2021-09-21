@@ -148,8 +148,12 @@ public class posts extends AppCompatActivity implements View.OnClickListener {
     private void askWhereToPost() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Post To?");
-        builder.setPositiveButton("Message Board", (dialog, id) -> postToMessageBoard());
-        builder.setNegativeButton("Notice Board", (dialog, id) -> postToNoticeBoard());
+        builder.setPositiveButton("Message Board", (dialog, id) -> {
+            postToMessageBoard();
+        });
+        builder.setNegativeButton("Notice Board", (dialog, id) -> {
+            postToNoticeBoard();
+        });
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }

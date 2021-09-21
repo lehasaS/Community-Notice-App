@@ -28,41 +28,36 @@
             android:layout_height="48dp"
             android:layout_marginStart="40dp"
             android:background="@color/blue_200"
-            android:text="@string/upload_picture"
+            android:text="Upload picture"
             android:textColor="#212121"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/profile_pic_IV"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.257" />
+            app:layout_constraintVertical_bias="0.279" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/newCommunityTI"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="280dp"
-            android:layout_height="wrap_content"
-            android:hint="@string/new_community"
-            app:layout_constraintBottom_toBottomOf="parent"
+        <EditText
+            android:id="@+id/new_community_ET"
+            android:layout_width="200dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="12dp"
+            android:ems="10"
+            android:hint="new community "
+            android:inputType="textPersonName"
+            app:layout_constraintBottom_toTopOf="@+id/editProfile_Btn"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.18"
+            app:layout_constraintHorizontal_bias="0.075"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.38">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:ignore="TextContrastCheck" />
-
-        </com.google.android.material.textfield.TextInputLayout>
+            app:layout_constraintTop_toBottomOf="@+id/new_username_ET"
+            app:layout_constraintVertical_bias="0.0" />
 
         <Button
             android:id="@+id/editProfile_Btn"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:background="@color/blue_200"
-            android:text="@string/save_changes"
+            android:text="save changes"
             android:textColor="#212121"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -75,7 +70,7 @@
             android:id="@+id/editProfile_TV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/edit_profile"
+            android:text="Edit Profile"
             android:textSize="30sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -89,7 +84,7 @@
             android:id="@+id/welcomeMessage_TV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/Greeting"
+            android:text="Hi!"
             android:textColor="@color/blue_200"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -101,61 +96,74 @@
 
         <ImageView
             android:id="@+id/profile_pic_IV"
-            android:layout_width="107dp"
-            android:layout_height="114dp"
+            android:layout_width="109dp"
+            android:layout_height="103dp"
+            android:layout_marginTop="112dp"
             app:layout_constraintBottom_toTopOf="@+id/editProfile_Btn"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.083"
+            app:layout_constraintHorizontal_bias="0.052"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.193"
-            app:srcCompat="@drawable/persona_ic"
-            android:contentDescription="@string/todo" />
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/persona_ic" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/display_Name_TI"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="280dp"
-            android:layout_height="wrap_content"
+        <EditText
+            android:id="@+id/new_username_ET"
+            android:layout_width="200dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="20dp"
+            android:ems="10"
             android:hint="@string/disp_name"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:inputType="textPersonName"
+            app:layout_constraintBottom_toTopOf="@+id/editProfile_Btn"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.181"
+            app:layout_constraintHorizontal_bias="0.075"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:ignore="TextContrastCheck" />
-
-        </com.google.android.material.textfield.TextInputLayout>
+            app:layout_constraintTop_toBottomOf="@+id/profile_pic_IV"
+            app:layout_constraintVertical_bias="0.029" />
 
         <TextView
             android:id="@+id/updatePassword_TV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/update_password"
+            android:layout_marginTop="24dp"
+            android:text="Update Password"
             android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@+id/updateEmail_TV"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.094"
+            app:layout_constraintHorizontal_bias="0.062"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/display_Name_TI"
-            app:layout_constraintVertical_bias="0.558" />
+            app:layout_constraintTop_toBottomOf="@+id/new_role_spin"
+            app:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/updateEmail_TV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/update_email"
+            android:text="Update Email"
             android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@+id/editProfile_Btn"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.085"
+            app:layout_constraintHorizontal_bias="0.054"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/display_Name_TI"
-            app:layout_constraintVertical_bias="0.33" />
+            app:layout_constraintTop_toBottomOf="@+id/new_role_spin"
+            app:layout_constraintVertical_bias="0.372" />
+
+        <Spinner
+            android:id="@+id/new_role_spin"
+            android:layout_width="280dp"
+            android:layout_height="48dp"
+            android:ems="10"
+            android:hint="new role"
+            android:inputType="textPersonName"
+            android:spinnerMode="dropdown"
+            app:layout_constraintBottom_toTopOf="@+id/editProfile_Btn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.121"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/new_username_ET"
+            app:layout_constraintVertical_bias="0.243"
+            tools:ignore="SpeakableTextPresentCheck" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

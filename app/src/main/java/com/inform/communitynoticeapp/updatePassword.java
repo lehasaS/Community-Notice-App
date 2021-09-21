@@ -2,44 +2,36 @@ package com.inform.communitynoticeapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.material.textfield.TextInputLayout;
-
-import java.util.Objects;
-
 public class updatePassword extends AppCompatActivity {
-    private TextInputLayout newPassword, newPasswordAgain;
-    private validateInput validate;
+    private EditText newPassword, newPasswordAgain;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_password);
-        newPassword = findViewById(R.id.newPasswordTI);
-        newPasswordAgain = findViewById(R.id.newPasswordAgainTI);
+        newPassword = findViewById(R.id.eneterNewPassword_ET);
+        newPasswordAgain = findViewById(R.id.enterNewPasswordAgain_ET);
         Button saveChanges = findViewById(R.id.saveChanges_Btn);
-        validate = new validateInput(this,null, newPassword, newPasswordAgain, null, null);
 
         saveChanges.setOnClickListener(view -> handleSaveChangesClick());
     }
 
     private void handleSaveChangesClick() {
         dataBaseFirebase firebase = dataBaseFirebase.getInstance();
-        String password = Objects.requireNonNull(newPassword.getEditText()).getText().toString();
-        String passwordAgain = Objects.requireNonNull(newPasswordAgain.getEditText()).getText().toString();
+        validateInput validate = new validateInput(this);
+        String password = newPassword.getText().toString();
+        String passwordAgain = newPasswordAgain.getText().toString();
 
-        if(validate.checkPasswordValid(password, passwordAgain).equals("valid")){
+        if(validate.checkPasswordValid(password, passwordAgain)){
             firebase.updatePassword(password).addOnCompleteListener(task -> {
                 Toast.makeText(updatePassword.this, "Password successfully updated!", Toast.LENGTH_SHORT).show();
-                firebase.getUserAuth().signOut();
             });
-
         }
-        Intent login = new Intent(updatePassword.this, LogIn.class);
-        startActivity(login);
+
     }
 }

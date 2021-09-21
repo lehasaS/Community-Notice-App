@@ -11,22 +11,29 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 
 public class profile extends AppCompatActivity implements View.OnClickListener {
 
     private final dataBaseFirebase firebase=dataBaseFirebase.getInstance();
+    private final FirebaseStorage storage = FirebaseStorage.getInstance();
     private Context context;
+    ImageView profilePicture;
 
 
     @SuppressLint({"SetTextI18n", "NonConstantResourceId"})
@@ -35,7 +42,7 @@ public class profile extends AppCompatActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         TextView roleTV = findViewById(R.id.roleTV);
-        ImageView profilePicture = findViewById(R.id.displayPicture_IV);
+        profilePicture = findViewById(R.id.displayPicture_IV);
         TextView community = findViewById(R.id.communityNameTV);
         TextView welcomeMessageTV = findViewById(R.id.welcomeMessage_TV);
         TextView displayName = findViewById(R.id.usernameTV);
@@ -61,6 +68,8 @@ public class profile extends AppCompatActivity implements View.OnClickListener {
 
             }
         });
+
+        showProfilePic();
 
         //initialize And Assign Variable
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -120,5 +129,18 @@ public class profile extends AppCompatActivity implements View.OnClickListener {
         builder.setNegativeButton("No", (dialog, id) -> dialog.dismiss());
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+
+    public void showProfilePic() {
+        String photoUrl = firebase.getDisplayPicture().toString();
+
+        StorageReference photoRef = storage.getReferenceFromUrl(photoUrl);
+
+        final long ONE_MEGABYTE = 1024 * 1024;
+        photoRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(bytes -> {
+            Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            profilePicture.setImageBitmap(bmp);
+        }).addOnFailureListener(exception ->
+                Toast.makeText(getApplicationContext(), "No Such file or Path found!!", Toast.LENGTH_LONG).show());
     }
 }
