@@ -1,5 +1,6 @@
 package com.inform.communitynoticeapp;
 
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
 
 public class createPost {
@@ -8,6 +9,8 @@ public class createPost {
     private String user;
     private String dateTime;
     private String imageUri;
+    private String postID;
+    private DatabaseReference postRef;
 
     public createPost() {
     }
@@ -57,12 +60,24 @@ public class createPost {
     }
 
     @Exclude
-    public boolean setSelected(boolean b) {
-        return b;
+    public void setPostID(String postID){
+        this.postID=postID;
     }
 
     @Exclude
-    public boolean isSelected() {
-        return true;
+    public String getPostID(){
+        return postID;
     }
+
+
+    @Exclude
+    public void setPostRef(DatabaseReference postRef){
+        this.postRef=postRef;
+    }
+
+    @Exclude
+    public DatabaseReference getPostRef(){
+        return postRef;
+    }
+
 }

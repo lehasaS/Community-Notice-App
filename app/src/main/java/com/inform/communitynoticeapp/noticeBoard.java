@@ -1,4 +1,5 @@
 package com.inform.communitynoticeapp;
+import static com.inform.communitynoticeapp.R.id.nav_bookmarks;
 import static com.inform.communitynoticeapp.R.id.nav_messageBoard;
 import static com.inform.communitynoticeapp.R.id.nav_noticeBoard;
 
@@ -27,8 +28,8 @@ public class noticeBoard extends AppCompatActivity implements View.OnClickListen
 
     private RecyclerView recyclerView;
     private Context context;
-    private ArrayList<createPost> createPostArrayList;
     private final dataBaseFirebase firebase = dataBaseFirebase.getInstance();
+    private ArrayList<createPost> createPostArrayList;
 
     public noticeBoard(){
         super(R.layout.activity_notice_board);
@@ -58,6 +59,11 @@ public class noticeBoard extends AppCompatActivity implements View.OnClickListen
                     overridePendingTransition(0,0);
                     return true;
 
+                case nav_bookmarks:
+                    startActivity(new Intent(getApplicationContext(),bookmarks.class));
+                    overridePendingTransition(0,0);
+                    return true;
+
                 case R.id.nav_profile:
                     startActivity(new Intent(getApplicationContext(),profile.class));
                     overridePendingTransition(0,0);
@@ -71,13 +77,15 @@ public class noticeBoard extends AppCompatActivity implements View.OnClickListen
 
         addPost.setOnClickListener(this);
 
-        recyclerView= findViewById(R.id.recyclerView);
+        recyclerView= findViewById(R.id.recyclerViewNotice);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
 
         createPostArrayList = new ArrayList<>();
         readPost();
+
+
     }
 
     private void readPost(){
@@ -90,7 +98,7 @@ public class noticeBoard extends AppCompatActivity implements View.OnClickListen
                     Objects.requireNonNull(post).setPost(post.getPost());
                     createPostArrayList.add(0,post);
                 }
-                postAdapter postAdapter = new postAdapter(createPostArrayList, context);
+                noticeBoardAdapter postAdapter = new noticeBoardAdapter(createPostArrayList, context);
                 recyclerView.setAdapter(postAdapter);
                 createPostArrayList=null;
             }
@@ -104,6 +112,8 @@ public class noticeBoard extends AppCompatActivity implements View.OnClickListen
     }
 
 
+
+
     @Override
     public void onClick(View view) {
         int id = view.getId();
@@ -113,4 +123,5 @@ public class noticeBoard extends AppCompatActivity implements View.OnClickListen
             startActivity(addPost);
         }
     }
+
 }

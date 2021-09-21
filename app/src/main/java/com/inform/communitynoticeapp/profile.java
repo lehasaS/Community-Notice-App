@@ -1,5 +1,6 @@
 package com.inform.communitynoticeapp;
 
+import static com.inform.communitynoticeapp.R.id.nav_bookmarks;
 import static com.inform.communitynoticeapp.R.id.nav_messageBoard;
 import static com.inform.communitynoticeapp.R.id.nav_noticeBoard;
 
@@ -88,6 +89,11 @@ public class profile extends AppCompatActivity implements View.OnClickListener {
 
                 case nav_messageBoard:
                     startActivity(new Intent(getApplicationContext(),messageBoard.class));
+                    overridePendingTransition(0,0);
+                    return true;
+
+                case nav_bookmarks:
+                    startActivity(new Intent(getApplicationContext(),bookmarks.class));
                     overridePendingTransition(0,0);
                     return true;
 

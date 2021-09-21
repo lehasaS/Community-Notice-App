@@ -6,16 +6,20 @@
     <item
         android:id="@+id/nav_noticeBoard"
         android:icon="@drawable/flag"
-        android:title="Notice Board" />
+        android:title="@string/notice_board" />
 
     <item
         android:id="@+id/nav_messageBoard"
         android:icon="@drawable/message_ic"
         android:title="@string/message_board" />
     <item
+        android:id="@+id/nav_bookmarks"
+        android:icon="@drawable/ic_bookmark_button"
+        android:title="@string/bookmark_list" />
+    <item
         android:id="@+id/nav_profile"
         android:icon="@drawable/persona_ic"
-        android:title="@string/user_profile" />
+        android:title="@string/user_profile"/>
 
 
 </menu>

@@ -33,6 +33,9 @@ dependencies {
 
     implementation platform('com.google.firebase:firebase-bom:28.4.0')
 
+    // FirebaseUI for Firebase Realtime Database
+    implementation 'com.firebaseui:firebase-ui-database:8.0.0'
+
     //for firebase auth
     implementation 'com.google.firebase:firebase-auth:21.0.1'
 

@@ -13,6 +13,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -145,6 +146,10 @@ public class dataBaseFirebase implements Cloneable, Serializable {
         return Objects.requireNonNull(userAuth.getCurrentUser()).updateEmail(email);
     }
 
+    public void addBookmarks(){
+
+    }
+
     public Task<Void> updatePassword(String password){
         return Objects.requireNonNull(userAuth.getCurrentUser()).updatePassword(password);
     }
@@ -163,11 +168,15 @@ public class dataBaseFirebase implements Cloneable, Serializable {
     }
 
     public DatabaseReference readPostForNoticeBoard(){
-        return this.getRootRef().child("Posts").child("NoticeBoard").orderByValue().getRef();
+        return this.getRootRef().child("Posts").child("NoticeBoard").getRef();
     }
 
     public DatabaseReference readPostForMessageBoard(){
-        return this.getRootRef().child("Posts").child("MessageBoard").orderByValue().getRef();
+        return this.getRootRef().child("Posts").child("MessageBoard").orderByKey().getRef();
+    }
+
+    public DatabaseReference readBookmarks(){
+        return this.getRootRef().child("Users").child(this.getUser().getUid()).child("Bookmarks").getRef();
     }
 
     public Task<Void> addPostToNoticeBoardNode(String text, String dateNow, String imageUri){
@@ -183,6 +192,18 @@ public class dataBaseFirebase implements Cloneable, Serializable {
         createPost post = new createPost(this.getUser().getDisplayName(), text, dateNow, imageUri);
         return newRef.setValue(post);
     }
+
+    public Task<Void> addPostToBookmarks(createPost post){
+        DatabaseReference bookmarkRef = this.getRootRef().child("Users").child(this.getUser().getUid()).child("Bookmarks").getRef();
+        DatabaseReference newRef = bookmarkRef.push();
+        return newRef.setValue(post);
+    }
+
+    //TODO: Make this method work
+    /*
+    public DatabaseReference removeBookmark(createPost post){
+        return this.getRootRef().child("Users").child(this.getUser().getUid()).child("Bookmarks").child(Objects.requireNonNull(post.getPostRef().getKey())).getRef();
+    }*/
 
     public void uploadPicture(Uri imgUri) {
         final String randomKey = UUID.randomUUID().toString();
