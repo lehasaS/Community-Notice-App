@@ -31,10 +31,11 @@
         tools:context=".noticeBoard">
 
         <TextView
-            android:id="@+id/messageboard_TV"
+            android:id="@+id/bookmark_TV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/message_board"
+            android:textColor="@color/blue_200"
             android:textSize="30sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -56,7 +57,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/messageboard_TV"
+            app:layout_constraintTop_toBottomOf="@+id/bookmark_TV"
             app:layout_constraintVertical_bias="0.056" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -72,7 +73,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.954"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/messageboard_TV"
+            app:layout_constraintTop_toBottomOf="@+id/bookmark_TV"
             app:layout_constraintVertical_bias="1.0"
             app:srcCompat="@drawable/floating_action_button"
             tools:ignore="MissingConstraints,RedundantDescriptionCheck" />

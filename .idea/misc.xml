@@ -18,6 +18,9 @@
         <entry key="..\:/Users/lehas/AndroidStudioProjects/communityNoticeApp/app/src/main/res/layout/post_card.xml" value="0.536" />
         <entry key="..\:/Users/lehas/AndroidStudioProjects/communityNoticeApp/app/src/main/res/menu/bottom_navigation.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/lehas/AndroidStudioProjects/communityNoticeApp/app/src/main/res/xml/roles_array.xml" value="0.1859375" />
+        <entry key="..\:/Users/lehas/csc3003s_capstone/app/src/main/res/drawable/ic_bookmark_button.xml" value="0.14635416666666667" />
+        <entry key="..\:/Users/lehas/csc3003s_capstone/app/src/main/res/drawable/persona_ic.xml" value="0.14635416666666667" />
+        <entry key="..\:/Users/lehas/csc3003s_capstone/app/src/main/res/layout/activity_bookmarks.xml" value="0.264" />
         <entry key="..\:/Users/lehas/csc3003s_capstone/app/src/main/res/layout/activity_log_in.xml" value="0.4" />
         <entry key="..\:/Users/lehas/csc3003s_capstone/app/src/main/res/layout/activity_message_board.xml" value="0.1793478260869565" />
         <entry key="..\:/Users/lehas/csc3003s_capstone/app/src/main/res/layout/activity_notice_board.xml" value="0.1793478260869565" />
@@ -28,6 +31,7 @@
         <entry key="..\:/Users/lehas/csc3003s_capstone/app/src/main/res/layout/activity_update_email.xml" value="0.264" />
         <entry key="..\:/Users/lehas/csc3003s_capstone/app/src/main/res/layout/activity_update_password.xml" value="0.1793478260869565" />
         <entry key="..\:/Users/lehas/csc3003s_capstone/app/src/main/res/layout/app_toolbar.xml" value="0.1793478260869565" />
+        <entry key="..\:/Users/lehas/csc3003s_capstone/app/src/main/res/menu/bottom_navigation.xml" value="0.264" />
         <entry key="..\:/Users/reake/AndroidStudioProjects/csc3003s_capstone/app/src/main/res/layout/activity_board.xml" value="0.225" />
         <entry key="..\:/Users/reake/AndroidStudioProjects/csc3003s_capstone/app/src/main/res/layout/activity_main.xml" value="0.11041666666666666" />
         <entry key="..\:/Users/reake/AndroidStudioProjects/csc3003s_capstone/app/src/main/res/layout/activity_posts.xml" value="0.225" />
