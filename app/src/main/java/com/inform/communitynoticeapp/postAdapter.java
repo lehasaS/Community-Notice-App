@@ -12,7 +12,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -38,6 +37,14 @@ public class postAdapter extends RecyclerView.Adapter<postAdapter.ViewHolder> im
         if(card.isClickable()){
             card.getCheckedIcon();
         }
+    }
+
+    public Context getContext() {
+        return context;
+    }
+
+    public dataBaseFirebase getFirebase() {
+        return firebase;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
@@ -82,11 +89,8 @@ public class postAdapter extends RecyclerView.Adapter<postAdapter.ViewHolder> im
             photoRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(bytes -> {
                 Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                 holder.postPicIV.setImageBitmap(bmp);
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    //handle failure
-                }
+            }).addOnFailureListener(e -> {
+                //handle failure
             });
         } else {
             holder.postPicIV.getLayoutParams().height = 0;
@@ -95,11 +99,7 @@ public class postAdapter extends RecyclerView.Adapter<postAdapter.ViewHolder> im
 
         //holder.cardView.setCheckedIcon();
         holder.cardView.setOnLongClickListener(view -> {
-            if(!holder.cardView.isChecked()){
-                holder.cardView.setChecked(true);
-            }else{
-                 holder.cardView.setChecked(false);
-            }
+            holder.cardView.setChecked(!holder.cardView.isChecked());
             return true;
         });
 

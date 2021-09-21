@@ -86,7 +86,8 @@
             android:layout_height="216dp"
             android:ems="10"
             android:gravity="start|top"
-            android:hint="What's going on?"
+            android:hint="@string/what_s_going_on"
+            android:importantForAutofill="no"
             android:inputType="textMultiLine"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
@@ -95,12 +96,14 @@
             app:layout_constraintHorizontal_bias="0.489"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.434" />
+            app:layout_constraintVertical_bias="0.434"
+            tools:ignore="TextContrastCheck" />
 
         <ImageView
             android:id="@+id/displayPicture_IV"
             android:layout_width="114dp"
             android:layout_height="126dp"
+            android:contentDescription="@string/todo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.04"
@@ -113,7 +116,7 @@
             android:id="@+id/displayName_TV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="[My_Username]"
+            android:text="@string/my_username"
             app:layout_constraintBottom_toTopOf="@+id/type_ET"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.053"
@@ -125,7 +128,7 @@
             android:id="@+id/commGroup_TV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="in [Community_Group]"
+            android:text="@string/community_name"
             app:layout_constraintBottom_toTopOf="@+id/type_ET"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.068"
@@ -138,6 +141,8 @@
             android:layout_width="360dp"
             android:layout_height="183dp"
             android:clickable="true"
+            android:contentDescription="@string/todo"
+            android:focusable="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
@@ -145,13 +150,14 @@
             app:layout_constraintTop_toBottomOf="@+id/type_ET"
             app:layout_constraintVertical_bias="0.077"
             app:srcCompat="@drawable/ic_baseline_image_24"
-            tools:ignore="SpeakableTextPresentCheck" />
+            tools:ignore="SpeakableTextPresentCheck,DuplicateSpeakableTextCheck" />
 
         <ImageView
             android:id="@+id/takePhoto_IV"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:clickable="true"
+            android:contentDescription="@string/todo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
@@ -159,12 +165,14 @@
             app:layout_constraintTop_toBottomOf="@+id/picPreview_IV"
             app:layout_constraintVertical_bias="0.6"
             app:srcCompat="@android:drawable/ic_menu_camera"
-            tools:ignore="SpeakableTextPresentCheck" />
+            tools:ignore="SpeakableTextPresentCheck,ImageContrastCheck"
+            android:focusable="true" />
 
         <ImageView
             android:id="@+id/removePhoto_IV"
             android:layout_width="60dp"
             android:layout_height="60dp"
+            android:contentDescription="@string/todo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.732"
@@ -177,13 +185,15 @@
             android:id="@+id/addPhoto_IV"
             android:layout_width="60dp"
             android:layout_height="60dp"
+            android:contentDescription="@string/todo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.277"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/picPreview_IV"
             app:layout_constraintVertical_bias="0.6"
-            app:srcCompat="@android:drawable/ic_menu_upload" />
+            app:srcCompat="@android:drawable/ic_menu_upload"
+            tools:ignore="ImageContrastCheck" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

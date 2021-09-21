@@ -14,7 +14,6 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -148,12 +147,8 @@ public class posts extends AppCompatActivity implements View.OnClickListener {
     private void askWhereToPost() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Post To?");
-        builder.setPositiveButton("Message Board", (dialog, id) -> {
-            postToMessageBoard();
-        });
-        builder.setNegativeButton("Notice Board", (dialog, id) -> {
-            postToNoticeBoard();
-        });
+        builder.setPositiveButton("Message Board", (dialog, id) -> postToMessageBoard());
+        builder.setNegativeButton("Notice Board", (dialog, id) -> postToNoticeBoard());
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
@@ -305,6 +300,7 @@ public class posts extends AppCompatActivity implements View.OnClickListener {
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK) {
                     Intent data = result.getData();
+                    assert data != null;
                     Uri imageUri = data.getData();
                     postPicIV.setImageURI(imageUri);
                     postPicUri = imageUri;

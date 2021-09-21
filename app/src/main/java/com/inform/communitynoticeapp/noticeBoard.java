@@ -12,7 +12,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -29,7 +28,6 @@ public class noticeBoard extends AppCompatActivity implements View.OnClickListen
     private RecyclerView recyclerView;
     private Context context;
     private ArrayList<createPost> createPostArrayList;
-    private FloatingActionButton addPost;
     private final dataBaseFirebase firebase = dataBaseFirebase.getInstance();
 
     public noticeBoard(){
@@ -69,7 +67,7 @@ public class noticeBoard extends AppCompatActivity implements View.OnClickListen
         });
 
         context=this;
-        addPost=findViewById(R.id.floating_action_button);
+        FloatingActionButton addPost = findViewById(R.id.floating_action_button);
 
         addPost.setOnClickListener(this);
 

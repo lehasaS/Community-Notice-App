@@ -43,7 +43,7 @@ public class profile extends AppCompatActivity implements View.OnClickListener {
         setContentView(R.layout.activity_profile);
         TextView roleTV = findViewById(R.id.roleTV);
         profilePicture = findViewById(R.id.displayPicture_IV);
-        TextView community = findViewById(R.id.communityNameTV);
+        TextView community = findViewById(R.id.communityTV);
         TextView welcomeMessageTV = findViewById(R.id.welcomeMessage_TV);
         TextView displayName = findViewById(R.id.usernameTV);
         Button logoutBtn = findViewById(R.id.logout_Btn);

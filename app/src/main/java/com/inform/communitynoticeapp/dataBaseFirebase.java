@@ -150,9 +150,6 @@ public class dataBaseFirebase implements Cloneable, Serializable {
     }
 
     public void updateDisplayPicture(Uri photoUri){
-        //final String randomKey = UUID.randomUUID().toString();
-        //StorageReference pictureRef = storageRef.child("profilePics/" + randomKey);
-        //pictureRef.putFile(photoUri);
         UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder().setPhotoUri(photoUri).build();
         this.getUser().updateProfile(profileChangeRequest);
     }

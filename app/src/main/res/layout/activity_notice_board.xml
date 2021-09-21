@@ -34,7 +34,7 @@
             android:id="@+id/messageboard_TV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Notice Board"
+            android:text="@string/notice_board"
             android:textSize="30sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -75,7 +75,7 @@
             app:layout_constraintTop_toBottomOf="@+id/messageboard_TV"
             app:layout_constraintVertical_bias="1.0"
             app:srcCompat="@drawable/floating_action_button"
-            tools:ignore="MissingConstraints" />
+            tools:ignore="MissingConstraints,RedundantDescriptionCheck" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation"

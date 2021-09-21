@@ -23,17 +23,17 @@
         android:layout_marginBottom="60dp">
 
         <TextView
-            android:id="@+id/communityNameTV"
-            android:layout_width="180dp"
-            android:layout_height="30dp"
+            android:id="@+id/communityTV"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
             android:text="@string/community_name"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.082"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/usernameTV"
             app:layout_constraintTop_toBottomOf="@+id/usernameTV"
-            app:layout_constraintVertical_bias="0.061" />
+            app:layout_constraintVertical_bias="0.082" />
 
         <Button
             android:id="@+id/logout_Btn"
@@ -63,16 +63,16 @@
 
         <TextView
             android:id="@+id/roleTV"
-            android:layout_width="180dp"
-            android:layout_height="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
             android:text="@string/role"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.082"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/communityNameTV"
-            app:layout_constraintVertical_bias="0.072" />
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/communityTV"
+            app:layout_constraintTop_toBottomOf="@+id/communityTV"
+            app:layout_constraintVertical_bias="0.084" />
 
         <TextView
             android:id="@+id/editPassword"
@@ -104,8 +104,8 @@
 
         <TextView
             android:id="@+id/usernameTV"
-            android:layout_width="180dp"
-            android:layout_height="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
             android:text="@string/username"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -119,6 +119,7 @@
             android:id="@+id/displayPicture_IV"
             android:layout_width="114dp"
             android:layout_height="126dp"
+            android:contentDescription="@string/todo"
             app:layout_constraintBottom_toTopOf="@+id/usernameTV"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.056"

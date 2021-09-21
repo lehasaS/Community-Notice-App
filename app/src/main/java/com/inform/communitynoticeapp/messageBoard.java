@@ -28,7 +28,6 @@ public class messageBoard extends AppCompatActivity implements View.OnClickListe
     private RecyclerView recyclerView;
     private Context context;
     private ArrayList<createPost> createPostArrayList;
-    private FloatingActionButton addPost;
     private final dataBaseFirebase firebase = dataBaseFirebase.getInstance();
 
     @SuppressLint("NonConstantResourceId")
@@ -63,7 +62,7 @@ public class messageBoard extends AppCompatActivity implements View.OnClickListe
         });
 
         context=this;
-        addPost=findViewById(R.id.floating_action_button);
+        FloatingActionButton addPost = findViewById(R.id.floating_action_button);
 
         addPost.setOnClickListener(this);
 

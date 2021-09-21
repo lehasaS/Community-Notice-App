@@ -10,10 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Zazi" >
         <activity
-            android:name=".messageBoard"
+            android:name=".updateEmail"
             android:exported="true" />
         <activity
-            android:name=".updateEmail"
+            android:name=".messageBoard"
             android:exported="true" />
         <activity
             android:name=".updatePassword"
@@ -23,7 +23,7 @@
             android:exported="true" />
         <activity
             android:name=".LogIn"
-            android:exported="true"/>
+            android:exported="true" />
         <activity
             android:name=".profile"
             android:exported="true" />
