@@ -48,7 +48,7 @@ public class profile extends AppCompatActivity implements View.OnClickListener {
         TextView welcomeMessageTV = findViewById(R.id.welcomeMessage_TV);
         TextView displayName = findViewById(R.id.usernameTV);
         Button logoutBtn = findViewById(R.id.logout_Btn);
-        Button editButton = findViewById(R.id.editProfile_Btn);
+        Button editButton = findViewById(R.id.manage_request_btn);
         logoutBtn.setOnClickListener(this);
         editButton.setOnClickListener(this);
         displayName.setText(firebase.getUser().getDisplayName());
@@ -114,9 +114,13 @@ public class profile extends AppCompatActivity implements View.OnClickListener {
             case R.id.logout_Btn:
                 showLogoutDialog();
                 break;
-            case R.id.editProfile_Btn:
+            case R.id.editProfile_Btn2:
                 Intent editProfile = new Intent(profile.this, profileEditor.class);
                 startActivity(editProfile);
+                break;
+            case R.id.manage_request_btn:
+                Intent manage_Request = new Intent(profile.this, manageRequest.class);
+                startActivity(manage_Request);
                 break;
 
         }

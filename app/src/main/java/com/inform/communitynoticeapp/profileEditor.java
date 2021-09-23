@@ -50,7 +50,7 @@ public class profileEditor extends AppCompatActivity implements View.OnClickList
         Button uploadPicBtn = findViewById(R.id.upload_pic_Btn);
         TextView updateEmail = findViewById(R.id.updateEmail_TV);
         TextView updatePassword = findViewById(R.id.updatePassword_TV);
-        Button saveBtn = findViewById(R.id.editProfile_Btn);
+        Button saveBtn = findViewById(R.id.manage_request_btn);
 
         showProfilePic();
 

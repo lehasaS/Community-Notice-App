@@ -22,6 +22,20 @@
         android:layout_marginEnd="0dp"
         android:layout_marginBottom="60dp">
 
+        <Button
+            android:id="@+id/editProfile_Btn2"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@color/blue_200"
+            android:text="@string/edit_profile"
+            android:textColor="#212121"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editPassword"
+            app:layout_constraintVertical_bias="0.755" />
+
         <TextView
             android:id="@+id/communityTV"
             android:layout_width="wrap_content"
@@ -48,11 +62,11 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
-            android:id="@+id/editProfile_Btn"
+            android:id="@+id/manage_request_btn"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:background="@color/blue_200"
-            android:text="@string/edit_profile"
+            android:text="manage  request"
             android:textColor="#212121"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Zazi">
         <activity
+            android:name=".manageRequest"
+            android:exported="true" />
+        <activity
             android:name=".bookmarks"
             android:exported="true" />
         <activity
