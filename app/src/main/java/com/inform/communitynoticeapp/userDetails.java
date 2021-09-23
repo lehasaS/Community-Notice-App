@@ -1,15 +1,16 @@
 package com.inform.communitynoticeapp;
 
 public class userDetails {
-    private String email, username, community;
+    private String email, dispName, community, role;
 
     public userDetails(){
 
     }
-    public  userDetails(String username, String email, String community){
-        this.username=username;
+    public  userDetails(String dispName, String email, String community, String role){
+        this.dispName=dispName;
         this.email=email;
         this.community=community;
+        this.role=role;
     }
 
     public String getCommunity() {
@@ -28,9 +29,17 @@ public class userDetails {
         this.email=email;
     }
 
-    public String getUsername(){return username;}
+    public String getDispName(){return dispName;}
 
-    public void setUsername(){
-        this.username=username;
+    public void setDispName(){
+        this.dispName=dispName;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }

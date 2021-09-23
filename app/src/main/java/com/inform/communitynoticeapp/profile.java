@@ -1,5 +1,10 @@
 package com.inform.communitynoticeapp;
 
+import static com.inform.communitynoticeapp.R.id.nav_bookmarks;
+import static com.inform.communitynoticeapp.R.id.nav_messageBoard;
+import static com.inform.communitynoticeapp.R.id.nav_noticeBoard;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,20 +12,29 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 
 public class profile extends AppCompatActivity implements View.OnClickListener {
 
-    private FirebaseAuth userAuth;
+    private final dataBaseFirebase firebase=dataBaseFirebase.getInstance();
+    private final FirebaseStorage storage = FirebaseStorage.getInstance();
     private Context context;
+    ImageView profilePicture;
 
 
     @SuppressLint({"SetTextI18n", "NonConstantResourceId"})
@@ -28,18 +42,35 @@ public class profile extends AppCompatActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-
-        userAuth= FirebaseAuth.getInstance();
+        TextView roleTV = findViewById(R.id.roleTV);
+        profilePicture = findViewById(R.id.displayPicture_IV);
+        TextView community = findViewById(R.id.communityTV);
         TextView welcomeMessageTV = findViewById(R.id.welcomeMessage_TV);
+        TextView displayName = findViewById(R.id.usernameTV);
         Button logoutBtn = findViewById(R.id.logout_Btn);
         Button editButton = findViewById(R.id.editProfile_Btn);
         logoutBtn.setOnClickListener(this);
         editButton.setOnClickListener(this);
-        FirebaseUser user = userAuth.getCurrentUser();
-        assert user != null;
-        welcomeMessageTV.setText(getString(R.string.Greeting)+ user.getDisplayName()+"!");
+        displayName.setText(firebase.getUser().getDisplayName());
+        welcomeMessageTV.setText(getString(R.string.Greeting)+ firebase.getUser().getDisplayName()+"!");
+        context=this;
 
-        context = this;
+        firebase.getUserDetailsRef().addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                userDetails details = snapshot.getValue(userDetails.class);
+                assert details != null;
+                roleTV.setText(details.getRole());
+                community.setText(details.getCommunity());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        showProfilePic();
 
         //initialize And Assign Variable
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -48,33 +79,34 @@ public class profile extends AppCompatActivity implements View.OnClickListener {
         bottomNavigationView.setSelectedItemId(R.id.nav_profile);
 
         //perform itemSelectedListener
-        bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
-            switch (menuItem.getItemId())
+        bottomNavigationView.setOnItemSelectedListener(item ->{
+            switch (item.getItemId())
             {
-                case R.id.nav_board:
-                    startActivity(new Intent(getApplicationContext(),board.class));
+                case nav_noticeBoard:
+                    startActivity(new Intent(getApplicationContext(),noticeBoard.class));
                     overridePendingTransition(0,0);
                     return true;
 
-                case R.id.nav_post:
-                    startActivity(new Intent(getApplicationContext(),posts.class));
+                case nav_messageBoard:
+                    startActivity(new Intent(getApplicationContext(),messageBoard.class));
+                    overridePendingTransition(0,0);
+                    return true;
+
+                case nav_bookmarks:
+                    startActivity(new Intent(getApplicationContext(),bookmarks.class));
                     overridePendingTransition(0,0);
                     return true;
 
                 case R.id.nav_profile:
                     return true;
-
-
             }
             return false;
         });
 
-        //TODO: Make profile picture display in user account
-
     }
 
 
-
+    @SuppressLint("NonConstantResourceId")
     public void onClick(View view) {
         int id = view.getId();
 
@@ -94,17 +126,27 @@ public class profile extends AppCompatActivity implements View.OnClickListener {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Are you sure you want to logout?");
         builder.setPositiveButton("Yes", (dialog, id) -> {
-            userAuth.signOut();
+            firebase.getUserAuth().signOut();
             ((Activity) context).finish();
-            Intent login = new Intent(profile.this, MainActivity.class);
+            Intent login = new Intent(profile.this, LogIn.class);
             startActivity(login);
 
         });
-        builder.setNegativeButton("No", (dialog, id) -> {
-            // User cancelled the dialog
-            dialog.dismiss();
-        });
+        builder.setNegativeButton("No", (dialog, id) -> dialog.dismiss());
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+
+    public void showProfilePic() {
+        String photoUrl = firebase.getDisplayPicture().toString();
+
+        StorageReference photoRef = storage.getReferenceFromUrl(photoUrl);
+
+        final long ONE_MEGABYTE = 1024 * 1024;
+        photoRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(bytes -> {
+            Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            profilePicture.setImageBitmap(bmp);
+        }).addOnFailureListener(exception ->
+                Toast.makeText(getApplicationContext(), "No Such file or Path found!!", Toast.LENGTH_LONG).show());
     }
 }

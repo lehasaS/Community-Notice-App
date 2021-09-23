@@ -1,10 +1,13 @@
 package com.inform.communitynoticeapp;
 
+import com.google.firebase.database.Exclude;
+
 public class createPost {
 
     private String post;
     private String user;
     private String dateTime;
+    private String imageUri;
 
     public createPost() {
     }
@@ -13,6 +16,14 @@ public class createPost {
         this.user=user;
         this.post=post;
         this.dateTime=dateTime;
+        this.imageUri = "";
+    }
+
+    public createPost(String user, String post, String dateTime, String imageUri){
+        this.user=user;
+        this.post=post;
+        this.dateTime=dateTime;
+        this.imageUri = imageUri;
     }
 
     public String getUser() {
@@ -35,5 +46,23 @@ public class createPost {
 
     public void setUser(String user) {
         this.user = user;
+    }
+
+    public String getImageUri() {
+        return imageUri;
+    }
+
+    public void setImageUri(String imageUri) {
+        this.imageUri = imageUri;
+    }
+
+    @Exclude
+    public boolean setSelected(boolean b) {
+        return b;
+    }
+
+    @Exclude
+    public boolean isSelected() {
+        return true;
     }
 }

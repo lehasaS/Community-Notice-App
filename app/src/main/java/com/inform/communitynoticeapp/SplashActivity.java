@@ -30,12 +30,12 @@ public class SplashActivity extends AppCompatActivity {
                 if(currentUser!=null) {
                     //user is already logged in.
 
-                    Intent homeIntent = new Intent(SplashActivity.this, posts.class);
+                    Intent homeIntent = new Intent(SplashActivity.this, noticeBoard.class);
                     startActivity(homeIntent);
                 }
                 else {
                     //user is not logged in, then show login activity.
-                    Intent loginIntent = new Intent(SplashActivity.this, MainActivity.class);
+                    Intent loginIntent = new Intent(SplashActivity.this, LogIn.class);
                     startActivity(loginIntent);
                 }
 
