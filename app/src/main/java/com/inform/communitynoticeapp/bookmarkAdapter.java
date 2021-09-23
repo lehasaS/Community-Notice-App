@@ -1,6 +1,5 @@
 package com.inform.communitynoticeapp;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -25,78 +24,42 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
-public class noticeBoardAdapter extends RecyclerView.Adapter<noticeBoardAdapter.ViewHolder>  {
+public class bookmarkAdapter extends RecyclerView.Adapter<bookmarkAdapter.ViewHolder>{
     private final ArrayList<createPost> postList;
     private final Context context;
     private final dataBaseFirebase firebase=dataBaseFirebase.getInstance();
     private final FirebaseStorage storage = FirebaseStorage.getInstance();
-    //adapter takes an object of view holder class, we make our own view holder class
-    //instead of using RecyclerView.ViewHolder
-    //We want to define our own text view in the posts.
 
-    public noticeBoardAdapter(ArrayList<createPost> posts, Context context){
-        this.postList=posts;
-        this.context=context;
-
-    }
-
-    public dataBaseFirebase getFirebase() {
-        return firebase;
-    }
-
-    public static class ViewHolder extends RecyclerView.ViewHolder{
-        TextView dispName, post, dateTime, postID;
-        ImageView postPicIV;
-        MaterialCardView cardView;
-        ToggleButton bookmark;
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            post=itemView.findViewById(R.id.post_contentTwo);
-            dispName =itemView.findViewById(R.id.display_nameTwo);
-            dateTime=itemView.findViewById(R.id.dateTime_TVTwo);
-            postPicIV=itemView.findViewById(R.id.postPic_IVTwo);
-            cardView=itemView.findViewById(R.id.cardviewTwo);
-            bookmark=itemView.findViewById(R.id.bookmark_BtnTwo);
-            postID=itemView.findViewById(R.id.postIDTwo);
-        }
-
+    public bookmarkAdapter(ArrayList<createPost> postList, Context context) {
+        this.postList = postList;
+        this.context = context;
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View postView = LayoutInflater.from(parent.getContext()).inflate(R.layout.notice_card, parent, false);
-        return new ViewHolder(postView);
-
+    public bookmarkAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View postView = LayoutInflater.from(parent.getContext()).inflate(R.layout.bookmark_card, parent, false);
+        return new bookmarkAdapter.ViewHolder(postView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
+    public void onBindViewHolder(@NonNull bookmarkAdapter.ViewHolder holder, int position) {
         holder.dispName.setText(postList.get(position).getUser());
         holder.dateTime.setText(postList.get(position).getDateTime());
-        holder.postID.setText(postList.get(position).getPostID());
+        //holder.postID.setText(postList.get(position).getPostID());
 
+        /*
         SharedPreferences preferences = getSharedPreferences();
-        String state = preferences.getString(position +"pressed", "no");
+        String state = preferences.getString(position +"pressed", "Yes");
 
         if(state.equals("yes")){
             holder.bookmark.setBackgroundDrawable(ContextCompat.getDrawable(holder.bookmark.getContext(), R.drawable.clicked_bookmark));
-        }else{
-            holder.bookmark.setBackgroundDrawable(ContextCompat.getDrawable(holder.bookmark.getContext(), R.drawable.ic_baseline_bookmark));
         }
 
-        //Change bookmark colour when clicking bookmark button
         holder.bookmark.setOnCheckedChangeListener((compoundButton, isChecked) -> {
             SharedPreferences.Editor editor = getSharedPreferences().edit();
-            if (isChecked && state.equals("no")) {
-                editor.putString(position + "pressed", "yes");
-                editor.apply();
-                holder.bookmark.setBackgroundDrawable(ContextCompat.getDrawable(holder.bookmark.getContext(), R.drawable.clicked_bookmark));
-                addPostToBookmarks(postList.get(position));
-            }
-            else  if (isChecked && state.equals("yes")) {
+            if (isChecked && state.equals("yes")) {
                 editor.putString(position + "pressed", "no");
                 editor.apply();
                 holder.bookmark.setBackgroundDrawable(ContextCompat.getDrawable(holder.bookmark.getContext(), R.drawable.ic_baseline_bookmark));
@@ -106,15 +69,13 @@ public class noticeBoardAdapter extends RecyclerView.Adapter<noticeBoardAdapter.
                 editor.apply();
                 holder.bookmark.setBackgroundDrawable(ContextCompat.getDrawable(holder.bookmark.getContext(), R.drawable.ic_baseline_bookmark));
                 removePostBookmark(holder.postID.getText().toString());
-            } else  if (!isChecked && state.equals("yes")) {
-                editor.putString(position + "pressed", "yes");
-                editor.apply();
-                holder.bookmark.setBackgroundDrawable(ContextCompat.getDrawable(holder.bookmark.getContext(), R.drawable.clicked_bookmark));
-                addPostToBookmarks(postList.get(position));
             }
 
         });
 
+        preferences.getString(position + "pressed", "no");
+
+         */
         if (!postList.get(position).getPost().equals("")) {
             holder.post.setText(postList.get(position).getPost());
         } else {
@@ -131,13 +92,12 @@ public class noticeBoardAdapter extends RecyclerView.Adapter<noticeBoardAdapter.
                 holder.postPicIV.setImageBitmap(bmp);
             }).addOnFailureListener(e -> {
                 //handle failure
-                Toast.makeText((noticeBoard)context, "An error occurred: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText((bookmarks)context, "An error occurred: "+e.getMessage(), Toast.LENGTH_SHORT).show();
             });
         } else {
             holder.postPicIV.getLayoutParams().height = 0;
             holder.postPicIV.requestLayout();
         }
-
 
     }
 
@@ -148,28 +108,18 @@ public class noticeBoardAdapter extends RecyclerView.Adapter<noticeBoardAdapter.
                 for(DataSnapshot dataSnapshot: snapshot.getChildren()){
                     dataSnapshot.getRef().removeValue();
                 }
-                Toast.makeText((noticeBoard)context, "Bookmark removed", Toast.LENGTH_SHORT).show();
+                Toast.makeText((bookmarks)context, "Bookmark removed", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText((noticeBoard)context, "An error occurred: "+error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void addPostToBookmarks(createPost post) {
-        firebase.addPostToBookmarks(Objects.requireNonNull(post)).addOnCompleteListener(task -> {
-            if(task.isSuccessful()){
-                Toast.makeText((noticeBoard)context, "Bookmark added", Toast.LENGTH_SHORT).show();
-            }else{
-                Toast.makeText((noticeBoard)context, "An error occurred: "+task.getException(), Toast.LENGTH_SHORT).show();
+                Toast.makeText((bookmarks)context, "An error occurred: "+error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private SharedPreferences getSharedPreferences() {
-        return context.getSharedPreferences("NoticeBoardButton", Context.MODE_PRIVATE);
+        return context.getSharedPreferences("BookmarkButton", Context.MODE_PRIVATE);
     }
 
     @Override
@@ -177,4 +127,20 @@ public class noticeBoardAdapter extends RecyclerView.Adapter<noticeBoardAdapter.
         return postList.size();
     }
 
+    public static class ViewHolder extends RecyclerView.ViewHolder{
+        TextView dispName, post, dateTime, postID;
+        ImageView postPicIV;
+        MaterialCardView cardView;
+        ToggleButton bookmark;
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            post=itemView.findViewById(R.id.post_contentThree);
+            dispName =itemView.findViewById(R.id.display_nameThree);
+            dateTime=itemView.findViewById(R.id.dateTime_TVThree);
+            postPicIV=itemView.findViewById(R.id.postPic_IVThree);
+            cardView=itemView.findViewById(R.id.cardviewThree);
+            bookmark=itemView.findViewById(R.id.bookmark_BtnThree);
+            //postID=itemView.findViewById(R.id.postIDThree);
+        }
+    }
 }

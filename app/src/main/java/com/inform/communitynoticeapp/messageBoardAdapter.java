@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +25,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class messageBoardAdapter extends RecyclerView.Adapter<messageBoardAdapter.ViewHolder>{
     private final ArrayList<createPost> postList;
@@ -48,6 +48,7 @@ public class messageBoardAdapter extends RecyclerView.Adapter<messageBoardAdapte
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.dispName.setText(postList.get(position).getUser());
         holder.dateTime.setText(postList.get(position).getDateTime());
+        holder.postID.setText(postList.get(position).getPostID());
 
         SharedPreferences preferences = getSharedPreferences();
         String state = preferences.getString(position +"pressed", "no");
@@ -66,31 +67,26 @@ public class messageBoardAdapter extends RecyclerView.Adapter<messageBoardAdapte
                 editor.putString(position + "pressed", "yes");
                 editor.apply();
                 holder.bookmark.setBackgroundDrawable(ContextCompat.getDrawable(holder.bookmark.getContext(), R.drawable.clicked_bookmark));
-                //addPostToBookmarks(postList.get(position));
-
-            }
-            else  if (isChecked && state.equals("yes")) {
+                addPostToBookmarks(postList.get(position));
+            } else  if (isChecked && state.equals("yes")) {
                 editor.putString(position + "pressed", "no");
                 editor.apply();
                 holder.bookmark.setBackgroundDrawable(ContextCompat.getDrawable(holder.bookmark.getContext(), R.drawable.ic_baseline_bookmark));
-                //TODO: Make removing work
-                //removePostBookmark(postList.get(position));
+                removePostBookmark(holder.postID.getText().toString());
             } else  if (!isChecked && state.equals("no")) {
                 editor.putString(position + "pressed", "no");
                 editor.apply();
                 holder.bookmark.setBackgroundDrawable(ContextCompat.getDrawable(holder.bookmark.getContext(), R.drawable.ic_baseline_bookmark));
-                //TODO: Make removing work
-                //removePostBookmark(postList.get(position));
+                removePostBookmark(holder.postID.getText().toString());
             } else  if (!isChecked && state.equals("yes")) {
                 editor.putString(position + "pressed", "yes");
                 editor.apply();
                 holder.bookmark.setBackgroundDrawable(ContextCompat.getDrawable(holder.bookmark.getContext(), R.drawable.clicked_bookmark));
-                //addPostToBookmarks(postList.get(position));
+                addPostToBookmarks(postList.get(position));
             }
 
         });
 
-        preferences.getString(position + "pressed", "no");
 
         if (!postList.get(position).getPost().equals("")) {
             holder.post.setText(postList.get(position).getPost());
@@ -108,6 +104,7 @@ public class messageBoardAdapter extends RecyclerView.Adapter<messageBoardAdapte
                 holder.postPicIV.setImageBitmap(bmp);
             }).addOnFailureListener(e -> {
                 //handle failure
+                Toast.makeText((messageBoard)context, "An error occurred: "+e.getMessage(), Toast.LENGTH_SHORT).show();
             });
         } else {
             holder.postPicIV.getLayoutParams().height = 0;
@@ -117,27 +114,29 @@ public class messageBoardAdapter extends RecyclerView.Adapter<messageBoardAdapte
 
     }
 
-    /*private void removePostBookmark(createPost model) {
-        firebase.removeBookmark(model).addListenerForSingleValueEvent(new ValueEventListener() {
+    private void removePostBookmark(String postID) {
+        firebase.removeBookmark(postID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                snapshot.getRef().removeValue();
-                Toast.makeText((noticeBoard)context, "Bookmark removed", Toast.LENGTH_SHORT).show();
+                for(DataSnapshot dataSnapshot: snapshot.getChildren()){
+                    dataSnapshot.getRef().removeValue();
+                }
+                Toast.makeText((messageBoard)context, "Bookmark removed", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Toast.makeText((messageBoard)context, "An error occurred: "+error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-    }*/
+    }
 
-    private void addPostToBookmarks(createPost model) {
-        firebase.addPostToBookmarks(Objects.requireNonNull(model)).addOnCompleteListener(task -> {
+    private void addPostToBookmarks(createPost post) {
+        firebase.addPostToBookmarks(post).addOnCompleteListener(task -> {
             if(task.isSuccessful()){
-                Toast.makeText((noticeBoard)context, "Bookmark added", Toast.LENGTH_SHORT).show();
+                Toast.makeText((messageBoard)context, "Bookmark added", Toast.LENGTH_SHORT).show();
             }else{
-                Toast.makeText((noticeBoard)context, "An error occurred: "+task.getException(), Toast.LENGTH_SHORT).show();
+                Toast.makeText((messageBoard)context, "An error occurred: "+task.getException(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -152,7 +151,7 @@ public class messageBoardAdapter extends RecyclerView.Adapter<messageBoardAdapte
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView dispName, post, dateTime;
+        TextView dispName, post, dateTime, postID;
         ImageView postPicIV;
         MaterialCardView cardView;
         ToggleButton bookmark;
@@ -164,6 +163,7 @@ public class messageBoardAdapter extends RecyclerView.Adapter<messageBoardAdapte
             postPicIV=itemView.findViewById(R.id.postPic_IV);
             cardView=itemView.findViewById(R.id.cardview);
             bookmark=itemView.findViewById(R.id.bookmark_Btn);
+            postID=itemView.findViewById(R.id.postID);
         }
     }
 }

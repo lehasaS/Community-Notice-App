@@ -146,10 +146,6 @@ public class dataBaseFirebase implements Cloneable, Serializable {
         return Objects.requireNonNull(userAuth.getCurrentUser()).updateEmail(email);
     }
 
-    public void addBookmarks(){
-
-    }
-
     public Task<Void> updatePassword(String password){
         return Objects.requireNonNull(userAuth.getCurrentUser()).updatePassword(password);
     }
@@ -182,28 +178,26 @@ public class dataBaseFirebase implements Cloneable, Serializable {
     public Task<Void> addPostToNoticeBoardNode(String text, String dateNow, String imageUri){
         DatabaseReference postRef = this.getRootRef().child("Posts").child("NoticeBoard").getRef();
         DatabaseReference newRef = postRef.push();
-        createPost post = new createPost(this.getUser().getDisplayName(), text, dateNow, imageUri);
+        createPost post = new createPost(this.getUser().getDisplayName(), text, dateNow, imageUri, newRef.getKey());
         return newRef.setValue(post);
     }
 
     public Task<Void> addPostToMessageBoardNode(String text, String dateNow, String imageUri){
         DatabaseReference postRef = this.getRootRef().child("Posts").child("MessageBoard").getRef();
         DatabaseReference newRef = postRef.push();
-        createPost post = new createPost(this.getUser().getDisplayName(), text, dateNow, imageUri);
+        createPost post = new createPost(this.getUser().getDisplayName(), text, dateNow, imageUri, newRef.getKey());
         return newRef.setValue(post);
     }
 
-    public Task<Void> addPostToBookmarks(createPost post){
+    public Task<Void> addPostToBookmarks(@NonNull createPost post){
         DatabaseReference bookmarkRef = this.getRootRef().child("Users").child(this.getUser().getUid()).child("Bookmarks").getRef();
         DatabaseReference newRef = bookmarkRef.push();
         return newRef.setValue(post);
     }
 
-    //TODO: Make this method work
-    /*
-    public DatabaseReference removeBookmark(createPost post){
-        return this.getRootRef().child("Users").child(this.getUser().getUid()).child("Bookmarks").child(Objects.requireNonNull(post.getPostRef().getKey())).getRef();
-    }*/
+    public Query removeBookmark(String postID){
+        return this.getRootRef().child("Users").child(this.getUser().getUid()).child("Bookmarks").orderByChild("postID").equalTo(postID);
+    }
 
     public void uploadPicture(Uri imgUri) {
         final String randomKey = UUID.randomUUID().toString();

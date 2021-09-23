@@ -68,6 +68,16 @@
                 android:textAppearance="?attr/textAppearanceBody2"
                 android:textColor="?android:attr/textColorSecondary" />
 
+            <TextView
+                android:id="@+id/postID"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/post_id"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:visibility="gone"
+                android:textColor="?android:attr/textColorSecondary" />
+
             <ImageView
                 android:id="@+id/postPic_IV"
                 android:layout_width="match_parent"

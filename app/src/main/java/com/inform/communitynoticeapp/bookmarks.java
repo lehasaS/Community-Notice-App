@@ -4,6 +4,7 @@ import static com.inform.communitynoticeapp.R.id.nav_bookmarks;
 import static com.inform.communitynoticeapp.R.id.nav_messageBoard;
 import static com.inform.communitynoticeapp.R.id.nav_noticeBoard;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,13 +14,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.Objects;
 
 public class bookmarks extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private final dataBaseFirebase firebase = dataBaseFirebase.getInstance();
-    private final FirebaseStorage storage = FirebaseStorage.getInstance();
+    private ArrayList<createPost> createPostArrayList;
     private Context context;
 
     @SuppressLint("NonConstantResourceId")
@@ -64,20 +70,26 @@ public class bookmarks extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
-        //displayBookmarks();
+
+        createPostArrayList = new ArrayList<>();
+        displayBookmarks();
 
     }
 
     private void displayBookmarks() {
-        //TODO: Display bookmarks(This will be done once remove works)
-    }
-
-   /* private void removeBookmark(createPost model) {
-        firebase.removeBookmark(model).addListenerForSingleValueEvent(new ValueEventListener() {
+        firebase.readBookmarks().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                snapshot.getRef().removeValue();
-                Toast.makeText(bookmarks.this, "Bookmark removed", Toast.LENGTH_SHORT).show();
+                createPost post;
+                for(DataSnapshot content: snapshot.getChildren()){
+                    post = content.getValue(createPost.class);
+                    Objects.requireNonNull(post).setPost(post.getPost());
+                    createPostArrayList.add(0,post);
+                }
+
+                bookmarkAdapter postAdapter = new bookmarkAdapter(createPostArrayList, context);
+                recyclerView.setAdapter(postAdapter);
+                createPostArrayList=null;
             }
 
             @Override
@@ -85,7 +97,8 @@ public class bookmarks extends AppCompatActivity {
 
             }
         });
-    }*/
+    }
+
 
 
 }

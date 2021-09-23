@@ -48,9 +48,11 @@ public class profile extends AppCompatActivity implements View.OnClickListener {
         TextView welcomeMessageTV = findViewById(R.id.welcomeMessage_TV);
         TextView displayName = findViewById(R.id.usernameTV);
         Button logoutBtn = findViewById(R.id.logout_Btn);
-        Button editButton = findViewById(R.id.manage_request_btn);
+        Button mangeRequests = findViewById(R.id.manage_request_btn);
+        Button editProfile = findViewById(R.id.editProfile_Btn2);
         logoutBtn.setOnClickListener(this);
-        editButton.setOnClickListener(this);
+        mangeRequests.setOnClickListener(this);
+        editProfile.setOnClickListener(this);
         displayName.setText(firebase.getUser().getDisplayName());
         welcomeMessageTV.setText(getString(R.string.Greeting)+ firebase.getUser().getDisplayName()+"!");
         context=this;

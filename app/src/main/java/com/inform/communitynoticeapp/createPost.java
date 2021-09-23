@@ -10,23 +10,16 @@ public class createPost {
     private String dateTime;
     private String imageUri;
     private String postID;
-    private DatabaseReference postRef;
 
     public createPost() {
     }
 
-    public createPost(String user, String post, String dateTime){
-        this.user=user;
-        this.post=post;
-        this.dateTime=dateTime;
-        this.imageUri = "";
-    }
-
-    public createPost(String user, String post, String dateTime, String imageUri){
+    public createPost(String user, String post, String dateTime, String imageUri, String postID){
         this.user=user;
         this.post=post;
         this.dateTime=dateTime;
         this.imageUri = imageUri;
+        this.postID=postID;
     }
 
     public String getUser() {
@@ -38,6 +31,14 @@ public class createPost {
     }
 
     public String getDateTime(){return  dateTime;}
+
+    public String getImageUri() {
+        return imageUri;
+    }
+
+    public String getPostID() {
+        return postID;
+    }
 
     public void setDateTime(String dateTime) {
         this.dateTime = dateTime;
@@ -51,33 +52,11 @@ public class createPost {
         this.user = user;
     }
 
-    public String getImageUri() {
-        return imageUri;
-    }
-
     public void setImageUri(String imageUri) {
         this.imageUri = imageUri;
     }
 
-    @Exclude
-    public void setPostID(String postID){
-        this.postID=postID;
+    public void setPostID(String postID) {
+        this.postID = postID;
     }
-
-    @Exclude
-    public String getPostID(){
-        return postID;
-    }
-
-
-    @Exclude
-    public void setPostRef(DatabaseReference postRef){
-        this.postRef=postRef;
-    }
-
-    @Exclude
-    public DatabaseReference getPostRef(){
-        return postRef;
-    }
-
 }
