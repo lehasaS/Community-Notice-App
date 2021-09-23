@@ -58,7 +58,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:id="@+id/editProfile_Btn"
+            android:id="@+id/manage_request_btn"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:background="@color/blue_200"
@@ -103,7 +103,7 @@
             android:id="@+id/profile_pic_IV"
             android:layout_width="107dp"
             android:layout_height="114dp"
-            app:layout_constraintBottom_toTopOf="@+id/editProfile_Btn"
+            app:layout_constraintBottom_toTopOf="@+id/manage_request_btn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.083"
             app:layout_constraintStart_toStartOf="parent"
@@ -150,7 +150,7 @@
             android:layout_height="wrap_content"
             android:text="@string/update_email"
             android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/editProfile_Btn"
+            app:layout_constraintBottom_toTopOf="@+id/manage_request_btn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.085"
             app:layout_constraintStart_toStartOf="parent"
