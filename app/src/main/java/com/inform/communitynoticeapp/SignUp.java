@@ -27,6 +27,7 @@ public class SignUp extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+        Objects.requireNonNull(getSupportActionBar()).hide();
         String[] communityArray = new String[]{"Mowbray", "Cape Town", "Rondebosch", "Claremont"};
 
         //[START] Signup Part

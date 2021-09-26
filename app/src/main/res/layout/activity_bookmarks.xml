@@ -13,35 +13,20 @@
         android:layout_above="@id/bottom_navigation"
         tools:context=".noticeBoard">
 
-        <TextView
-            android:id="@+id/bookmark_TV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/bookmark_list"
-            android:textColor="@color/blue_200"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
-
         <!-- Main content -->
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewNotice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:paddingTop="30dp"
             android:paddingBottom="100dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/bookmark_TV"
-            app:layout_constraintVertical_bias="0.056" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.15" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation"

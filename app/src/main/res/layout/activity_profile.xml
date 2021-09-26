@@ -33,8 +33,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editPassword"
-            app:layout_constraintVertical_bias="0.755" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.781" />
 
         <TextView
             android:id="@+id/communityTV"
@@ -53,13 +53,16 @@
             android:id="@+id/logout_Btn"
             android:layout_width="match_parent"
             android:layout_height="48dp"
+            android:layout_marginTop="12dp"
             android:background="@color/blue_200"
             android:text="@string/logout"
             android:textColor="#212121"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.267"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.996" />
 
         <Button
             android:id="@+id/manage_request_btn"
@@ -72,8 +75,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editPassword"
-            app:layout_constraintVertical_bias="0.889" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.89" />
 
         <TextView
             android:id="@+id/roleTV"
@@ -89,21 +92,6 @@
             app:layout_constraintVertical_bias="0.084" />
 
         <TextView
-            android:id="@+id/editPassword"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/user_profile"
-            android:textColor="@color/blue_200"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.009" />
-
-        <TextView
             android:id="@+id/welcomeMessage_TV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -114,8 +102,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editPassword"
-            app:layout_constraintVertical_bias="0.033" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.059" />
 
         <TextView
             android:id="@+id/usernameTV"
@@ -125,10 +113,10 @@
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.082"
+            app:layout_constraintHorizontal_bias="0.05"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.419" />
+            app:layout_constraintVertical_bias="0.41" />
 
         <ImageView
             android:id="@+id/displayPicture_IV"
@@ -137,10 +125,10 @@
             android:contentDescription="@string/todo"
             app:layout_constraintBottom_toTopOf="@+id/usernameTV"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.056"
+            app:layout_constraintHorizontal_bias="0.053"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.828"
+            app:layout_constraintVertical_bias="0.71"
             app:srcCompat="@drawable/persona_ic" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

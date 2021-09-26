@@ -51,20 +51,6 @@
             app:layout_constraintTop_toBottomOf="@+id/newPost_TV"
             app:layout_constraintTop_toTopOf="parent" />-->
 
-        <TextView
-            android:id="@+id/editProfileTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/create_post"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.009" />
-
         <Button
             android:id="@+id/post_Btn"
             android:layout_width="100dp"
@@ -75,10 +61,10 @@
             app:cardCornerRadius="30dp"
             app:layout_constraintBottom_toTopOf="@+id/type_ET"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.324"
+            app:layout_constraintHorizontal_bias="0.59"
             app:layout_constraintStart_toEndOf="@+id/commGroup_TV"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.675" />
+            app:layout_constraintVertical_bias="0.875" />
 
         <EditText
             android:id="@+id/type_ET"
@@ -119,10 +105,10 @@
             android:text="@string/my_username"
             app:layout_constraintBottom_toTopOf="@+id/type_ET"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.053"
+            app:layout_constraintHorizontal_bias="0.063"
             app:layout_constraintStart_toEndOf="@+id/displayPicture_IV"
-            app:layout_constraintTop_toBottomOf="@+id/editProfileTV"
-            app:layout_constraintVertical_bias="0.414" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.765" />
 
         <TextView
             android:id="@+id/commGroup_TV"
@@ -158,6 +144,7 @@
             android:layout_height="60dp"
             android:clickable="true"
             android:contentDescription="@string/todo"
+            android:focusable="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
@@ -165,8 +152,7 @@
             app:layout_constraintTop_toBottomOf="@+id/picPreview_IV"
             app:layout_constraintVertical_bias="0.6"
             app:srcCompat="@android:drawable/ic_menu_camera"
-            tools:ignore="SpeakableTextPresentCheck,ImageContrastCheck"
-            android:focusable="true" />
+            tools:ignore="SpeakableTextPresentCheck,ImageContrastCheck" />
 
         <ImageView
             android:id="@+id/removePhoto_IV"
