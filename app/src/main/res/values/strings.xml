@@ -46,4 +46,14 @@
     <string name="bookmark_list">Bookmark List</string>
     <string name="manage_request">Manage Request</string>
     <string name="post_id">Post ID</string>
+    <string name="events">Events</string>
+    <string name="recommendations">Recommendations</string>
+    <string name="crime_information">Crime Information</string>
+    <string name="lost_pets">Lost Pets</string>
+    <string name="local_services">Local Services</string>
+    <string name="general_post">General Post</string>
+    <string name="add_hashtag">Add hashtag</string>
+    <string name="choose_hashtags">Choose Hashtags</string>
+    <string name="done">Done</string>
+    <string name="clear">Clear</string>
 </resources>

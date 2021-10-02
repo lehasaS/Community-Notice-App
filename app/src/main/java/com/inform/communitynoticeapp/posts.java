@@ -18,6 +18,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -25,6 +26,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,8 +37,14 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.ByteArrayOutputStream;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 public class posts extends AppCompatActivity implements View.OnClickListener {
@@ -44,9 +52,11 @@ public class posts extends AppCompatActivity implements View.OnClickListener {
     private EditText typeET;
     private final dataBaseFirebase firebase = dataBaseFirebase.getInstance();
     private final FirebaseStorage storage = FirebaseStorage.getInstance();
-    ImageView profilePicIV, postPicIV;
-    Uri postPicUri = null;
-    String strPostPicUri = "";
+    private ImageView profilePicIV, postPicIV;
+    private Uri postPicUri = null;
+    private LinearLayout linearLayout;
+    private TextView communityTV;
+
 
     @SuppressLint("NonConstantResourceId")
     @Override
@@ -55,15 +65,16 @@ public class posts extends AppCompatActivity implements View.OnClickListener {
         setContentView(R.layout.activity_posts);
         TextView displayNameTV = findViewById(R.id.displayName_TV);
         displayNameTV.setText(firebase.getUser().getDisplayName());
-        TextView communityTV = findViewById(R.id.commGroup_TV);
+        communityTV = findViewById(R.id.commGroup_TV);
         typeET=findViewById(R.id.type_ET);
         Button postBtn = findViewById(R.id.post_Btn);
         ImageView takePhoto = findViewById(R.id.takePhoto_IV);
         ImageView galleryPhoto = findViewById(R.id.addPhoto_IV);
         ImageView removePhotoIV = findViewById(R.id.removePhoto_IV);
+        ImageView category = findViewById(R.id.categoryIV);
         profilePicIV = findViewById(R.id.displayPicture_IV);
         postPicIV = findViewById(R.id.picPreview_IV);
-        //postPicIV.getLayoutParams().height = 0;
+        linearLayout= findViewById(R.id.tagsLL);
 
         firebase.getUserDetailsRef().addValueEventListener(new ValueEventListener() {
             @Override
@@ -80,10 +91,10 @@ public class posts extends AppCompatActivity implements View.OnClickListener {
         });
 
         showProfilePic();
-
         takePhoto.setOnClickListener(this);
         galleryPhoto.setOnClickListener(this);
         removePhotoIV.setOnClickListener(this);
+        category.setOnClickListener(this);
 
         postBtn.setOnClickListener(view -> checkRole());
 
@@ -128,8 +139,31 @@ public class posts extends AppCompatActivity implements View.OnClickListener {
             case R.id.removePhoto_IV:
                 handleRemovingPhoto();
                 break;
+            case R.id.categoryIV:
+                Intent choose= new Intent(posts.this, hashtag.class);
+                chooseHashtags.launch(choose);
+                break;
         }
     }
+
+    @SuppressLint({"SetTextI18n", "ResourceType"})
+    @SuppressWarnings("unchecked")
+    ActivityResultLauncher<Intent> chooseHashtags = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if(result.getResultCode() == RESULT_OK) {
+                    Map<String, Object> hashtags = (HashMap<String, Object>) Objects.requireNonNull(result.getData()).getSerializableExtra("extra");
+                    for(Map.Entry<String,Object> entry:hashtags.entrySet()){
+                        List<String> tags = (List<String>) entry.getValue();
+                        for(String hashTags: tags){
+                            TextView textView = new TextView(this);
+                            textView.setTypeface(textView.getTypeface(), Typeface.BOLD_ITALIC);
+                            textView.setText("#"+hashTags);
+                            linearLayout.addView(textView);
+                        }
+                    }
+                }
+            });
+
 
     public void showProfilePic() {
         String photoUrl = firebase.getDisplayPicture().toString();
@@ -158,8 +192,9 @@ public class posts extends AppCompatActivity implements View.OnClickListener {
         @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM 'at' HH:mm");
         String dateNow = dateFormat.format(date);
         String text = typeET.getText().toString();
+        ArrayList<String> tags = getHashtags();
 
-        firebase.addPostToMessageBoardNode(text, dateNow, pictureURI).addOnCompleteListener(task -> {
+        firebase.addPostToMessageBoardNode(text, dateNow, pictureURI, tags, communityTV.getText().toString()).addOnCompleteListener(task -> {
             if(task.isSuccessful()){
                 Toast.makeText(posts.this, "Post Submitted", Toast.LENGTH_SHORT).show();
             }else{
@@ -167,6 +202,7 @@ public class posts extends AppCompatActivity implements View.OnClickListener {
             }
             typeET.setText("");
         });
+        tags.clear();
         goToMessageBoard();
     }
 
@@ -203,13 +239,26 @@ public class posts extends AppCompatActivity implements View.OnClickListener {
         }
     }
 
+    private ArrayList<String> getHashtags(){
+        ArrayList<String> hash = new ArrayList<>();
+        int childCount = linearLayout.getChildCount();
+        if(childCount!=0){
+            for(int i=0; i<childCount;i++){
+                TextView view = (TextView) linearLayout.getChildAt(i);
+                hash.add(view.getText().toString().substring(1));
+            }
+        }
+        return hash;
+    }
+
     private void postToNoticeBoard(String pictureURI) {
         Date date = new Date();
         @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM 'at' HH:mm");
         String dateNow = dateFormat.format(date);
         String text = typeET.getText().toString();
+        ArrayList<String> tags = getHashtags();
 
-        firebase.addPostToNoticeBoardNode(text, dateNow, pictureURI).addOnCompleteListener(task -> {
+        firebase.addPostToNoticeBoardNode(text, dateNow, pictureURI, tags, communityTV.getText().toString()).addOnCompleteListener(task -> {
             if(task.isSuccessful()){
                 Toast.makeText(posts.this, "Post Submitted", Toast.LENGTH_SHORT).show();
             }else{
@@ -217,6 +266,7 @@ public class posts extends AppCompatActivity implements View.OnClickListener {
             }
             typeET.setText("");
         });
+        tags.clear();
        goToNoticeBoard();
     }
 
@@ -253,7 +303,6 @@ public class posts extends AppCompatActivity implements View.OnClickListener {
         }
     }
 
-    //TODO: Handle taking photos and also storing them in firebase
     private void handleTakingPhoto() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[] {

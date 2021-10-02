@@ -21,6 +21,7 @@ import com.google.firebase.storage.StorageReference;
 import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -163,29 +164,29 @@ public class dataBaseFirebase implements Cloneable, Serializable {
         getRootRef().child("Users").child(getUser().getUid()).child("community").setValue(community);
     }
 
-    public DatabaseReference readPostForNoticeBoard(){
-        return this.getRootRef().child("Posts").child("NoticeBoard").getRef();
+    public Query readPostForNoticeBoard(String community){
+        return this.getRootRef().child("Posts").child("NoticeBoard").orderByChild("community").equalTo(community);
     }
 
-    public DatabaseReference readPostForMessageBoard(){
-        return this.getRootRef().child("Posts").child("MessageBoard").orderByKey().getRef();
+    public Query readPostForMessageBoard(String community){
+        return this.getRootRef().child("Posts").child("MessageBoard").orderByChild("community").equalTo(community);
     }
 
     public DatabaseReference readBookmarks(){
         return this.getRootRef().child("Users").child(this.getUser().getUid()).child("Bookmarks").getRef();
     }
 
-    public Task<Void> addPostToNoticeBoardNode(String text, String dateNow, String imageUri){
+    public Task<Void> addPostToNoticeBoardNode(String text, String dateNow, String imageUri, ArrayList<String> hashtags, String community){
         DatabaseReference postRef = this.getRootRef().child("Posts").child("NoticeBoard").getRef();
         DatabaseReference newRef = postRef.push();
-        createPost post = new createPost(this.getUser().getDisplayName(), text, dateNow, imageUri, newRef.getKey());
+        createPost post = new createPost(this.getUser().getDisplayName(), text, dateNow, imageUri, newRef.getKey(), hashtags, community);
         return newRef.setValue(post);
     }
 
-    public Task<Void> addPostToMessageBoardNode(String text, String dateNow, String imageUri){
+    public Task<Void> addPostToMessageBoardNode(String text, String dateNow, String imageUri, ArrayList<String> hashtags, String community){
         DatabaseReference postRef = this.getRootRef().child("Posts").child("MessageBoard").getRef();
         DatabaseReference newRef = postRef.push();
-        createPost post = new createPost(this.getUser().getDisplayName(), text, dateNow, imageUri, newRef.getKey());
+        createPost post = new createPost(this.getUser().getDisplayName(), text, dateNow, imageUri, newRef.getKey(), hashtags, community);
         return newRef.setValue(post);
     }
 

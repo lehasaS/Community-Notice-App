@@ -14,6 +14,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
@@ -35,7 +37,6 @@ public class messageBoard extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_board);
-
 
         //initialize And Assign Variable
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -69,20 +70,17 @@ public class messageBoard extends AppCompatActivity implements View.OnClickListe
 
         context=this;
         FloatingActionButton addPost = findViewById(R.id.floating_action_button);
-
         addPost.setOnClickListener(this);
-
         recyclerView= findViewById(R.id.recyclerViewMessage);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
-
         createPostArrayList = new ArrayList<>();
-        readPost();
+        getUserObject(this::readPost);
     }
 
-    private void readPost(){
-        firebase.readPostForMessageBoard().addValueEventListener(new ValueEventListener() {
+    private void readPost(userDetails user){
+        firebase.readPostForMessageBoard(user.getCommunity()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 createPost post;
@@ -91,12 +89,10 @@ public class messageBoard extends AppCompatActivity implements View.OnClickListe
                     Objects.requireNonNull(post).setPost(post.getPost());
                     createPostArrayList.add(0,post);
                 }
-
                 messageBoardAdapter postAdapter = new messageBoardAdapter(createPostArrayList, context);
                 recyclerView.setAdapter(postAdapter);
                 createPostArrayList=null;
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
@@ -105,15 +101,32 @@ public class messageBoard extends AppCompatActivity implements View.OnClickListe
 
     }
 
-
     @Override
     public void onClick(View view) {
         int id = view.getId();
-
         if(id==R.id.floating_action_button){
             Intent addPost = new Intent(messageBoard.this, posts.class);
             startActivity(addPost);
         }
+    }
+
+    private void getUserObject(userDetailsI userDetail){
+        firebase.getUserDetailsRef().addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                userDetails details = snapshot.getValue(userDetails.class);
+                assert details != null;
+                userDetail.onCallback(details);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private interface userDetailsI {
+        void onCallback(userDetails user);
     }
 
 }
