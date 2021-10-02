@@ -3,6 +3,9 @@ package com.inform.communitynoticeapp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 public class createPost {
 
     private String post;
@@ -10,16 +13,21 @@ public class createPost {
     private String dateTime;
     private String imageUri;
     private String postID;
+    private ArrayList<String> hashtags;
+    private String community;
 
-    public createPost() {
+    public createPost(){
+
     }
 
-    public createPost(String user, String post, String dateTime, String imageUri, String postID){
+    public createPost(String user, String post, String dateTime, String imageUri, String postID, ArrayList<String> hashtags, String community){
         this.user=user;
         this.post=post;
         this.dateTime=dateTime;
         this.imageUri = imageUri;
         this.postID=postID;
+        this.hashtags=hashtags;
+        this.community=community;
     }
 
     public String getUser() {
@@ -40,8 +48,24 @@ public class createPost {
         return postID;
     }
 
+    public ArrayList<String> getHashtags() {
+        return hashtags;
+    }
+
+    public String getCommunity() {
+        return community;
+    }
+
     public void setDateTime(String dateTime) {
         this.dateTime = dateTime;
+    }
+
+    public void setHashtags(ArrayList<String> hashtags) {
+        this.hashtags = hashtags;
+    }
+
+    public void setCommunity(String community) {
+        this.community = community;
     }
 
     public void setPost(String post) {

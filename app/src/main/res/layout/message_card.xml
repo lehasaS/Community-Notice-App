@@ -87,28 +87,12 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/linear_LL"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:orientation="horizontal">
-
-            <com.google.android.material.button.MaterialButton
-                style="?attr/borderlessButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="8dp"
-                android:text="@string/action_1" />
-
-            <!--
-            <com.google.android.material.button.MaterialButton
-                style="?attr/borderlessButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="90dp"
-                android:text="@string/action_2" /> -->
-        </LinearLayout>
+            android:orientation="horizontal"/>
 
     </LinearLayout>
 
