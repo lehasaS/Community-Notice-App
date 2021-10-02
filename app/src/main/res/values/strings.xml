@@ -44,6 +44,22 @@
     <string name="what_s_going_on">What\'s going on?</string>
     <string name="notice_board">Notice Board</string>
     <string name="bookmark_list">Bookmark List</string>
-    <string name="manage_request">Manage Request</string>
     <string name="post_id">Post ID</string>
+    <string name="events">Events</string>
+    <string name="recommendations">Recommendations</string>
+    <string name="crime_information">Crime Information</string>
+    <string name="lost_pets">Lost Pets</string>
+    <string name="local_services">Local Services</string>
+    <string name="general_post">General Post</string>
+    <string name="add_hashtag">Add hashtag</string>
+    <string name="choose_hashtags">Choose Hashtags</string>
+    <string name="done">Done</string>
+    <string name="clear">Clear</string>
+    <string name="manage_request">Manage Requests</string>
+    <string name="manage_requests">Manage Requests</string>
+    <string name="make_request">Request Notice Board Permissions</string>
+    <string name="request_reason">Reason For Request</string>
+    <string name="submit_request">Submit Request</string>
+    <string name="accept">Accept</string>
+    <string name="decline">Decline</string>
 </resources>

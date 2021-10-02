@@ -1,4 +1,4 @@
 package com.inform.communitynoticeapp;
 
-public class requestAdapter {
+public interface userDetailsI {
 }

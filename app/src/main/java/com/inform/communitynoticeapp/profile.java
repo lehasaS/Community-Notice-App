@@ -48,10 +48,10 @@ public class profile extends AppCompatActivity implements View.OnClickListener {
         TextView welcomeMessageTV = findViewById(R.id.welcomeMessage_TV);
         TextView displayName = findViewById(R.id.usernameTV);
         Button logoutBtn = findViewById(R.id.logout_Btn);
-        Button mangeRequests = findViewById(R.id.manage_request_btn);
+        Button manageRequests = findViewById(R.id.manage_requests_btn);
         Button editProfile = findViewById(R.id.editProfile_Btn2);
         logoutBtn.setOnClickListener(this);
-        mangeRequests.setOnClickListener(this);
+        manageRequests.setOnClickListener(this);
         editProfile.setOnClickListener(this);
         displayName.setText(firebase.getUser().getDisplayName());
         welcomeMessageTV.setText(getString(R.string.Greeting)+ firebase.getUser().getDisplayName()+"!");
@@ -73,6 +73,10 @@ public class profile extends AppCompatActivity implements View.OnClickListener {
         });
 
         showProfilePic();
+
+        if (!roleTV.getText().equals("Moderator")) {
+            manageRequests.setVisibility(View.GONE);
+        }
 
         //initialize And Assign Variable
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -120,9 +124,9 @@ public class profile extends AppCompatActivity implements View.OnClickListener {
                 Intent editProfile = new Intent(profile.this, profileEditor.class);
                 startActivity(editProfile);
                 break;
-            case R.id.manage_request_btn:
-                Intent manage_Request = new Intent(profile.this, manageRequest.class);
-                startActivity(manage_Request);
+            case R.id.manage_requests_btn:
+                Intent manage_Requests = new Intent(profile.this, manageRequests.class);
+                startActivity(manage_Requests);
                 break;
 
         }

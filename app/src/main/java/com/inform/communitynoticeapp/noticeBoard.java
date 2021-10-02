@@ -13,8 +13,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.chip.Chip;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -29,6 +32,7 @@ public class noticeBoard extends AppCompatActivity implements View.OnClickListen
     private RecyclerView recyclerView;
     private Context context;
     private final dataBaseFirebase firebase = dataBaseFirebase.getInstance();
+    private ArrayList<String> selectedChips;
     private ArrayList<createPost> createPostArrayList;
 
     public noticeBoard(){
@@ -40,7 +44,28 @@ public class noticeBoard extends AppCompatActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notice_board);
+        Chip events = findViewById(R.id.Events_chip);
+        Chip recommendations = findViewById(R.id.Recommendations_chip);
+        Chip crimeInformation = findViewById(R.id.CrimeInfo_chip);
+        Chip lostPets = findViewById(R.id.lostPets_chip);
+        Chip localServices = findViewById(R.id.localServices_chip);
+        Chip generalNews = findViewById(R.id.GeneralPost_chip);
+        selectedChips = new ArrayList<>();
 
+        CompoundButton.OnCheckedChangeListener checkedChangeListener = (compoundButton, isChecked) -> {
+            if(isChecked){
+                selectedChips.add(compoundButton.getText().toString());
+            }else{
+                selectedChips.remove(compoundButton.getText().toString());
+            }
+        };
+
+        events.setOnCheckedChangeListener(checkedChangeListener);
+        recommendations.setOnCheckedChangeListener(checkedChangeListener);
+        crimeInformation.setOnCheckedChangeListener(checkedChangeListener);
+        lostPets.setOnCheckedChangeListener(checkedChangeListener);
+        localServices.setOnCheckedChangeListener(checkedChangeListener);
+        generalNews.setOnCheckedChangeListener(checkedChangeListener);
         //initialize And Assign Variable
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
@@ -74,33 +99,43 @@ public class noticeBoard extends AppCompatActivity implements View.OnClickListen
 
         context=this;
         FloatingActionButton addPost = findViewById(R.id.floating_action_button);
-
         addPost.setOnClickListener(this);
-
         recyclerView= findViewById(R.id.recyclerViewNotice);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
-
         createPostArrayList = new ArrayList<>();
-        readPost();
-
-
+        getUserObject(this::readPost);
     }
 
-    private void readPost(){
-        firebase.readPostForNoticeBoard().addValueEventListener(new ValueEventListener() {
+    private void readPost(userDetails user){
+        firebase.readPostForNoticeBoard(user.getCommunity()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 createPost post;
                 for(DataSnapshot content: snapshot.getChildren()){
                     post = content.getValue(createPost.class);
-                    Objects.requireNonNull(post).setPost(post.getPost());
                     createPostArrayList.add(0,post);
                 }
                 noticeBoardAdapter postAdapter = new noticeBoardAdapter(createPostArrayList, context);
                 recyclerView.setAdapter(postAdapter);
                 createPostArrayList=null;
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+
+    private void getUserObject(noticeBoard.userDetailsI userDetail){
+        firebase.getUserDetailsRef().addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                userDetails details = snapshot.getValue(userDetails.class);
+                assert details != null;
+                userDetail.onCallback(details);
             }
 
             @Override
@@ -108,20 +143,21 @@ public class noticeBoard extends AppCompatActivity implements View.OnClickListen
 
             }
         });
-
     }
-
-
 
 
     @Override
     public void onClick(View view) {
         int id = view.getId();
-
         if(id==R.id.floating_action_button){
             Intent addPost = new Intent(noticeBoard.this, posts.class);
             startActivity(addPost);
         }
+    }
+
+    private interface userDetailsI {
+
+        void onCallback(userDetails user);
     }
 
 }

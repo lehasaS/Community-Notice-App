@@ -5,10 +5,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -51,6 +53,7 @@ public class noticeBoardAdapter extends RecyclerView.Adapter<noticeBoardAdapter.
         ImageView postPicIV;
         MaterialCardView cardView;
         ToggleButton bookmark;
+        LinearLayout linearLayout;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             post=itemView.findViewById(R.id.post_contentTwo);
@@ -60,6 +63,7 @@ public class noticeBoardAdapter extends RecyclerView.Adapter<noticeBoardAdapter.
             cardView=itemView.findViewById(R.id.cardviewTwo);
             bookmark=itemView.findViewById(R.id.bookmark_BtnTwo);
             postID=itemView.findViewById(R.id.postIDTwo);
+            linearLayout=itemView.findViewById(R.id.linearLL);
         }
 
     }
@@ -72,11 +76,22 @@ public class noticeBoardAdapter extends RecyclerView.Adapter<noticeBoardAdapter.
 
     }
 
+    @SuppressLint({"SetTextI18n", "ResourceType"})
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.dispName.setText(postList.get(position).getUser());
         holder.dateTime.setText(postList.get(position).getDateTime());
         holder.postID.setText(postList.get(position).getPostID());
+        if(postList.get(position).getHashtags()!=null){
+            ArrayList<String> tags = postList.get(position).getHashtags();
+            for(String hashTags: tags){
+                TextView textView = new TextView(context);
+                textView.setTypeface(textView.getTypeface(), Typeface.BOLD_ITALIC);
+                textView.setText("#"+hashTags);
+                holder.linearLayout.addView(textView);
+            }
+        }
+
 
         SharedPreferences preferences = getSharedPreferences();
         String state = preferences.getString(position +"pressed", "no");

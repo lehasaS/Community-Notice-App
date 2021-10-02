@@ -21,6 +21,7 @@ import com.google.firebase.storage.StorageReference;
 import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -163,29 +164,29 @@ public class dataBaseFirebase implements Cloneable, Serializable {
         getRootRef().child("Users").child(getUser().getUid()).child("community").setValue(community);
     }
 
-    public DatabaseReference readPostForNoticeBoard(){
-        return this.getRootRef().child("Posts").child("NoticeBoard").getRef();
+    public Query readPostForNoticeBoard(String community){
+        return this.getRootRef().child("Posts").child("NoticeBoard").orderByChild("community").equalTo(community);
     }
 
-    public DatabaseReference readPostForMessageBoard(){
-        return this.getRootRef().child("Posts").child("MessageBoard").orderByKey().getRef();
+    public Query readPostForMessageBoard(String community){
+        return this.getRootRef().child("Posts").child("MessageBoard").orderByChild("community").equalTo(community);
     }
 
     public DatabaseReference readBookmarks(){
         return this.getRootRef().child("Users").child(this.getUser().getUid()).child("Bookmarks").getRef();
     }
 
-    public Task<Void> addPostToNoticeBoardNode(String text, String dateNow, String imageUri){
+    public Task<Void> addPostToNoticeBoardNode(String text, String dateNow, String imageUri, ArrayList<String> hashtags, String community){
         DatabaseReference postRef = this.getRootRef().child("Posts").child("NoticeBoard").getRef();
         DatabaseReference newRef = postRef.push();
-        createPost post = new createPost(this.getUser().getDisplayName(), text, dateNow, imageUri, newRef.getKey());
+        createPost post = new createPost(this.getUser().getDisplayName(), text, dateNow, imageUri, newRef.getKey(), hashtags, community);
         return newRef.setValue(post);
     }
 
-    public Task<Void> addPostToMessageBoardNode(String text, String dateNow, String imageUri){
+    public Task<Void> addPostToMessageBoardNode(String text, String dateNow, String imageUri, ArrayList<String> hashtags, String community){
         DatabaseReference postRef = this.getRootRef().child("Posts").child("MessageBoard").getRef();
         DatabaseReference newRef = postRef.push();
-        createPost post = new createPost(this.getUser().getDisplayName(), text, dateNow, imageUri, newRef.getKey());
+        createPost post = new createPost(this.getUser().getDisplayName(), text, dateNow, imageUri, newRef.getKey(), hashtags, community);
         return newRef.setValue(post);
     }
 
@@ -203,6 +204,29 @@ public class dataBaseFirebase implements Cloneable, Serializable {
         final String randomKey = UUID.randomUUID().toString();
         StorageReference pictureRef = storageRef.child("images/" + randomKey);
         pictureRef.putFile(imgUri);
+    }
+
+    public DatabaseReference readRequests(){
+        return this.getRootRef().child("Requests").getRef();
+    }
+
+    public Task<Void> addRequest(String reason, String dateNow){
+        getRootRef().child("Users").child(this.getUser().getUid()).child("requestStatus").setValue("Pending");
+        DatabaseReference requestRef = this.getRootRef().child("Requests").getRef();
+        DatabaseReference newRef = requestRef.push();
+        request newRequest = new request(this.getUser().getUid(), this.getUser().getDisplayName(), this.getUser().getEmail(), reason, dateNow, newRef.getKey());
+        return newRef.setValue(newRequest);
+    }
+
+    public void acceptRequest(String requestID, String userID) {
+        getRootRef().child("Users").child(userID).child("role").setValue("Service provider");
+        getRootRef().child("Requests").child(requestID).child("status").setValue("Accepted");
+        getRootRef().child("Users").child(userID).child("requestStatus").setValue("Accepted");
+    }
+
+    public void declineRequest(String requestID, String userID) {
+        getRootRef().child("Requests").child(requestID).child("status").setValue("Declined");
+        getRootRef().child("Users").child(userID).child("requestStatus").setValue("Declined");
     }
 
 }
