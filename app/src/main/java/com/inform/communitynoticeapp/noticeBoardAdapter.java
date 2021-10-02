@@ -18,8 +18,12 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -32,6 +36,7 @@ public class noticeBoardAdapter extends RecyclerView.Adapter<noticeBoardAdapter.
     private final Context context;
     private final dataBaseFirebase firebase=dataBaseFirebase.getInstance();
     private final FirebaseStorage storage = FirebaseStorage.getInstance();
+    FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
     //adapter takes an object of view holder class, we make our own view holder class
     //instead of using RecyclerView.ViewHolder
     //We want to define our own text view in the posts.
@@ -47,8 +52,8 @@ public class noticeBoardAdapter extends RecyclerView.Adapter<noticeBoardAdapter.
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
-        TextView dispName, post, dateTime, postID;
-        ImageView postPicIV;
+        TextView dispName, post, dateTime, postID,like_Textview;
+        ImageView postPicIV,like_button;
         MaterialCardView cardView;
         ToggleButton bookmark;
         public ViewHolder(@NonNull View itemView) {
@@ -60,8 +65,65 @@ public class noticeBoardAdapter extends RecyclerView.Adapter<noticeBoardAdapter.
             cardView=itemView.findViewById(R.id.cardviewTwo);
             bookmark=itemView.findViewById(R.id.bookmark_BtnTwo);
             postID=itemView.findViewById(R.id.postIDTwo);
+            like_button = itemView.findViewById(R.id.like_btn);
+            like_Textview = itemView.findViewById(R.id.likes_textview);
         }
 
+    }
+
+
+    //method for liking/disliking
+
+
+
+
+   private void isLikes(String postid , ImageView imageView)
+    {
+
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference()
+                .child("likes")
+                .child(postid);
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.child(firebaseUser.getUid()).exists())
+                {
+                    imageView.setImageResource(R.drawable.like);
+                    imageView.setTag("liked");
+
+                }
+                else
+                {
+                    imageView.setImageResource(R.drawable.dislike);
+                    imageView.setTag("like");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+    }
+    //method to increment likes
+    private void nrLikes(TextView likes , String postId)
+    {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("likes")
+                .child(postId);
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                likes.setText(snapshot.getChildrenCount()+"likes");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     @NonNull
@@ -137,6 +199,28 @@ public class noticeBoardAdapter extends RecyclerView.Adapter<noticeBoardAdapter.
             holder.postPicIV.getLayoutParams().height = 0;
             holder.postPicIV.requestLayout();
         }
+
+        //Uterlizing the methods
+        isLikes(postList.get(position).getPostID(),holder.like_button);
+        nrLikes(holder.like_Textview,postList.get(position).getPostID());
+
+        holder.like_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(holder.like_button.getTag().equals("like"))
+                {
+                    FirebaseDatabase.getInstance().getReference().child("likes").child(postList.get(position).getPostID())
+                            .child(firebaseUser.getUid()).setValue(true);
+
+                }
+                else{
+                    FirebaseDatabase.getInstance().getReference().child("likes").child(postList.get(position).getPostID())
+                            .child(firebaseUser.getUid()).removeValue();
+
+                }
+            }
+        });
+
 
 
     }
