@@ -11,10 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Zazi">
         <activity
-            android:name=".manageCommunities"
-            android:exported="true" />
-        <activity
-            android:name=".makeRequest"
+            android:name=".JoinCommunities"
             android:exported="true" />
         <activity
             android:name=".hashtag"
@@ -47,6 +44,10 @@
             android:name=".manageRequests"
             android:exported="true"
             android:label="@string/manage_request" />
+        <activity
+            android:name=".manageCommunities"
+            android:exported="true"
+            android:label="@string/manage_communities" />
         <activity
             android:name=".profile"
             android:exported="true"

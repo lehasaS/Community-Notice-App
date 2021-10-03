@@ -7,16 +7,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Collections;
 import java.util.Objects;
 
-public class manageRequests extends AppCompatActivity {
+public class JoinCommunities extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private Context context;
@@ -25,42 +27,40 @@ public class manageRequests extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_manage_requests);
+        setContentView(R.layout.activity_join_communities);
 
         context = this;
 
-        recyclerView= findViewById(R.id.recyclerViewRequests);
+        recyclerView = findViewById(R.id.recyclerViewJoinCommunities);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        displayPendingRequests();
+        displayCommunities();
     }
 
-    private void displayPendingRequests() {
-        firebase.readRequests().addValueEventListener(new ValueEventListener() {
+    private void displayCommunities() {
+        firebase.readCommunities().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                request aRequest;
-                ArrayList<request> requestsList = new ArrayList<>();
+                ArrayList<String> communitiesList = new ArrayList<>();
+                Community aCommunity;
                 for(DataSnapshot content: snapshot.getChildren()){
-                    aRequest = content.getValue(request.class);
-                    Objects.requireNonNull(aRequest).setReason(aRequest.getReason());
-                    if (aRequest.getStatus().equals("Pending")) {
-                        requestsList.add(0, aRequest);
-                    }
+                    aCommunity = content.getValue(Community.class);
+                    assert aCommunity != null;
+                    communitiesList.add(aCommunity.getName());
                 }
 
-                requestsAdapter reqAdapter = new requestsAdapter(requestsList, context);
-                recyclerView.setAdapter(reqAdapter);
-                requestsList=null;
+                Collections.sort(communitiesList);
+
+                JoinCommunitiesAdapter comAdapter = new JoinCommunitiesAdapter(communitiesList, context);
+                recyclerView.setAdapter(comAdapter);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Toast.makeText(JoinCommunities.this, "An error occurred: " + error.toString(), Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 }

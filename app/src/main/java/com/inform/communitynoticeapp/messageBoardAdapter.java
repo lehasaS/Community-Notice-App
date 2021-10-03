@@ -51,6 +51,7 @@ public class messageBoardAdapter extends RecyclerView.Adapter<messageBoardAdapte
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.dispName.setText(postList.get(position).getUser());
         holder.dateTime.setText(postList.get(position).getDateTime());
+        holder.community.setText(postList.get(position).getCommunity());
         holder.postID.setText(postList.get(position).getPostID());
         if(postList.get(position).getHashtags()!=null){
             ArrayList<String> tags = postList.get(position).getHashtags();
@@ -164,7 +165,7 @@ public class messageBoardAdapter extends RecyclerView.Adapter<messageBoardAdapte
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView dispName, post, dateTime, postID;
+        TextView dispName, post, dateTime, postID, community;
         ImageView postPicIV;
         MaterialCardView cardView;
         ToggleButton bookmark;
@@ -174,6 +175,7 @@ public class messageBoardAdapter extends RecyclerView.Adapter<messageBoardAdapte
             post=itemView.findViewById(R.id.post_content);
             dispName =itemView.findViewById(R.id.display_name);
             dateTime=itemView.findViewById(R.id.dateTime_TV);
+            community=itemView.findViewById(R.id.community_TV);
             postPicIV=itemView.findViewById(R.id.postPic_IV);
             cardView=itemView.findViewById(R.id.cardview);
             bookmark=itemView.findViewById(R.id.bookmark_Btn);

@@ -49,7 +49,7 @@ public class noticeBoardAdapter extends RecyclerView.Adapter<noticeBoardAdapter.
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
-        TextView dispName, post, dateTime, postID;
+        TextView dispName, post, dateTime, postID, community;
         ImageView postPicIV;
         MaterialCardView cardView;
         ToggleButton bookmark;
@@ -59,6 +59,7 @@ public class noticeBoardAdapter extends RecyclerView.Adapter<noticeBoardAdapter.
             post=itemView.findViewById(R.id.post_contentTwo);
             dispName =itemView.findViewById(R.id.display_nameTwo);
             dateTime=itemView.findViewById(R.id.dateTime_TVTwo);
+            community=itemView.findViewById(R.id.community_TVTwo);
             postPicIV=itemView.findViewById(R.id.postPic_IVTwo);
             cardView=itemView.findViewById(R.id.cardviewTwo);
             bookmark=itemView.findViewById(R.id.bookmark_BtnTwo);
@@ -81,6 +82,7 @@ public class noticeBoardAdapter extends RecyclerView.Adapter<noticeBoardAdapter.
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.dispName.setText(postList.get(position).getUser());
         holder.dateTime.setText(postList.get(position).getDateTime());
+        holder.community.setText(postList.get(position).getCommunity());
         holder.postID.setText(postList.get(position).getPostID());
         if(postList.get(position).getHashtags()!=null){
             ArrayList<String> tags = postList.get(position).getHashtags();

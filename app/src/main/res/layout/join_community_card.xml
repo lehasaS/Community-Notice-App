@@ -2,7 +2,7 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/request_cardView"
+    android:id="@+id/join_community_cardView"
     android:clickable="true"
     android:focusable="true"
     android:checkable="true"
@@ -32,65 +32,39 @@
 
 
             <TextView
-                android:id="@+id/displayName_TV"
+                android:id="@+id/communityName_TV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="name"
+                android:text="@string/community_name"
                 android:textAppearance="?attr/textAppearanceHeadline6" />
-
-            <TextView
-                android:id="@+id/email_TV"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="email"
-                android:textAppearance="?attr/textAppearanceHeadline6" />
-
-
-            <TextView
-                android:id="@+id/dateTime_TV"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="date / time"
-                android:textAppearance="?attr/textAppearanceBody2"
-                android:textColor="?android:attr/textColorSecondary" />
-
-            <TextView
-                android:id="@+id/reason_TV"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="reason for request"
-                android:textAppearance="?attr/textAppearanceBody2"
-                android:textColor="?android:attr/textColorSecondary" />
 
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="300dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:orientation="horizontal">
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/accept_Btn"
+                android:id="@+id/join_Btn"
                 style="?attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="8dp"
-                android:text="@string/accept" />
+                android:text="@string/join" />
 
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/decline_Btn"
+                android:id="@+id/leave_Btn"
                 style="?attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="90dp"
-                android:text="@string/decline" />
+                android:layout_marginLeft="90dp"
+                android:text="@string/leave" />
         </LinearLayout>
 
 

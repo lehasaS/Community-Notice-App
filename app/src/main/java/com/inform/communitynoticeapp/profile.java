@@ -16,6 +16,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,6 +29,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 
 public class profile extends AppCompatActivity implements View.OnClickListener {
 
@@ -35,6 +39,7 @@ public class profile extends AppCompatActivity implements View.OnClickListener {
     private final FirebaseStorage storage = FirebaseStorage.getInstance();
     private Context context;
     ImageView profilePicture;
+    private TextView communityTV;
 
 
     @SuppressLint({"SetTextI18n", "NonConstantResourceId"})
@@ -44,15 +49,17 @@ public class profile extends AppCompatActivity implements View.OnClickListener {
         setContentView(R.layout.activity_profile);
         TextView roleTV = findViewById(R.id.roleTV);
         profilePicture = findViewById(R.id.displayPicture_IV);
-        TextView community = findViewById(R.id.communityTV);
+        communityTV = findViewById(R.id.communityTV);
         TextView welcomeMessageTV = findViewById(R.id.welcomeMessage_TV);
         TextView displayName = findViewById(R.id.usernameTV);
         Button logoutBtn = findViewById(R.id.logout_Btn);
         Button manageRequests = findViewById(R.id.manage_requests_btn);
+        Button manageCommunities = findViewById(R.id.manage_communities_btn);
         Button editProfile = findViewById(R.id.editProfile_Btn2);
         logoutBtn.setOnClickListener(this);
         manageRequests.setOnClickListener(this);
         editProfile.setOnClickListener(this);
+        manageCommunities.setOnClickListener(this);
         displayName.setText(firebase.getUser().getDisplayName());
         welcomeMessageTV.setText(getString(R.string.Greeting)+ firebase.getUser().getDisplayName()+"!");
         context=this;
@@ -63,20 +70,21 @@ public class profile extends AppCompatActivity implements View.OnClickListener {
                 userDetails details = snapshot.getValue(userDetails.class);
                 assert details != null;
                 roleTV.setText(details.getRole());
-                community.setText(details.getCommunity());
+
+                if (!details.getRole().equals("Moderator")) {
+                    manageRequests.setVisibility(View.GONE);
+                    manageCommunities.setVisibility(View.GONE);
+                }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Toast.makeText(profile.this, "Error has occurred" + error.toString(), Toast.LENGTH_SHORT).show();
             }
         });
 
+        readCommunities();
         showProfilePic();
-
-        if (!roleTV.getText().equals("Moderator")) {
-            manageRequests.setVisibility(View.GONE);
-        }
 
         //initialize And Assign Variable
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -128,6 +136,10 @@ public class profile extends AppCompatActivity implements View.OnClickListener {
                 Intent manage_Requests = new Intent(profile.this, manageRequests.class);
                 startActivity(manage_Requests);
                 break;
+            case R.id.manage_communities_btn:
+                Intent manageCommunities = new Intent(profile.this, manageCommunities.class);
+                startActivity(manageCommunities);
+                break;
 
         }
     }
@@ -158,5 +170,28 @@ public class profile extends AppCompatActivity implements View.OnClickListener {
             profilePicture.setImageBitmap(bmp);
         }).addOnFailureListener(exception ->
                 Toast.makeText(getApplicationContext(), "No Such file or Path found!!", Toast.LENGTH_LONG).show());
+    }
+
+    private void readCommunities() {
+        firebase.getUserCommunities().addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ArrayList<String> communitiesList = new ArrayList<String>();
+                Community aCommunity;
+                for(DataSnapshot content: snapshot.getChildren()){
+                    aCommunity = content.getValue(Community.class);
+                    assert aCommunity != null;
+                    communitiesList.add(aCommunity.getName());
+                }
+                Collections.sort(communitiesList);
+                communityTV.setText(communitiesList.toString());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(profile.this, "Error occurred: " + error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 }

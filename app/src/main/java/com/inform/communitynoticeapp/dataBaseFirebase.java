@@ -21,7 +21,6 @@ import com.google.firebase.storage.StorageReference;
 import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -106,9 +105,26 @@ public class dataBaseFirebase implements Cloneable, Serializable {
         }
     }
 
+    public Task<Void> addCommunityToFirebase(String community){
+        DatabaseReference communityRef = this.getRootRef().child("Communities").getRef();
+        DatabaseReference newRef = communityRef.push();
+        Community com = new Community(community);
+        return newRef.setValue(com);
+    }
+
+    public DatabaseReference readCommunities(){
+        return this.getRootRef().child("Communities").getRef();
+    }
+
     public void saveNameInFirebase(userDetails userCurrent){
         DatabaseReference nameRef = this.getRootRef().child("Users").child(Objects.requireNonNull(userAuth.getUid()));
         nameRef.setValue(userCurrent);
+    }
+
+    public void saveNameInFirebase(userDetails userCurrent, String community){
+        DatabaseReference nameRef = this.getRootRef().child("Users").child(Objects.requireNonNull(userAuth.getUid()));
+        nameRef.setValue(userCurrent);
+        this.joinCommunity(community);
     }
 
     public Task<AuthResult> signInUser(String email, String password){
@@ -227,6 +243,21 @@ public class dataBaseFirebase implements Cloneable, Serializable {
     public void declineRequest(String requestID, String userID) {
         getRootRef().child("Requests").child(requestID).child("status").setValue("Declined");
         getRootRef().child("Users").child(userID).child("requestStatus").setValue("Declined");
+    }
+
+    public void joinCommunity(String community) {
+        DatabaseReference communityRef = this.getRootRef().child("Users").child(Objects.requireNonNull(userAuth.getUid())).child("Communities").getRef();
+        DatabaseReference newRef = communityRef.push();
+        Community com = new Community(community);
+        newRef.setValue(com);
+    }
+
+    public void leaveCommunity(String communityID) {
+        this.getRootRef().child("Users").child(Objects.requireNonNull(userAuth.getUid())).child("Communities").child(communityID).removeValue();
+    }
+
+    public DatabaseReference getUserCommunities(){
+        return this.getRootRef().child("Users").child(Objects.requireNonNull(userAuth.getUid())).child("Communities").getRef();
     }
 
 }

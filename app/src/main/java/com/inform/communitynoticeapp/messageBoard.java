@@ -23,6 +23,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Objects;
 
 public class messageBoard extends AppCompatActivity implements View.OnClickListener{
@@ -30,7 +31,6 @@ public class messageBoard extends AppCompatActivity implements View.OnClickListe
     private RecyclerView recyclerView;
     private Context context;
     private final dataBaseFirebase firebase = dataBaseFirebase.getInstance();
-    private ArrayList<createPost> createPostArrayList;
 
     @SuppressLint("NonConstantResourceId")
     @Override
@@ -75,29 +75,34 @@ public class messageBoard extends AppCompatActivity implements View.OnClickListe
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
-        createPostArrayList = new ArrayList<>();
-        getUserObject(this::readPost);
+        getCommunities(this::readPost);
     }
 
-    private void readPost(userDetails user){
-        firebase.readPostForMessageBoard(user.getCommunity()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                createPost post;
-                for(DataSnapshot content: snapshot.getChildren()){
-                    post = content.getValue(createPost.class);
-                    Objects.requireNonNull(post).setPost(post.getPost());
-                    createPostArrayList.add(0,post);
-                }
-                messageBoardAdapter postAdapter = new messageBoardAdapter(createPostArrayList, context);
-                recyclerView.setAdapter(postAdapter);
-                createPostArrayList=null;
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+    private void readPost(ArrayList<String> communities){
+        final ArrayList<createPost> createPostArrayList = new ArrayList<>();
+        for (String community: communities) {
+            firebase.readPostForMessageBoard(community).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    createPost post;
+                    for (DataSnapshot content : snapshot.getChildren()) {
+                        post = content.getValue(createPost.class);
+                        Objects.requireNonNull(post).setPost(post.getPost());
+                        createPostArrayList.add(post);
+                    }
 
-            }
-        });
+                    Collections.sort(createPostArrayList);
+
+                    messageBoardAdapter postAdapter = new messageBoardAdapter(createPostArrayList, context);
+                    recyclerView.setAdapter(postAdapter);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(messageBoard.this, "An error occurred: " + error.toString(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
 
     }
 
@@ -110,23 +115,29 @@ public class messageBoard extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void getUserObject(userDetailsI userDetail){
-        firebase.getUserDetailsRef().addValueEventListener(new ValueEventListener() {
+    private void getCommunities(messageBoard.userCommunitiesI userCommunities){
+        firebase.getUserCommunities().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                userDetails details = snapshot.getValue(userDetails.class);
-                assert details != null;
-                userDetail.onCallback(details);
+                ArrayList<String> communitiesList = new ArrayList<>();
+                Community aCommunity;
+                for(DataSnapshot content: snapshot.getChildren()){
+                    aCommunity = content.getValue(Community.class);
+                    assert aCommunity != null;
+                    communitiesList.add(aCommunity.getName());
+                }
+
+                userCommunities.onCallback(communitiesList);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Toast.makeText(messageBoard.this, "An error occurred: " + error.toString(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private interface userDetailsI {
-        void onCallback(userDetails user);
+    private interface userCommunitiesI {
+        void onCallback(ArrayList<String> communities);
     }
 
 }

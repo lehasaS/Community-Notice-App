@@ -2,10 +2,15 @@ package com.inform.communitynoticeapp;
 
 import android.content.Context;
 import android.util.Patterns;
+import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,7 +24,8 @@ public class validateInput {
     private final TextInputLayout emailTI;
     private TextInputLayout passwordTI;
     private TextInputLayout emailAgainTI;
-    private final ArrayList<String> communities=new ArrayList<>(Arrays.asList("Mowbray", "Cape Town", "Rondebosch", "Claremont"));
+    private final ArrayList<String> communities = new ArrayList<String>();
+    private final dataBaseFirebase firebase = dataBaseFirebase.getInstance();
 
     public validateInput(Context context, TextInputLayout emailTI, TextInputLayout emailAgainTI){
         this.context = context;
@@ -117,6 +123,7 @@ public class validateInput {
     }
 
     public CharSequence checkCommunity(@NonNull String community){
+        readCommunities();
         if(community.equals("")){
             communityTI.setEndIconActivated(true);
             communityTI.setError("Enter your community name");
@@ -131,6 +138,26 @@ public class validateInput {
 
     public Context getContext() {
         return context;
+    }
+
+    private void readCommunities() {
+        firebase.readCommunities().addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Community aCommunity;
+                for(DataSnapshot content: snapshot.getChildren()){
+                    aCommunity = content.getValue(Community.class);
+                    assert aCommunity != null;
+                    communities.add(aCommunity.getName());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(context, "Error occurred: " + error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 }
 

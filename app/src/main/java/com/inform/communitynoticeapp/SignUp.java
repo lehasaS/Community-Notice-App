@@ -1,5 +1,6 @@
 package com.inform.communitynoticeapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -11,12 +12,17 @@ import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class SignUp extends AppCompatActivity {
 
     private TextInputLayout emailTI, passwordTI, passwordAgainTI, displayNameTI, communityTI;
+    private AutoCompleteTextView textView;
     private validateInput validate;
     private String dispName;
     private userDetails userCurrent;
@@ -28,7 +34,6 @@ public class SignUp extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
         Objects.requireNonNull(getSupportActionBar()).hide();
-        String[] communityArray = new String[]{"Mowbray", "Cape Town", "Rondebosch", "Claremont"};
 
         //[START] Signup Part
         emailTI = findViewById(R.id.emailTI);
@@ -37,12 +42,12 @@ public class SignUp extends AppCompatActivity {
         passwordAgainTI = findViewById(R.id.passwordAgainTI);
         communityTI = findViewById(R.id.communityTI);
         Button signUpBtn = findViewById(R.id.signUp_btn2);
+        textView = (AutoCompleteTextView) findViewById(R.id.autoCompleteCommunity);
         validate=new validateInput(this, emailTI, passwordTI, passwordAgainTI, displayNameTI, communityTI);
-        ArrayAdapter<String> communities = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, communityArray);
-        AutoCompleteTextView textView = (AutoCompleteTextView) findViewById(R.id.autoCompleteCommunity);
-        textView.setAdapter(communities);
         signUpBtn.setOnClickListener(view -> handleSignUpBtnClick());
         //[END] Signup Part
+
+        readCommunities();
 
     }
 
@@ -54,7 +59,7 @@ public class SignUp extends AppCompatActivity {
         String passwordAgain = Objects.requireNonNull(passwordAgainTI.getEditText()).getText().toString();
         String community = Objects.requireNonNull(communityTI.getEditText()).getText().toString();
         String role = "Community Member";//default role
-        userCurrent = new userDetails(dispName, email, community, role);
+        userCurrent = new userDetails(dispName, email, role);
 
         if(validate.checkEmailValid(email).equals("valid") && validate.checkPasswordValid(password, passwordAgain).equals("valid") ){
             if(validate.checkDisplayName(dispName).equals("valid") && validate.checkCommunity(community).equals("valid")) {
@@ -65,9 +70,9 @@ public class SignUp extends AppCompatActivity {
                        firebase.sendVerificationEmail().addOnCompleteListener(task1 -> {
                            if(task1.isSuccessful()){
                                firebase.updateDispName(dispName);
-                               firebase.saveNameInFirebase(userCurrent);
+                               firebase.saveNameInFirebase(userCurrent, community);
                                setDefaultPic();
-                               Toast.makeText(SignUp.this, "You have signed up successfully!", Toast.LENGTH_SHORT).show();
+                               Toast.makeText(SignUp.this, "You have signed up successfully! Don't forget to verify your email.", Toast.LENGTH_SHORT).show();
                                Intent login = new Intent(SignUp.this, LogIn.class);
                                startActivity(login);
                            }else {
@@ -92,5 +97,32 @@ public class SignUp extends AppCompatActivity {
                     .build();
             firebase.getUser().updateProfile(profileChangeRequest);
         });
+    }
+
+    private void readCommunities() {
+        firebase.readCommunities().addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ArrayList<String> communitiesList = new ArrayList<String>();
+                String[] communitiesArray;
+                Community aCommunity;
+                for(DataSnapshot content: snapshot.getChildren()){
+                    aCommunity = content.getValue(Community.class);
+                    assert aCommunity != null;
+                    communitiesList.add(aCommunity.getName());
+                }
+
+                communitiesArray = new String[communitiesList.size()];
+                communitiesArray = communitiesList.toArray(communitiesArray);
+                ArrayAdapter<String> communities = new ArrayAdapter<>(SignUp.this, android.R.layout.simple_dropdown_item_1line, communitiesArray);
+                textView.setAdapter(communities);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(SignUp.this, "Error occurred: " + error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 }

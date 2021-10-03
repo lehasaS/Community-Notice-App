@@ -23,6 +23,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -30,6 +32,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -55,7 +58,8 @@ public class posts extends AppCompatActivity implements View.OnClickListener {
     private ImageView profilePicIV, postPicIV;
     private Uri postPicUri = null;
     private LinearLayout linearLayout;
-    private TextView communityTV;
+    private TextInputLayout communityTI;
+    private AutoCompleteTextView textView;
 
 
     @SuppressLint("NonConstantResourceId")
@@ -65,7 +69,7 @@ public class posts extends AppCompatActivity implements View.OnClickListener {
         setContentView(R.layout.activity_posts);
         TextView displayNameTV = findViewById(R.id.displayName_TV);
         displayNameTV.setText(firebase.getUser().getDisplayName());
-        communityTV = findViewById(R.id.commGroup_TV);
+        communityTI = findViewById(R.id.commGroup_TI);
         typeET=findViewById(R.id.type_ET);
         Button postBtn = findViewById(R.id.post_Btn);
         ImageView takePhoto = findViewById(R.id.takePhoto_IV);
@@ -75,20 +79,7 @@ public class posts extends AppCompatActivity implements View.OnClickListener {
         profilePicIV = findViewById(R.id.displayPicture_IV);
         postPicIV = findViewById(R.id.picPreview_IV);
         linearLayout= findViewById(R.id.tagsLL);
-
-        firebase.getUserDetailsRef().addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                userDetails details = snapshot.getValue(userDetails.class);
-                assert details != null;
-                communityTV.setText(details.getCommunity());
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+        textView = (AutoCompleteTextView) findViewById(R.id.autoCompleteCommunity);
 
         showProfilePic();
         takePhoto.setOnClickListener(this);
@@ -97,6 +88,8 @@ public class posts extends AppCompatActivity implements View.OnClickListener {
         category.setOnClickListener(this);
 
         postBtn.setOnClickListener(view -> checkRole());
+
+        readCommunities();
 
     }
 
@@ -194,7 +187,7 @@ public class posts extends AppCompatActivity implements View.OnClickListener {
         String text = typeET.getText().toString();
         ArrayList<String> tags = getHashtags();
 
-        firebase.addPostToMessageBoardNode(text, dateNow, pictureURI, tags, communityTV.getText().toString()).addOnCompleteListener(task -> {
+        firebase.addPostToMessageBoardNode(text, dateNow, pictureURI, tags, Objects.requireNonNull(communityTI.getEditText()).getText().toString()).addOnCompleteListener(task -> {
             if(task.isSuccessful()){
                 Toast.makeText(posts.this, "Post Submitted", Toast.LENGTH_SHORT).show();
             }else{
@@ -258,7 +251,7 @@ public class posts extends AppCompatActivity implements View.OnClickListener {
         String text = typeET.getText().toString();
         ArrayList<String> tags = getHashtags();
 
-        firebase.addPostToNoticeBoardNode(text, dateNow, pictureURI, tags, communityTV.getText().toString()).addOnCompleteListener(task -> {
+        firebase.addPostToNoticeBoardNode(text, dateNow, pictureURI, tags, Objects.requireNonNull(communityTI.getEditText()).getText().toString()).addOnCompleteListener(task -> {
             if(task.isSuccessful()){
                 Toast.makeText(posts.this, "Post Submitted", Toast.LENGTH_SHORT).show();
             }else{
@@ -353,13 +346,38 @@ public class posts extends AppCompatActivity implements View.OnClickListener {
                     Uri imageUri = data.getData();
                     postPicIV.setImageURI(imageUri);
                     postPicUri = imageUri;
-                    //postPicIV.getLayoutParams().height = 30;
                 }
             });
 
     private void handleRemovingPhoto() {
-        //postPicIV.getLayoutParams().height = 0;
         postPicIV.setImageResource(R.drawable.ic_baseline_image_24);
         postPicUri = null;
+    }
+
+    private void readCommunities() {
+        firebase.getUserCommunities().addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ArrayList<String> communitiesList = new ArrayList<String>();
+                String[] communitiesArray;
+                Community aCommunity;
+                for (DataSnapshot content : snapshot.getChildren()) {
+                    aCommunity = content.getValue(Community.class);
+                    assert aCommunity != null;
+                    communitiesList.add(aCommunity.getName());
+                }
+
+                communitiesArray = new String[communitiesList.size()];
+                communitiesArray = communitiesList.toArray(communitiesArray);
+                ArrayAdapter<String> communities = new ArrayAdapter<>(posts.this, android.R.layout.simple_dropdown_item_1line, communitiesArray);
+                textView.setAdapter(communities);
+                Objects.requireNonNull(communityTI.getEditText()).setText(communitiesArray[0]);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(posts.this, "Error occurred: " + error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

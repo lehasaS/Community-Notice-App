@@ -6,7 +6,7 @@ import com.google.firebase.database.Exclude;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class createPost {
+public class createPost implements Comparable<createPost> {
 
     private String post;
     private String user;
@@ -82,5 +82,16 @@ public class createPost {
 
     public void setPostID(String postID) {
         this.postID = postID;
+    }
+
+    @Override
+    public int compareTo(createPost post) {
+        if (this.postID.equals(post.getPostID())) {
+            return 0;
+        } else if (this.postID.compareTo(post.getPostID())>0) {
+            return -1;
+        } else {
+            return 1;
+        }
     }
 }

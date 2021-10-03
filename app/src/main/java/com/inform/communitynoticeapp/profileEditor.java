@@ -32,7 +32,7 @@ import java.util.UUID;
 
 public class profileEditor extends AppCompatActivity implements View.OnClickListener {
 
-    private TextInputLayout dispNameTI, communityTI;
+    private TextInputLayout dispNameTI;
     private ImageView profilePicIV;
     private final dataBaseFirebase firebase = dataBaseFirebase.getInstance();
     private validateInput validate;
@@ -42,38 +42,25 @@ public class profileEditor extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_editor);
-        validate = new validateInput(this,null, null, null, dispNameTI, communityTI);
+        validate = new validateInput(this,null, null, null, dispNameTI, null);
 
         profilePicIV = findViewById(R.id.profile_pic_IV);
         dispNameTI = findViewById(R.id.display_Name_TI);
-        communityTI = findViewById(R.id.newCommunityTI);
         Button uploadPicBtn = findViewById(R.id.upload_pic_Btn);
         TextView updateEmail = findViewById(R.id.updateEmail_TV);
         TextView updatePassword = findViewById(R.id.updatePassword_TV);
         TextView makeRequest = findViewById(R.id.makeRequest_TV);
+        TextView joinCommunity = findViewById(R.id.joinCommunity_TV);
         Button saveBtn = findViewById(R.id.save_btn);
 
         showProfilePic();
 
         Objects.requireNonNull(dispNameTI.getEditText()).setText(firebase.getDisplayName());
 
-        firebase.getUserDetailsRef().addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                userDetails details = snapshot.getValue(userDetails.class);
-                assert details != null;
-                Objects.requireNonNull(communityTI.getEditText()).setText(details.getCommunity());
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
         updateEmail.setOnClickListener(this);
         updatePassword.setOnClickListener(this);
         makeRequest.setOnClickListener(this);
+        joinCommunity.setOnClickListener(this);
         saveBtn.setOnClickListener(view -> handleSaveBtnClick());
         uploadPicBtn.setOnClickListener(view -> handlePicBtnClick());
 
@@ -99,16 +86,19 @@ public class profileEditor extends AppCompatActivity implements View.OnClickList
                 Intent makeRequest = new Intent(profileEditor.this, makeRequest.class);
                 startActivity(makeRequest);
                 break;
+
+            case R.id.joinCommunity_TV:
+                Intent joinCommunity = new Intent(profileEditor.this, JoinCommunities.class);
+                startActivity(joinCommunity);
+                break;
         }
 
     }
 
     private void handleSaveBtnClick() {
         String dispName = Objects.requireNonNull(dispNameTI.getEditText()).getText().toString();
-        String community = Objects.requireNonNull(communityTI.getEditText()).getText().toString();
-        if (validate.checkDisplayName(dispName).equals("valid") && validate.checkCommunity(community).equals("valid")) {
+        if (validate.checkDisplayName(dispName).equals("valid")) {
             firebase.updateDispName(dispName);
-            firebase.updateCommunity(community);
             Toast.makeText(this, "Profile updated successfully!", Toast.LENGTH_SHORT).show();
         }
         Intent profile = new Intent(profileEditor.this, profile.class);

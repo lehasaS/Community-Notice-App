@@ -34,20 +34,31 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.89" />
+            app:layout_constraintVertical_bias="0.905" />
 
-        <TextView
-            android:id="@+id/communityTV"
-            android:layout_width="wrap_content"
+        <HorizontalScrollView
+            android:id="@+id/communitySV"
+            android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:text="@string/community_name"
-            android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/usernameTV"
             app:layout_constraintTop_toBottomOf="@+id/usernameTV"
-            app:layout_constraintVertical_bias="0.082" />
+            app:layout_constraintVertical_bias="0.082">
+
+            <TextView
+                android:id="@+id/communityTV"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="@string/community_name"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </HorizontalScrollView>
 
         <Button
             android:id="@+id/logout_Btn"
@@ -73,10 +84,24 @@
             android:textColor="#212121"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.81" />
+
+        <Button
+            android:id="@+id/manage_communities_btn"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@color/blue_200"
+            android:text="@string/manage_communities"
+            android:textColor="#212121"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.781" />
+            app:layout_constraintVertical_bias="0.714" />
 
         <TextView
             android:id="@+id/roleTV"
@@ -87,8 +112,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/communityTV"
-            app:layout_constraintTop_toBottomOf="@+id/communityTV"
+            app:layout_constraintStart_toStartOf="@+id/communitySV"
+            app:layout_constraintTop_toBottomOf="@+id/communitySV"
             app:layout_constraintVertical_bias="0.084" />
 
         <TextView

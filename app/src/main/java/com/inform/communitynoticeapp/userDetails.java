@@ -1,7 +1,10 @@
 package com.inform.communitynoticeapp;
 
+import java.util.ArrayList;
+
 public class userDetails {
     private String email, dispName, community, role, requestStatus;
+    private ArrayList<String> communities;
 
     public userDetails(){
 
@@ -10,6 +13,13 @@ public class userDetails {
         this.dispName=dispName;
         this.email=email;
         this.community=community;
+        this.role=role;
+        this.requestStatus="None";
+    }
+
+    public  userDetails(String dispName, String email, String role){
+        this.dispName=dispName;
+        this.email=email;
         this.role=role;
         this.requestStatus="None";
     }
