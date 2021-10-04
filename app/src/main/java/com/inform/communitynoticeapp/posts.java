@@ -209,6 +209,7 @@ public class posts extends AppCompatActivity implements View.OnClickListener {
     private void goToMessageBoard() {
         Intent goToMessageBoard = new Intent(posts.this, messageBoard.class);
         startActivity(goToMessageBoard);
+        overridePendingTransition(0,0);
     }
 
     private void postToMessageBoard() {
@@ -273,6 +274,7 @@ public class posts extends AppCompatActivity implements View.OnClickListener {
     private void goToNoticeBoard() {
         Intent goToNoticeBoard = new Intent(posts.this, noticeBoard.class);
         startActivity(goToNoticeBoard);
+        overridePendingTransition(0,0);
     }
 
     private void postToNoticeBoard() {

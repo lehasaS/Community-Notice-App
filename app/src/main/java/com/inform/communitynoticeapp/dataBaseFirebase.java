@@ -172,8 +172,8 @@ public class dataBaseFirebase implements Cloneable, Serializable {
         return this.getRootRef().child("Posts").child("MessageBoard").orderByChild("community").equalTo(community);
     }
 
-    public DatabaseReference readBookmarks(){
-        return this.getRootRef().child("Users").child(this.getUser().getUid()).child("Bookmarks").getRef();
+    public Query readBookmarks(){
+        return this.getRootRef().child("Bookmarks").child(this.getUser().getUid()).orderByChild("dateTime").getRef();
     }
 
     public Task<Void> addPostToNoticeBoardNode(String text, String dateNow, String imageUri, ArrayList<String> hashtags, String community){
@@ -191,19 +191,42 @@ public class dataBaseFirebase implements Cloneable, Serializable {
     }
 
     public Task<Void> addPostToBookmarks(@NonNull createPost post){
-        DatabaseReference bookmarkRef = this.getRootRef().child("Users").child(this.getUser().getUid()).child("Bookmarks").getRef();
+        DatabaseReference bookmarkRef = this.getRootRef().child("Bookmarks").child(this.getUser().getUid()).getRef();
         DatabaseReference newRef = bookmarkRef.push();
         return newRef.setValue(post);
     }
 
     public Query removeBookmark(String postID){
-        return this.getRootRef().child("Users").child(this.getUser().getUid()).child("Bookmarks").orderByChild("postID").equalTo(postID);
+        return this.getRootRef().child("Bookmarks").child(this.getUser().getUid()).orderByChild("postID").equalTo(postID);
     }
 
     public void uploadPicture(Uri imgUri) {
         final String randomKey = UUID.randomUUID().toString();
         StorageReference pictureRef = storageRef.child("images/" + randomKey);
         pictureRef.putFile(imgUri);
+    }
+
+    public DatabaseReference readRequests(){
+        return this.getRootRef().child("Requests").getRef();
+    }
+
+    public Task<Void> addRequest(String reason, String dateNow){
+        getRootRef().child("Users").child(this.getUser().getUid()).child("requestStatus").setValue("Pending");
+        DatabaseReference requestRef = this.getRootRef().child("Requests").getRef();
+        DatabaseReference newRef = requestRef.push();
+        request newRequest = new request(this.getUser().getUid(), this.getUser().getDisplayName(), this.getUser().getEmail(), reason, dateNow, newRef.getKey());
+        return newRef.setValue(newRequest);
+    }
+
+    public void acceptRequest(String requestID, String userID) {
+        getRootRef().child("Users").child(userID).child("role").setValue("Service provider");
+        getRootRef().child("Requests").child(requestID).child("status").setValue("Accepted");
+        getRootRef().child("Users").child(userID).child("requestStatus").setValue("Accepted");
+    }
+
+    public void declineRequest(String requestID, String userID) {
+        getRootRef().child("Requests").child(requestID).child("status").setValue("Declined");
+        getRootRef().child("Users").child(userID).child("requestStatus").setValue("Declined");
     }
 
 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cardview"
     app:cardElevation="4dp"
     android:clipChildren="true"
@@ -84,6 +85,37 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 app:srcCompat="@android:drawable/ic_menu_gallery" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.23"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.483">
+
+            <ImageButton
+                android:id="@+id/like_btn2"
+                android:layout_width="47dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="20dp"
+                android:src="@drawable/dislike"
+                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+            <TextView
+                android:id="@+id/likes_textview2"
+                android:layout_width="83dp"
+                android:layout_height="37dp"
+                android:hint="@string/likes"
+                android:textColor="@android:color/black"
+                android:textSize="24sp" />
+
+
         </LinearLayout>
 
         <LinearLayout

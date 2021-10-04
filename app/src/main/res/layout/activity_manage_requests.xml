@@ -10,15 +10,14 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/post_ET"
+        android:id="@+id/postRequest"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/bottom_navigation"
         tools:context=".noticeBoard">
 
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+            android:id="@+id/recyclerViewRequests"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="30dp"
@@ -28,7 +27,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.15" />
+            app:layout_constraintVertical_bias="0.071" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

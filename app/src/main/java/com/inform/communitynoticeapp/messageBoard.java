@@ -14,9 +14,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.chip.Chip;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,15 +33,37 @@ public class messageBoard extends AppCompatActivity implements View.OnClickListe
     private Context context;
     private final dataBaseFirebase firebase = dataBaseFirebase.getInstance();
     private ArrayList<createPost> createPostArrayList;
+    private messageBoardAdapter postAdapter;
 
     @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_board);
+        Chip events = findViewById(R.id.EventsChip);
+        Chip recommendations = findViewById(R.id.RecommendationsChip);
+        Chip crimeInformation = findViewById(R.id.CrimeInfoChip);
+        Chip lostPets = findViewById(R.id.lostPetsChip);
+        Chip localServices = findViewById(R.id.localServicesChip);
+        Chip generalNews = findViewById(R.id.GeneralPostChip);
+
+        CompoundButton.OnCheckedChangeListener checkedChangeListener = (compoundButton, isChecked) -> {
+            if(isChecked){
+                postAdapter.getFilter().filter(compoundButton.getText().toString().toLowerCase());
+            }else{
+                postAdapter.getFilter().filter(null);
+            }
+        };
+
+        events.setOnCheckedChangeListener(checkedChangeListener);
+        recommendations.setOnCheckedChangeListener(checkedChangeListener);
+        crimeInformation.setOnCheckedChangeListener(checkedChangeListener);
+        lostPets.setOnCheckedChangeListener(checkedChangeListener);
+        localServices.setOnCheckedChangeListener(checkedChangeListener);
+        generalNews.setOnCheckedChangeListener(checkedChangeListener);
 
         //initialize And Assign Variable
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigationMessage);
 
         //set posts selected
         bottomNavigationView.setSelectedItemId(nav_messageBoard);
@@ -86,10 +110,9 @@ public class messageBoard extends AppCompatActivity implements View.OnClickListe
                 createPost post;
                 for(DataSnapshot content: snapshot.getChildren()){
                     post = content.getValue(createPost.class);
-                    Objects.requireNonNull(post).setPost(post.getPost());
                     createPostArrayList.add(0,post);
                 }
-                messageBoardAdapter postAdapter = new messageBoardAdapter(createPostArrayList, context);
+                postAdapter = new messageBoardAdapter(createPostArrayList, context);
                 recyclerView.setAdapter(postAdapter);
                 createPostArrayList=null;
             }

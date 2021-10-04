@@ -32,8 +32,8 @@ public class noticeBoard extends AppCompatActivity implements View.OnClickListen
     private RecyclerView recyclerView;
     private Context context;
     private final dataBaseFirebase firebase = dataBaseFirebase.getInstance();
-    private ArrayList<String> selectedChips;
     private ArrayList<createPost> createPostArrayList;
+    private noticeBoardAdapter postAdapter;
 
     public noticeBoard(){
         super(R.layout.activity_notice_board);
@@ -50,13 +50,12 @@ public class noticeBoard extends AppCompatActivity implements View.OnClickListen
         Chip lostPets = findViewById(R.id.lostPets_chip);
         Chip localServices = findViewById(R.id.localServices_chip);
         Chip generalNews = findViewById(R.id.GeneralPost_chip);
-        selectedChips = new ArrayList<>();
 
         CompoundButton.OnCheckedChangeListener checkedChangeListener = (compoundButton, isChecked) -> {
             if(isChecked){
-                selectedChips.add(compoundButton.getText().toString());
+                postAdapter.getFilter().filter(compoundButton.getText().toString().toLowerCase());
             }else{
-                selectedChips.remove(compoundButton.getText().toString());
+                postAdapter.getFilter().filter(null);
             }
         };
 
@@ -67,7 +66,7 @@ public class noticeBoard extends AppCompatActivity implements View.OnClickListen
         localServices.setOnCheckedChangeListener(checkedChangeListener);
         generalNews.setOnCheckedChangeListener(checkedChangeListener);
         //initialize And Assign Variable
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigationNotice);
 
         //set posts selected
         bottomNavigationView.setSelectedItemId(nav_noticeBoard);
@@ -117,7 +116,7 @@ public class noticeBoard extends AppCompatActivity implements View.OnClickListen
                     post = content.getValue(createPost.class);
                     createPostArrayList.add(0,post);
                 }
-                noticeBoardAdapter postAdapter = new noticeBoardAdapter(createPostArrayList, context);
+                postAdapter = new noticeBoardAdapter(createPostArrayList, context);
                 recyclerView.setAdapter(postAdapter);
                 createPostArrayList=null;
             }
@@ -137,7 +136,6 @@ public class noticeBoard extends AppCompatActivity implements View.OnClickListen
                 assert details != null;
                 userDetail.onCallback(details);
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
@@ -156,7 +154,6 @@ public class noticeBoard extends AppCompatActivity implements View.OnClickListen
     }
 
     private interface userDetailsI {
-
         void onCallback(userDetails user);
     }
 

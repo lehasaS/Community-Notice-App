@@ -131,7 +131,6 @@ public class bookmarkAdapter extends RecyclerView.Adapter<bookmarkAdapter.ViewHo
         TextView dispName, post, dateTime, postID;
         ImageView postPicIV;
         MaterialCardView cardView;
-        ToggleButton bookmark;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             post=itemView.findViewById(R.id.post_contentThree);
@@ -139,7 +138,6 @@ public class bookmarkAdapter extends RecyclerView.Adapter<bookmarkAdapter.ViewHo
             dateTime=itemView.findViewById(R.id.dateTime_TVThree);
             postPicIV=itemView.findViewById(R.id.postPic_IVThree);
             cardView=itemView.findViewById(R.id.cardviewThree);
-            bookmark=itemView.findViewById(R.id.bookmark_BtnThree);
             //postID=itemView.findViewById(R.id.postIDThree);
         }
     }

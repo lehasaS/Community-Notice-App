@@ -8,6 +8,8 @@ import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,14 +31,16 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
-public class noticeBoardAdapter extends RecyclerView.Adapter<noticeBoardAdapter.ViewHolder>  {
+public class noticeBoardAdapter extends RecyclerView.Adapter<noticeBoardAdapter.ViewHolder> implements Filterable {
     private final ArrayList<createPost> postList;
+    private final ArrayList<createPost> postListFull;
     private final Context context;
     private final dataBaseFirebase firebase=dataBaseFirebase.getInstance();
     private final FirebaseStorage storage = FirebaseStorage.getInstance();
-    FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+    private final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
     //adapter takes an object of view holder class, we make our own view holder class
     //instead of using RecyclerView.ViewHolder
     //We want to define our own text view in the posts.
@@ -44,12 +48,48 @@ public class noticeBoardAdapter extends RecyclerView.Adapter<noticeBoardAdapter.
     public noticeBoardAdapter(ArrayList<createPost> posts, Context context){
         this.postList=posts;
         this.context=context;
-
+        postListFull=new ArrayList<>(posts);
     }
 
     public dataBaseFirebase getFirebase() {
         return firebase;
     }
+
+    @Override
+    public Filter getFilter() {
+        return postFilter;
+    }
+
+    private final Filter postFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+            List<createPost> filteredList = new ArrayList<>();
+            if (charSequence == null || charSequence.length() == 0) {
+                filteredList.addAll(postListFull);
+            } else {
+                String filterPattern = charSequence.toString().toLowerCase().trim();
+                for (createPost post : postListFull) {
+                    for (String tag : post.getHashtags()) {
+                        if (tag.toLowerCase().equals(filterPattern)) {
+                            filteredList.add(post);
+                        }
+                    }
+                }
+            }
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+            return results;
+        }
+
+        @SuppressWarnings("unchecked")
+        @SuppressLint("NotifyDataSetChanged")
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            postList.clear();
+            postList.addAll((List<? extends createPost>) filterResults.values);
+            notifyDataSetChanged();
+        }
+    };
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
         TextView dispName, post, dateTime, postID,like_Textview;
@@ -72,10 +112,10 @@ public class noticeBoardAdapter extends RecyclerView.Adapter<noticeBoardAdapter.
     }
 
 
-    //method for liking/disliking
 
 
 
+//method for liking/disliking
 
    private void isLikes(String postid , ImageView imageView)
     {
@@ -200,7 +240,7 @@ public class noticeBoardAdapter extends RecyclerView.Adapter<noticeBoardAdapter.
             holder.postPicIV.requestLayout();
         }
 
-        //Uterlizing the methods
+        //Uterlizing the like/dislike and the likes increment methods
         isLikes(postList.get(position).getPostID(),holder.like_button);
         nrLikes(holder.like_Textview,postList.get(position).getPostID());
 
