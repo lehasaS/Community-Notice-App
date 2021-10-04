@@ -206,4 +206,27 @@ public class dataBaseFirebase implements Cloneable, Serializable {
         pictureRef.putFile(imgUri);
     }
 
+    public DatabaseReference readRequests(){
+        return this.getRootRef().child("Requests").getRef();
+    }
+
+    public Task<Void> addRequest(String reason, String dateNow){
+        getRootRef().child("Users").child(this.getUser().getUid()).child("requestStatus").setValue("Pending");
+        DatabaseReference requestRef = this.getRootRef().child("Requests").getRef();
+        DatabaseReference newRef = requestRef.push();
+        request newRequest = new request(this.getUser().getUid(), this.getUser().getDisplayName(), this.getUser().getEmail(), reason, dateNow, newRef.getKey());
+        return newRef.setValue(newRequest);
+    }
+
+    public void acceptRequest(String requestID, String userID) {
+        getRootRef().child("Users").child(userID).child("role").setValue("Service provider");
+        getRootRef().child("Requests").child(requestID).child("status").setValue("Accepted");
+        getRootRef().child("Users").child(userID).child("requestStatus").setValue("Accepted");
+    }
+
+    public void declineRequest(String requestID, String userID) {
+        getRootRef().child("Requests").child(requestID).child("status").setValue("Declined");
+        getRootRef().child("Users").child(userID).child("requestStatus").setValue("Declined");
+    }
+
 }

@@ -34,7 +34,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.781" />
+            app:layout_constraintVertical_bias="0.89" />
 
         <TextView
             android:id="@+id/communityTV"
@@ -65,18 +65,18 @@
             app:layout_constraintVertical_bias="0.996" />
 
         <Button
-            android:id="@+id/manage_request_btn"
+            android:id="@+id/manage_requests_btn"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:background="@color/blue_200"
-            android:text="manage  request"
+            android:text="@string/manage_requests"
             android:textColor="#212121"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.89" />
+            app:layout_constraintVertical_bias="0.781" />
 
         <TextView
             android:id="@+id/roleTV"

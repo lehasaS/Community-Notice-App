@@ -36,7 +36,7 @@ public class noticeBoardAdapter extends RecyclerView.Adapter<noticeBoardAdapter.
     private final Context context;
     private final dataBaseFirebase firebase=dataBaseFirebase.getInstance();
     private final FirebaseStorage storage = FirebaseStorage.getInstance();
-    FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+    private final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
     //adapter takes an object of view holder class, we make our own view holder class
     //instead of using RecyclerView.ViewHolder
     //We want to define our own text view in the posts.
@@ -72,10 +72,10 @@ public class noticeBoardAdapter extends RecyclerView.Adapter<noticeBoardAdapter.
     }
 
 
-    //method for liking/disliking
 
 
 
+//method for liking/disliking
 
    private void isLikes(String postid , ImageView imageView)
     {
@@ -200,7 +200,7 @@ public class noticeBoardAdapter extends RecyclerView.Adapter<noticeBoardAdapter.
             holder.postPicIV.requestLayout();
         }
 
-        //Uterlizing the methods
+        //Uterlizing the like/dislike and the likes increment methods
         isLikes(postList.get(position).getPostID(),holder.like_button);
         nrLikes(holder.like_Textview,postList.get(position).getPostID());
 

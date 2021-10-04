@@ -50,7 +50,8 @@ public class profileEditor extends AppCompatActivity implements View.OnClickList
         Button uploadPicBtn = findViewById(R.id.upload_pic_Btn);
         TextView updateEmail = findViewById(R.id.updateEmail_TV);
         TextView updatePassword = findViewById(R.id.updatePassword_TV);
-        Button saveBtn = findViewById(R.id.manage_request_btn);
+        TextView makeRequest = findViewById(R.id.makeRequest_TV);
+        Button saveBtn = findViewById(R.id.save_btn);
 
         showProfilePic();
 
@@ -72,6 +73,7 @@ public class profileEditor extends AppCompatActivity implements View.OnClickList
 
         updateEmail.setOnClickListener(this);
         updatePassword.setOnClickListener(this);
+        makeRequest.setOnClickListener(this);
         saveBtn.setOnClickListener(view -> handleSaveBtnClick());
         uploadPicBtn.setOnClickListener(view -> handlePicBtnClick());
 
@@ -91,6 +93,11 @@ public class profileEditor extends AppCompatActivity implements View.OnClickList
             case R.id.updatePassword_TV:
                 Intent updatePassword = new Intent(profileEditor.this, updatePassword.class);
                 startActivity(updatePassword);
+                break;
+
+            case R.id.makeRequest_TV:
+                Intent makeRequest = new Intent(profileEditor.this, makeRequest.class);
+                startActivity(makeRequest);
                 break;
         }
 

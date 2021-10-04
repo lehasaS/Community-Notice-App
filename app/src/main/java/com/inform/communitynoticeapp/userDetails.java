@@ -1,7 +1,7 @@
 package com.inform.communitynoticeapp;
 
 public class userDetails {
-    private String email, dispName, community, role;
+    private String email, dispName, community, role, requestStatus;
 
     public userDetails(){
 
@@ -11,6 +11,7 @@ public class userDetails {
         this.email=email;
         this.community=community;
         this.role=role;
+        this.requestStatus="None";
     }
 
     public String getCommunity() {
@@ -41,5 +42,13 @@ public class userDetails {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getRequestStatus() {
+        return requestStatus;
+    }
+
+    public void setRequestStatus(String requestStatus) {
+        this.requestStatus = requestStatus;
     }
 }
