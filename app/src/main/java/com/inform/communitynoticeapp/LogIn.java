@@ -66,8 +66,8 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
 
     private void handleLoginBtnClick() {
         showProgressBar();
-        String email = Objects.requireNonNull(emailTI.getEditText()).getText().toString();
-        String password = Objects.requireNonNull(passwordTI.getEditText()).getText().toString();
+        String email = Objects.requireNonNull(emailTI.getEditText()).getText().toString().trim();
+        String password = Objects.requireNonNull(passwordTI.getEditText()).getText().toString().trim();
 
         if(validate.checkEmailValid(email).equals("valid") && validate.checkEnteredPasswordValid(password).equals("valid")){
             firebase.signInUser(email, password).addOnCompleteListener(task -> {

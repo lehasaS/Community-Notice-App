@@ -15,10 +15,27 @@
 
         <!-- Main content -->
 
+        <TextView
+            android:id="@+id/textViewUpdateP3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/here_are_your_favourite_posts"
+            android:textAlignment="center"
+            android:textColor="@color/blue_200"
+            android:textSize="25sp"
+            android:textStyle="italic"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.494"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewBookmark"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="409dp"
+            android:layout_height="323dp"
             android:paddingTop="30dp"
             android:paddingBottom="100dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -26,7 +43,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.071" />
+            app:layout_constraintVertical_bias="0.120000005" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigationBookmark"

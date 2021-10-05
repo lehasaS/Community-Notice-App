@@ -49,7 +49,6 @@ public class messageBoardAdapter extends RecyclerView.Adapter<messageBoardAdapte
         postListFull=new ArrayList<>(postList);
     }
 
-
     //method for liking/disliking
 
     private void isLikes(String postid , ImageView imageView)
