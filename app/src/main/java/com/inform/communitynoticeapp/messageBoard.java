@@ -14,6 +14,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 
@@ -34,33 +35,19 @@ public class messageBoard extends AppCompatActivity implements View.OnClickListe
     private final dataBaseFirebase firebase = dataBaseFirebase.getInstance();
     private ArrayList<createPost> createPostArrayList;
     private messageBoardAdapter postAdapter;
+    private Chip events, recommendations, crimeInformation, lostPets, localServices, generalNews;
 
     @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_board);
-        Chip events = findViewById(R.id.EventsChip);
-        Chip recommendations = findViewById(R.id.RecommendationsChip);
-        Chip crimeInformation = findViewById(R.id.CrimeInfoChip);
-        Chip lostPets = findViewById(R.id.lostPetsChip);
-        Chip localServices = findViewById(R.id.localServicesChip);
-        Chip generalNews = findViewById(R.id.GeneralPostChip);
-
-        CompoundButton.OnCheckedChangeListener checkedChangeListener = (compoundButton, isChecked) -> {
-            if(isChecked){
-                postAdapter.getFilter().filter(compoundButton.getText().toString().toLowerCase());
-            }else{
-                postAdapter.getFilter().filter(null);
-            }
-        };
-
-        events.setOnCheckedChangeListener(checkedChangeListener);
-        recommendations.setOnCheckedChangeListener(checkedChangeListener);
-        crimeInformation.setOnCheckedChangeListener(checkedChangeListener);
-        lostPets.setOnCheckedChangeListener(checkedChangeListener);
-        localServices.setOnCheckedChangeListener(checkedChangeListener);
-        generalNews.setOnCheckedChangeListener(checkedChangeListener);
+        events = findViewById(R.id.EventsChip);
+        recommendations = findViewById(R.id.RecommendationsChip);
+        crimeInformation = findViewById(R.id.CrimeInfoChip);
+        lostPets = findViewById(R.id.lostPetsChip);
+        localServices = findViewById(R.id.localServicesChip);
+        generalNews = findViewById(R.id.GeneralPostChip);
 
         //initialize And Assign Variable
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigationMessage);
@@ -107,6 +94,7 @@ public class messageBoard extends AppCompatActivity implements View.OnClickListe
         firebase.readPostForMessageBoard(user.getCommunity()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                createPostArrayList.clear();
                 createPost post;
                 for(DataSnapshot content: snapshot.getChildren()){
                     post = content.getValue(createPost.class);
@@ -114,7 +102,6 @@ public class messageBoard extends AppCompatActivity implements View.OnClickListe
                 }
                 postAdapter = new messageBoardAdapter(createPostArrayList, context);
                 recyclerView.setAdapter(postAdapter);
-                createPostArrayList=null;
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -146,6 +133,55 @@ public class messageBoard extends AppCompatActivity implements View.OnClickListe
 
             }
         });
+    }
+
+    @SuppressLint("NonConstantResourceId")
+    public void OnCheckedChangeListener(View view) {
+        boolean isChecked = ((CheckBox) view).isChecked();
+        switch (view.getId()) {
+            case R.id.EventsChip:
+                if (isChecked) {
+                    postAdapter.getFilter().filter(events.getText().toString().toLowerCase());
+                } else {
+                    postAdapter.getFilter().filter("");
+                }
+                break;
+            case R.id.RecommendationsChip:
+                if (isChecked) {
+                    postAdapter.getFilter().filter(recommendations.getText().toString().toLowerCase());
+                } else {
+                    postAdapter.getFilter().filter("");
+                }
+                break;
+            case R.id.CrimeInfoChip:
+                if (isChecked) {
+                    postAdapter.getFilter().filter(crimeInformation.getText().toString().toLowerCase());
+                } else {
+                    postAdapter.getFilter().filter("");
+                }
+                break;
+            case R.id.lostPetsChip:
+                if (isChecked) {
+                    postAdapter.getFilter().filter(lostPets.getText().toString().toLowerCase());
+                } else {
+                    postAdapter.getFilter().filter("");
+                }
+                break;
+            case R.id.localServicesChip:
+                if (isChecked) {
+                    postAdapter.getFilter().filter(localServices.getText().toString().toLowerCase());
+                } else {
+                    postAdapter.getFilter().filter("");
+                }
+                break;
+            case R.id.GeneralPostChip:
+                if (isChecked) {
+                    postAdapter.getFilter().filter(generalNews.getText().toString().toLowerCase());
+                } else {
+                    postAdapter.getFilter().filter("");
+                }
+                break;
+        }
     }
 
     private interface userDetailsI {

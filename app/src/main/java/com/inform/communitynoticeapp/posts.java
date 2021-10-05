@@ -193,6 +193,9 @@ public class posts extends AppCompatActivity implements View.OnClickListener {
         String dateNow = dateFormat.format(date);
         String text = typeET.getText().toString();
         ArrayList<String> tags = getHashtags();
+        if(tags.size()==0) {
+            tags.add("General Post");
+        }
 
         firebase.addPostToMessageBoardNode(text, dateNow, pictureURI, tags, communityTV.getText().toString()).addOnCompleteListener(task -> {
             if(task.isSuccessful()){
@@ -258,6 +261,9 @@ public class posts extends AppCompatActivity implements View.OnClickListener {
         String dateNow = dateFormat.format(date);
         String text = typeET.getText().toString();
         ArrayList<String> tags = getHashtags();
+        if(tags.size()==0) {
+            tags.add("General Post");
+        }
 
         firebase.addPostToNoticeBoardNode(text, dateNow, pictureURI, tags, communityTV.getText().toString()).addOnCompleteListener(task -> {
             if(task.isSuccessful()){

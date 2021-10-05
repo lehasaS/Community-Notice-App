@@ -30,7 +30,8 @@
                 android:id="@+id/chip_Group"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:singleSelection="true">
+                app:singleSelection="true"
+                tools:ignore="UsingOnClickInXml">
 
                 <!-- Chips can be declared here, or added dynamically. -->
                 <com.google.android.material.chip.Chip
@@ -40,6 +41,7 @@
                     android:layout_height="wrap_content"
                     android:clickable="true"
                     android:focusable="true"
+                    android:onClick="OnCheckedChangeListener"
                     android:text="@string/events" />
 
                 <com.google.android.material.chip.Chip
@@ -49,6 +51,7 @@
                     android:layout_height="wrap_content"
                     android:clickable="true"
                     android:focusable="true"
+                    android:onClick="OnCheckedChangeListener"
                     android:text="@string/recommendations" />
 
 
@@ -59,6 +62,7 @@
                     android:layout_height="wrap_content"
                     android:clickable="true"
                     android:focusable="true"
+                    android:onClick="OnCheckedChangeListener"
                     android:text="@string/crime_information" />
 
                 <com.google.android.material.chip.Chip
@@ -68,6 +72,7 @@
                     android:layout_height="wrap_content"
                     android:clickable="true"
                     android:focusable="true"
+                    android:onClick="OnCheckedChangeListener"
                     android:text="@string/lost_pets" />
 
                 <com.google.android.material.chip.Chip
@@ -76,6 +81,7 @@
                     android:layout_height="wrap_content"
                     android:clickable="true"
                     android:focusable="true"
+                    android:onClick="OnCheckedChangeListener"
                     android:text="@string/local_services" />
 
                 <com.google.android.material.chip.Chip
@@ -85,6 +91,7 @@
                     android:layout_height="wrap_content"
                     android:clickable="true"
                     android:focusable="true"
+                    android:onClick="OnCheckedChangeListener"
                     android:text="@string/general_post" />
 
             </com.google.android.material.chip.ChipGroup>
@@ -117,7 +124,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.954"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerViewMessage"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.995"
             app:srcCompat="@drawable/floating_action_button"
             tools:ignore="MissingConstraints,RedundantDescriptionCheck" />
@@ -132,7 +139,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerViewMessage"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0"
             app:menu="@menu/bottom_navigation" />
 

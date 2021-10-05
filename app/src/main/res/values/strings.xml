@@ -1,6 +1,6 @@
-<resources>
+<resources>+
     <string name="app_name">Zazi</string>
-    <string name="don_t_have_an_account_signup">Don\'t have an account? SIGNUP</string>
+    <string name="don_t_have_an_account_signup">Don\'t have an account? SIGN UP</string>
     <string name="password">Password</string>
     <string name="login">LOGIN</string>
     <string name="email_address">Email address</string>
@@ -63,4 +63,7 @@
     <string name="accept">Accept</string>
     <string name="decline">Decline</string>
     <string name="likes">likes</string>
+    <string name="keep_your_account_safe_n_update_your_email">Keep your account safe! \n Update your email</string>
+    <string name="keep_your_account_safe_n_update_your_password">Keep your account safe! \n Update your password</string>
+    <string name="here_are_your_favourite_posts">Here are your favourite Posts!</string>
 </resources>

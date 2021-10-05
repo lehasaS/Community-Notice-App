@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cardview"
     app:cardElevation="4dp"
     android:clipChildren="true"
@@ -103,15 +102,13 @@
                 android:id="@+id/like_btn2"
                 android:layout_width="47dp"
                 android:layout_height="match_parent"
-                android:layout_marginStart="20dp"
-                android:src="@drawable/dislike"
-                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+                android:src="@drawable/dislike" />
 
             <TextView
                 android:id="@+id/likes_textview2"
                 android:layout_width="83dp"
                 android:layout_height="37dp"
-                android:hint="@string/likes"
+                android:hint="likes"
                 android:textColor="@android:color/black"
                 android:textSize="24sp" />
 
