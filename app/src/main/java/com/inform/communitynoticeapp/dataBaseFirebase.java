@@ -62,9 +62,7 @@ public class dataBaseFirebase implements Cloneable, Serializable {
     }
 
     public FirebaseUser getUser(){
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        assert user != null;
-        return user;
+        return FirebaseAuth.getInstance().getCurrentUser();
     }
 
     public StorageReference getStorageRef() {

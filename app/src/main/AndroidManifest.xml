@@ -15,6 +15,10 @@
             android:exported="true"
             android:label="Hashtags"/>
         <activity
+            android:name=".makeRequest"
+            android:exported="true"
+            android:label="@string/make_request"/>
+        <activity
             android:name=".bookmarks"
             android:exported="true"
             android:label="@string/bookmark_list"/>
