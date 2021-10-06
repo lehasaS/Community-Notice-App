@@ -64,7 +64,7 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_posts);
+        setContentView(R.layout.activity_create_post);
         TextView displayNameTV = findViewById(R.id.displayName_TV);
         displayNameTV.setText(firebase.getUser().getDisplayName());
         communityTI = findViewById(R.id.commGroup_TI);

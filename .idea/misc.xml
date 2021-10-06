@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Rea/StudioProjects/csc3003s_capstone/app/src/main/res/drawable/ic_baseline_image_24.xml" value="0.1265625" />
+        <entry key="..\:/Users/Rea/StudioProjects/csc3003s_capstone/app/src/main/res/layout/activity_create_post.xml" value="0.11041666666666666" />
         <entry key="..\:/Users/lehas/AndroidStudioProjects/communityNoticeApp/app/src/main/res/layout/activity_board.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/lehas/AndroidStudioProjects/communityNoticeApp/app/src/main/res/layout/activity_change_email.xml" value="0.2477355072463768" />
         <entry key="..\:/Users/lehas/AndroidStudioProjects/communityNoticeApp/app/src/main/res/layout/activity_change_password.xml" value="0.2477355072463768" />

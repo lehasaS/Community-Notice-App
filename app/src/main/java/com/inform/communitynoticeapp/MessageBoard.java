@@ -26,6 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.Objects;
 
 public class MessageBoard extends AppCompatActivity implements View.OnClickListener{
@@ -90,7 +91,9 @@ public class MessageBoard extends AppCompatActivity implements View.OnClickListe
 
     private void readPost(ArrayList<String> communities){
         final ArrayList<Post> postArrayList = new ArrayList<>();
-        for (String community: communities) {
+        Iterator<String> iterator = communities.iterator();
+        while (iterator.hasNext()) {
+            String community = iterator.next();
             firebase.readPostForMessageBoard(community).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -103,8 +106,10 @@ public class MessageBoard extends AppCompatActivity implements View.OnClickListe
 
                     Collections.sort(postArrayList);
 
-                    postAdapter = new MessageBoardAdapter(postArrayList, context);
-                    recyclerView.setAdapter(postAdapter);
+                    if (!iterator.hasNext()) {
+                        postAdapter = new MessageBoardAdapter(postArrayList, context);
+                        recyclerView.setAdapter(postAdapter);
+                    }
                 }
 
                 @Override

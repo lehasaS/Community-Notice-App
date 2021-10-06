@@ -55,7 +55,7 @@ public class MessageBoardAdapter extends RecyclerView.Adapter<MessageBoardAdapte
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference()
                 .child("likes")
                 .child(postid);
-        reference.addValueEventListener(new ValueEventListener() {
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.child(firebaseUser.getUid()).exists())
@@ -73,7 +73,7 @@ public class MessageBoardAdapter extends RecyclerView.Adapter<MessageBoardAdapte
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Toast.makeText(context, "An error occurred: " + error.toString(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -85,9 +85,10 @@ public class MessageBoardAdapter extends RecyclerView.Adapter<MessageBoardAdapte
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("likes")
                 .child(postId);
         reference.addValueEventListener(new ValueEventListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                likes.setText(snapshot.getChildrenCount()+"likes");
+                likes.setText(snapshot.getChildrenCount()+" likes");
             }
 
             @Override
@@ -104,6 +105,7 @@ public class MessageBoardAdapter extends RecyclerView.Adapter<MessageBoardAdapte
         return new MessageBoardAdapter.ViewHolder(postView);
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.dispName.setText(postList.get(position).getUser());
@@ -163,16 +165,16 @@ public class MessageBoardAdapter extends RecyclerView.Adapter<MessageBoardAdapte
             photoRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(bytes -> {
                 Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                 holder.postPicIV.setImageBitmap(bmp);
+                holder.postPicIV.setVisibility(View.VISIBLE);
             }).addOnFailureListener(e -> {
                 //handle failure
                 Toast.makeText((MessageBoard)context, "An error occurred: "+e.getMessage(), Toast.LENGTH_SHORT).show();
             });
         } else {
-            holder.postPicIV.getLayoutParams().height = 0;
-            holder.postPicIV.requestLayout();
+            holder.postPicIV.setVisibility(View.GONE);
         }
 
-        //Uterlizing the like/dislike and the likes increment methods
+        //Utilizing the like/dislike and the likes increment methods
         isLikes(postList.get(position).getPostID(),holder.like_button);
         nrLikes(holder.like_Textview,postList.get(position).getPostID());
 
@@ -192,12 +194,6 @@ public class MessageBoardAdapter extends RecyclerView.Adapter<MessageBoardAdapte
                 }
             }
         });
-
-
-
-
-
-
     }
 
     private void removePostBookmark(String postID) {
