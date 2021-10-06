@@ -18,21 +18,19 @@ import java.util.Objects;
 public class LogIn extends AppCompatActivity implements View.OnClickListener {
 
     private TextInputLayout emailTI, passwordTI;
-    private validateInput validate;
+    private ValidateInput validate;
     private View progressBar;
-    private final dataBaseFirebase firebase = dataBaseFirebase.getInstance();
+    private final FirebaseConnector firebase = FirebaseConnector.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
-        Objects.requireNonNull(getSupportActionBar()).hide();
-
-        //validate = new validateInput(this);
+        //Objects.requireNonNull(getSupportActionBar()).hide();
 
         //[START] login Part
         emailTI = findViewById(R.id.email_TI);
         passwordTI = findViewById(R.id.password_TI);
-        validate = new validateInput(this,emailTI, passwordTI, null, null, null);
+        validate = new ValidateInput(this,emailTI, passwordTI, null, null, null);
         Button loginBtn = findViewById(R.id.login_btn);
         TextView signUpText = findViewById(R.id.signUp_TV);
         progressBar = findViewById(R.id.progressBar);
@@ -66,8 +64,8 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
 
     private void handleLoginBtnClick() {
         showProgressBar();
-        String email = Objects.requireNonNull(emailTI.getEditText()).getText().toString();
-        String password = Objects.requireNonNull(passwordTI.getEditText()).getText().toString();
+        String email = Objects.requireNonNull(emailTI.getEditText()).getText().toString().trim();
+        String password = Objects.requireNonNull(passwordTI.getEditText()).getText().toString().trim();
 
         if(validate.checkEmailValid(email).equals("valid") && validate.checkEnteredPasswordValid(password).equals("valid")){
             firebase.signInUser(email, password).addOnCompleteListener(task -> {
@@ -75,7 +73,7 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
                     if (task.isSuccessful()) {
                         //Used to get user info e.g. email, password, etc.
                         Toast.makeText(LogIn.this, "You have Logged in successfully!", Toast.LENGTH_SHORT).show();
-                        Intent post = new Intent(LogIn.this, noticeBoard.class);
+                        Intent post = new Intent(LogIn.this, NoticeBoard.class);
                         startActivity(post);
                     } else {
                         hideProgressBar();
