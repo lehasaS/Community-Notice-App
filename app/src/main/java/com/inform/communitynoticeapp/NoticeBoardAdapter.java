@@ -5,14 +5,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -29,29 +27,96 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-public class messageBoardAdapter extends RecyclerView.Adapter<messageBoardAdapter.ViewHolder> implements Filterable {
-    private final ArrayList<createPost> postList;
-    private final ArrayList<createPost> postListFull;
+public class NoticeBoardAdapter extends RecyclerView.Adapter<NoticeBoardAdapter.ViewHolder> implements Filterable {
+    private final ArrayList<Post> postList;
+    private final ArrayList<Post> postListFull;
     private final Context context;
-    private final dataBaseFirebase firebase=dataBaseFirebase.getInstance();
-    private final FirebaseStorage storage = FirebaseStorage.getInstance();
+    private final FirebaseConnector firebase= FirebaseConnector.getInstance();
     private final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+    //adapter takes an object of view holder class, we make our own view holder class
+    //instead of using RecyclerView.ViewHolder
+    //We want to define our own text view in the posts.
 
-    public messageBoardAdapter(ArrayList<createPost> postList, Context context) {
-        this.postList = postList;
-        this.context = context;
-        postListFull=new ArrayList<>(postList);
+    public NoticeBoardAdapter(ArrayList<Post> posts, Context context){
+        this.postList=posts;
+        this.context=context;
+        postListFull=new ArrayList<>(posts);
     }
 
-    //method for liking/disliking
+    public FirebaseConnector getFirebase() {
+        return firebase;
+    }
 
-    private void isLikes(String postid , ImageView imageView)
+    @Override
+    public Filter getFilter() {
+        return postFilter;
+    }
+
+    private final Filter postFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+            List<Post> filteredList = new ArrayList<>();
+            if (charSequence == null || charSequence.length() == 0) {
+                filteredList.addAll(postListFull);
+            } else {
+                String filterPattern = charSequence.toString().toLowerCase().trim();
+                for (Post post : postListFull) {
+                    for (String tag : post.getHashtags()) {
+                        if (tag.toLowerCase().equals(filterPattern)) {
+                            filteredList.add(post);
+                        }
+                    }
+                }
+            }
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+            return results;
+        }
+
+        @SuppressWarnings("unchecked")
+        @SuppressLint("NotifyDataSetChanged")
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            postList.clear();
+            postList.addAll((List<? extends Post>) filterResults.values);
+            notifyDataSetChanged();
+        }
+    };
+
+    public static class ViewHolder extends RecyclerView.ViewHolder{
+        TextView dispName, post, dateTime, postID, like_Textview, community;
+        ImageView postPicIV,like_button;
+        MaterialCardView cardView;
+        ToggleButton bookmark;
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            post=itemView.findViewById(R.id.post_contentTwo);
+            dispName =itemView.findViewById(R.id.display_nameTwo);
+            dateTime=itemView.findViewById(R.id.dateTime_TVTwo);
+            community=itemView.findViewById(R.id.community_TVTwo);
+            postPicIV=itemView.findViewById(R.id.postPic_IVTwo);
+            cardView=itemView.findViewById(R.id.cardviewTwo);
+            bookmark=itemView.findViewById(R.id.bookmark_BtnTwo);
+            postID=itemView.findViewById(R.id.postIDTwo);
+            like_button = itemView.findViewById(R.id.like_btn);
+            like_Textview = itemView.findViewById(R.id.likes_textview);
+        }
+
+    }
+
+
+
+
+
+//method for liking/disliking
+
+   private void isLikes(String postid , ImageView imageView)
     {
 
 
@@ -103,8 +168,9 @@ public class messageBoardAdapter extends RecyclerView.Adapter<messageBoardAdapte
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View postView = LayoutInflater.from(parent.getContext()).inflate(R.layout.message_card, parent, false);
-        return new messageBoardAdapter.ViewHolder(postView);
+        View postView = LayoutInflater.from(parent.getContext()).inflate(R.layout.notice_card, parent, false);
+        return new ViewHolder(postView);
+
     }
 
     @Override
@@ -117,7 +183,6 @@ public class messageBoardAdapter extends RecyclerView.Adapter<messageBoardAdapte
         SharedPreferences preferences = getSharedPreferences();
         String state = preferences.getString(position +"pressed", "no");
 
-        //Used to make sure the button is still bookmarked when you leave and come back to the screen
         if(state.equals("yes")){
             holder.bookmark.setBackgroundDrawable(ContextCompat.getDrawable(holder.bookmark.getContext(), R.drawable.clicked_bookmark));
         }else{
@@ -132,7 +197,8 @@ public class messageBoardAdapter extends RecyclerView.Adapter<messageBoardAdapte
                 editor.apply();
                 holder.bookmark.setBackgroundDrawable(ContextCompat.getDrawable(holder.bookmark.getContext(), R.drawable.clicked_bookmark));
                 addPostToBookmarks(postList.get(position));
-            } else  if (isChecked && state.equals("yes")) {
+            }
+            else  if (isChecked && state.equals("yes")) {
                 editor.putString(position + "pressed", "no");
                 editor.apply();
                 holder.bookmark.setBackgroundDrawable(ContextCompat.getDrawable(holder.bookmark.getContext(), R.drawable.ic_baseline_bookmark));
@@ -151,7 +217,6 @@ public class messageBoardAdapter extends RecyclerView.Adapter<messageBoardAdapte
 
         });
 
-
         if (!postList.get(position).getPost().equals("")) {
             holder.post.setText(postList.get(position).getPost());
         } else {
@@ -160,7 +225,7 @@ public class messageBoardAdapter extends RecyclerView.Adapter<messageBoardAdapte
 
         //show post picture
         if (!postList.get(position).getImageUri().equals("")) {
-            StorageReference photoRef = storage.getReferenceFromUrl(postList.get(position).getImageUri());
+            StorageReference photoRef = firebase.getFBStorage().getReferenceFromUrl(postList.get(position).getImageUri());
 
             final long ONE_MEGABYTE = 1024 * 1024;
             photoRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(bytes -> {
@@ -168,7 +233,7 @@ public class messageBoardAdapter extends RecyclerView.Adapter<messageBoardAdapte
                 holder.postPicIV.setImageBitmap(bmp);
             }).addOnFailureListener(e -> {
                 //handle failure
-                Toast.makeText((messageBoard)context, "An error occurred: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText((NoticeBoard)context, "An error occurred: "+e.getMessage(), Toast.LENGTH_SHORT).show();
             });
         } else {
             holder.postPicIV.getLayoutParams().height = 0;
@@ -198,9 +263,6 @@ public class messageBoardAdapter extends RecyclerView.Adapter<messageBoardAdapte
 
 
 
-
-
-
     }
 
     private void removePostBookmark(String postID) {
@@ -210,28 +272,28 @@ public class messageBoardAdapter extends RecyclerView.Adapter<messageBoardAdapte
                 for(DataSnapshot dataSnapshot: snapshot.getChildren()){
                     dataSnapshot.getRef().removeValue();
                 }
-                Toast.makeText((messageBoard)context, "Bookmark removed", Toast.LENGTH_SHORT).show();
+                Toast.makeText((NoticeBoard)context, "Bookmark removed", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText((messageBoard)context, "An error occurred: "+error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText((NoticeBoard)context, "An error occurred: "+error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void addPostToBookmarks(createPost post) {
-        firebase.addPostToBookmarks(post).addOnCompleteListener(task -> {
+    private void addPostToBookmarks(Post post) {
+        firebase.addPostToBookmarks(Objects.requireNonNull(post)).addOnCompleteListener(task -> {
             if(task.isSuccessful()){
-                Toast.makeText((messageBoard)context, "Bookmark added", Toast.LENGTH_SHORT).show();
+                Toast.makeText((NoticeBoard)context, "Bookmark added", Toast.LENGTH_SHORT).show();
             }else{
-                Toast.makeText((messageBoard)context, "An error occurred: "+task.getException(), Toast.LENGTH_SHORT).show();
+                Toast.makeText((NoticeBoard)context, "An error occurred: "+task.getException(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private SharedPreferences getSharedPreferences() {
-        return context.getSharedPreferences("MessageBoardButton", Context.MODE_PRIVATE);
+        return context.getSharedPreferences("NoticeBoardButton", Context.MODE_PRIVATE);
     }
 
     @Override
@@ -239,61 +301,4 @@ public class messageBoardAdapter extends RecyclerView.Adapter<messageBoardAdapte
         return postList.size();
     }
 
-    @Override
-    public Filter getFilter() {
-        return postFilter;
-    }
-
-    private final Filter postFilter = new Filter() {
-        @Override
-        protected FilterResults performFiltering(CharSequence charSequence) {
-            List<createPost> filteredList = new ArrayList<>();
-            if(charSequence==null || charSequence.length()==0){
-                filteredList.addAll(postListFull);
-            }else {
-                String filterPattern = charSequence.toString().toLowerCase().trim();
-                for(createPost post: postListFull){
-                    for(String tag:post.getHashtags()){
-                        if(tag.toLowerCase().equals(filterPattern)){
-                            filteredList.add(post);
-                        }
-                    }
-                }
-            }
-            FilterResults results = new FilterResults();
-            results.values=filteredList;
-            return results;
-        }
-
-        @SuppressWarnings("unchecked")
-        @SuppressLint("NotifyDataSetChanged")
-        @Override
-        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-            postList.clear();
-            postList.addAll((List<? extends createPost>) filterResults.values);
-            notifyDataSetChanged();
-        }
-    };
-
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView dispName, post, dateTime, postID, like_Textview, community;
-        ImageView postPicIV,like_button;
-        MaterialCardView cardView;
-        ToggleButton bookmark;
-        LinearLayout linearLayout;
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            post=itemView.findViewById(R.id.post_content);
-            dispName =itemView.findViewById(R.id.display_name);
-            dateTime=itemView.findViewById(R.id.dateTime_TV);
-            community=itemView.findViewById(R.id.community_TV);
-            postPicIV=itemView.findViewById(R.id.postPic_IV);
-            cardView=itemView.findViewById(R.id.cardview);
-            bookmark=itemView.findViewById(R.id.bookmark_Btn);
-            postID=itemView.findViewById(R.id.postID);
-            linearLayout=itemView.findViewById(R.id.linear_LL);
-            like_button = itemView.findViewById(R.id.like_btn2);
-            like_Textview = itemView.findViewById(R.id.likes_textview2);
-        }
-    }
 }

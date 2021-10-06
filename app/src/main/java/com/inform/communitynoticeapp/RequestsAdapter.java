@@ -1,13 +1,10 @@
 package com.inform.communitynoticeapp;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,13 +14,13 @@ import com.google.android.material.card.MaterialCardView;
 
 import java.util.ArrayList;
 
-public class requestsAdapter extends RecyclerView.Adapter<requestsAdapter.ViewHolder> {
+public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHolder> {
 
-    private final ArrayList<request> requestsList;
+    private final ArrayList<Request> requestsList;
     private final Context context;
-    private final dataBaseFirebase firebase=dataBaseFirebase.getInstance();
+    private final FirebaseConnector firebase= FirebaseConnector.getInstance();
 
-    public requestsAdapter(ArrayList<request> requestsList, Context context) {
+    public RequestsAdapter(ArrayList<Request> requestsList, Context context) {
         this.requestsList = requestsList;
         this.context = context;
     }
@@ -47,13 +44,13 @@ public class requestsAdapter extends RecyclerView.Adapter<requestsAdapter.ViewHo
 
     @NonNull
     @Override
-    public requestsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RequestsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View requestView = LayoutInflater.from(parent.getContext()).inflate(R.layout.request_card, parent, false);
-        return new requestsAdapter.ViewHolder(requestView);
+        return new RequestsAdapter.ViewHolder(requestView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull requestsAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RequestsAdapter.ViewHolder holder, int position) {
         holder.displayNameTV.setText(requestsList.get(position).getDisplayName());
         holder.emailTV.setText(requestsList.get(position).getEmailAddress());
         holder.dateTimeTV.setText(requestsList.get(position).getDateTime());

@@ -1,12 +1,8 @@
 package com.inform.communitynoticeapp;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.Exclude;
-
 import java.util.ArrayList;
-import java.util.Map;
 
-public class createPost implements Comparable<createPost> {
+public class Post implements Comparable<Post> {
 
     private String post;
     private String user;
@@ -16,11 +12,11 @@ public class createPost implements Comparable<createPost> {
     private ArrayList<String> hashtags;
     private String community;
 
-    public createPost(){
+    public Post(){
 
     }
 
-    public createPost(String user, String post, String dateTime, String imageUri, String postID, ArrayList<String> hashtags, String community){
+    public Post(String user, String post, String dateTime, String imageUri, String postID, ArrayList<String> hashtags, String community){
         this.user=user;
         this.post=post;
         this.dateTime=dateTime;
@@ -85,7 +81,7 @@ public class createPost implements Comparable<createPost> {
     }
 
     @Override
-    public int compareTo(createPost post) {
+    public int compareTo(Post post) {
         if (this.postID.equals(post.getPostID())) {
             return 0;
         } else if (this.postID.compareTo(post.getPostID())>0) {

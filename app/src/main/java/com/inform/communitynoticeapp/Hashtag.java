@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class hashtag extends AppCompatActivity implements View.OnClickListener {
+public class Hashtag extends AppCompatActivity implements View.OnClickListener {
 
     private CheckBox eventsCB, recommendationsCB, crimeInfoCB, lostPetsCB, localServicesCB, generalNewsCB;
     private Map<String, Object> checked;

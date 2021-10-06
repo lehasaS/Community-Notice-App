@@ -9,8 +9,6 @@ import android.os.Handler;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.util.Objects;
-
 public class SplashActivity extends AppCompatActivity {
 
     @Override
@@ -33,7 +31,7 @@ public class SplashActivity extends AppCompatActivity {
                 if(currentUser!=null) {
                     //user is already logged in.
 
-                    Intent homeIntent = new Intent(SplashActivity.this, noticeBoard.class);
+                    Intent homeIntent = new Intent(SplashActivity.this, NoticeBoard.class);
                     startActivity(homeIntent);
                 }
                 else {

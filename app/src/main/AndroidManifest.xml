@@ -18,54 +18,54 @@
             android:exported="true"
             android:label="Join Communities" />
         <activity
-            android:name=".hashtag"
+            android:name=".Hashtag"
             android:exported="true"
             android:label="Hashtags"/>
         <activity
-            android:name=".makeRequest"
+            android:name=".MakeRequest"
             android:exported="true"
             android:label="@string/make_request"/>
         <activity
-            android:name=".bookmarks"
+            android:name=".Bookmarks"
             android:exported="true"
             android:label="@string/bookmark_list"/>
         <activity
-            android:name=".updateEmail"
+            android:name=".UpdateEmail"
             android:exported="true"
             android:label="@string/update_email"/>
         <activity
-            android:name=".messageBoard"
+            android:name=".MessageBoard"
             android:exported="true"
             android:label="@string/message_board"/>
         <activity
-            android:name=".updatePassword"
+            android:name=".UpdatePassword"
             android:exported="true"
             android:label="@string/update_password"/>
         <activity
-            android:name=".profileEditor"
+            android:name=".EditProfile"
             android:exported="true"
             android:label="@string/edit_profile"/>
         <activity
             android:name=".LogIn"
             android:exported="true"/>
         <activity
-            android:name=".manageRequests"
+            android:name=".ManageRequests"
             android:exported="true"
             android:label="@string/manage_request"/>
         <activity
-            android:name=".manageCommunities"
+            android:name=".ManageCommunities"
             android:exported="true"
             android:label="@string/manage_communities" />
         <activity
-            android:name=".profile"
+            android:name=".Profile"
             android:exported="true"
             android:label="@string/user_profile"/>
         <activity
-            android:name=".noticeBoard"
+            android:name=".NoticeBoard"
             android:exported="true"
             android:label="@string/notice_board"/>
         <activity
-            android:name=".posts"
+            android:name=".CreatePost"
             android:exported="true"
             android:label="@string/create_post"/>
         <activity

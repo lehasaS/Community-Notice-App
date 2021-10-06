@@ -9,12 +9,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -24,23 +21,24 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.UUID;
 
-public class dataBaseFirebase implements Cloneable, Serializable {
+public class FirebaseConnector implements Cloneable, Serializable {
 
     private final FirebaseAuth userAuth = FirebaseAuth.getInstance();
-    private static final dataBaseFirebase instance = new dataBaseFirebase();
-    private final StorageReference storageRef;
-    private dataBaseFirebase(){
+    private static final FirebaseConnector instance = new FirebaseConnector();
+
+    private FirebaseConnector(){
         if(instance!=null){
             throw new IllegalStateException("Firebase database instance is already created");
         }
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        storageRef = storage.getReference();
     }
 
-    public static dataBaseFirebase getInstance(){
+    public static FirebaseConnector getInstance(){
         return instance;
     }
 
+    public FirebaseStorage getFBStorage() {
+        return FirebaseStorage.getInstance();
+    }
 
     private Object readResolve() throws ObjectStreamException {
         return instance;
@@ -65,42 +63,11 @@ public class dataBaseFirebase implements Cloneable, Serializable {
     }
 
     public StorageReference getStorageRef() {
-        return storageRef;
-    }
-
-
-    public Uri getDisplayPic() {
-        return getUser().getPhotoUrl();
+        return FirebaseStorage.getInstance().getReference();
     }
 
     private DatabaseReference getRootRef(){
         return FirebaseDatabase.getInstance().getReference();
-    }
-
-    public void addCommunitiesToFirebase(ArrayList<String> communities){
-        this.getRootRef().child("Communities").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(!(snapshot.hasChildren())){
-                    saveCommunitiesInFirebase(communities);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
-
-    private void saveCommunitiesInFirebase(@NonNull ArrayList<String> communities){
-        DatabaseReference communityRef = this.getRootRef().child("Communities").getRef();
-        DatabaseReference newRef = communityRef.push();
-
-        for(String com: communities){
-            newRef.setValue(com);
-            newRef = communityRef.push();
-        }
     }
 
     public Task<Void> addCommunityToFirebase(String community){
@@ -114,12 +81,12 @@ public class dataBaseFirebase implements Cloneable, Serializable {
         return this.getRootRef().child("Communities").getRef();
     }
 
-    public void saveNameInFirebase(userDetails userCurrent){
+    public void saveNameInFirebase(UserDetails userCurrent){
         DatabaseReference nameRef = this.getRootRef().child("Users").child(Objects.requireNonNull(userAuth.getUid()));
         nameRef.setValue(userCurrent);
     }
 
-    public void saveNameInFirebase(userDetails userCurrent, String community){
+    public void saveNameInFirebase(UserDetails userCurrent, String community){
         DatabaseReference nameRef = this.getRootRef().child("Users").child(Objects.requireNonNull(userAuth.getUid()));
         nameRef.setValue(userCurrent);
         this.joinCommunity(community);
@@ -193,18 +160,18 @@ public class dataBaseFirebase implements Cloneable, Serializable {
     public Task<Void> addPostToNoticeBoardNode(String text, String dateNow, String imageUri, ArrayList<String> hashtags, String community){
         DatabaseReference postRef = this.getRootRef().child("Posts").child("NoticeBoard").getRef();
         DatabaseReference newRef = postRef.push();
-        createPost post = new createPost(this.getUser().getDisplayName(), text, dateNow, imageUri, newRef.getKey(), hashtags, community);
+        Post post = new Post(this.getUser().getDisplayName(), text, dateNow, imageUri, newRef.getKey(), hashtags, community);
         return newRef.setValue(post);
     }
 
     public Task<Void> addPostToMessageBoardNode(String text, String dateNow, String imageUri, ArrayList<String> hashtags, String community){
         DatabaseReference postRef = this.getRootRef().child("Posts").child("MessageBoard").getRef();
         DatabaseReference newRef = postRef.push();
-        createPost post = new createPost(this.getUser().getDisplayName(), text, dateNow, imageUri, newRef.getKey(), hashtags, community);
+        Post post = new Post(this.getUser().getDisplayName(), text, dateNow, imageUri, newRef.getKey(), hashtags, community);
         return newRef.setValue(post);
     }
 
-    public Task<Void> addPostToBookmarks(@NonNull createPost post){
+    public Task<Void> addPostToBookmarks(@NonNull Post post){
         DatabaseReference bookmarkRef = this.getRootRef().child("Bookmarks").child(this.getUser().getUid()).getRef();
         DatabaseReference newRef = bookmarkRef.push();
         return newRef.setValue(post);
@@ -216,7 +183,7 @@ public class dataBaseFirebase implements Cloneable, Serializable {
 
     public void uploadPicture(Uri imgUri) {
         final String randomKey = UUID.randomUUID().toString();
-        StorageReference pictureRef = storageRef.child("images/" + randomKey);
+        StorageReference pictureRef = getStorageRef().child("images/" + randomKey);
         pictureRef.putFile(imgUri);
     }
 
@@ -228,7 +195,7 @@ public class dataBaseFirebase implements Cloneable, Serializable {
         getRootRef().child("Users").child(this.getUser().getUid()).child("requestStatus").setValue("Pending");
         DatabaseReference requestRef = this.getRootRef().child("Requests").getRef();
         DatabaseReference newRef = requestRef.push();
-        request newRequest = new request(this.getUser().getUid(), this.getUser().getDisplayName(), this.getUser().getEmail(), reason, dateNow, newRef.getKey());
+        Request newRequest = new Request(this.getUser().getUid(), this.getUser().getDisplayName(), this.getUser().getEmail(), reason, dateNow, newRef.getKey());
         return newRef.setValue(newRequest);
     }
 

@@ -10,41 +10,37 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
-public class bookmarkAdapter extends RecyclerView.Adapter<bookmarkAdapter.ViewHolder>{
-    private final ArrayList<createPost> postList;
+public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.ViewHolder>{
+    private final ArrayList<Post> postList;
     private final Context context;
-    private final dataBaseFirebase firebase=dataBaseFirebase.getInstance();
-    private final FirebaseStorage storage = FirebaseStorage.getInstance();
+    private final FirebaseConnector firebase= FirebaseConnector.getInstance();
 
-    public bookmarkAdapter(ArrayList<createPost> postList, Context context) {
+    public BookmarkAdapter(ArrayList<Post> postList, Context context) {
         this.postList = postList;
         this.context = context;
     }
 
     @NonNull
     @Override
-    public bookmarkAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public BookmarkAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View postView = LayoutInflater.from(parent.getContext()).inflate(R.layout.bookmark_card, parent, false);
-        return new bookmarkAdapter.ViewHolder(postView);
+        return new BookmarkAdapter.ViewHolder(postView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull bookmarkAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull BookmarkAdapter.ViewHolder holder, int position) {
         holder.dispName.setText(postList.get(position).getUser());
         holder.dateTime.setText(postList.get(position).getDateTime());
         holder.community.setText(postList.get(position).getCommunity());
@@ -85,7 +81,7 @@ public class bookmarkAdapter extends RecyclerView.Adapter<bookmarkAdapter.ViewHo
 
         //show post picture
         if (!postList.get(position).getImageUri().equals("")) {
-            StorageReference photoRef = storage.getReferenceFromUrl(postList.get(position).getImageUri());
+            StorageReference photoRef = firebase.getFBStorage().getReferenceFromUrl(postList.get(position).getImageUri());
 
             final long ONE_MEGABYTE = 1024 * 1024;
             photoRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(bytes -> {
@@ -93,7 +89,7 @@ public class bookmarkAdapter extends RecyclerView.Adapter<bookmarkAdapter.ViewHo
                 holder.postPicIV.setImageBitmap(bmp);
             }).addOnFailureListener(e -> {
                 //handle failure
-                Toast.makeText((bookmarks)context, "An error occurred: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText((Bookmarks)context, "An error occurred: "+e.getMessage(), Toast.LENGTH_SHORT).show();
             });
         } else {
             holder.postPicIV.getLayoutParams().height = 0;
@@ -109,12 +105,12 @@ public class bookmarkAdapter extends RecyclerView.Adapter<bookmarkAdapter.ViewHo
                 for(DataSnapshot dataSnapshot: snapshot.getChildren()){
                     dataSnapshot.getRef().removeValue();
                 }
-                Toast.makeText((bookmarks)context, "Bookmark removed", Toast.LENGTH_SHORT).show();
+                Toast.makeText((Bookmarks)context, "Bookmark removed", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText((bookmarks)context, "An error occurred: "+error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText((Bookmarks)context, "An error occurred: "+error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

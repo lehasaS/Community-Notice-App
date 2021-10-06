@@ -15,7 +15,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -29,12 +28,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Objects;
 
-public class messageBoard extends AppCompatActivity implements View.OnClickListener{
+public class MessageBoard extends AppCompatActivity implements View.OnClickListener{
 
     private RecyclerView recyclerView;
     private Context context;
-    private final dataBaseFirebase firebase = dataBaseFirebase.getInstance();
-    private messageBoardAdapter postAdapter;
+    private final FirebaseConnector firebase = FirebaseConnector.getInstance();
+    private MessageBoardAdapter postAdapter;
     private Chip events, recommendations, crimeInformation, lostPets, localServices, generalNews;
 
     @SuppressLint("NonConstantResourceId")
@@ -59,7 +58,7 @@ public class messageBoard extends AppCompatActivity implements View.OnClickListe
             switch (item.getItemId())
             {
                 case nav_noticeBoard:
-                    startActivity(new Intent(getApplicationContext(),noticeBoard.class));
+                    startActivity(new Intent(getApplicationContext(), NoticeBoard.class));
                     overridePendingTransition(0,0);
                     return true;
 
@@ -67,12 +66,12 @@ public class messageBoard extends AppCompatActivity implements View.OnClickListe
                     return true;
 
                 case nav_bookmarks:
-                    startActivity(new Intent(getApplicationContext(),bookmarks.class));
+                    startActivity(new Intent(getApplicationContext(), Bookmarks.class));
                     overridePendingTransition(0,0);
                     return true;
 
                 case R.id.nav_profile:
-                    startActivity(new Intent(getApplicationContext(),profile.class));
+                    startActivity(new Intent(getApplicationContext(), Profile.class));
                     overridePendingTransition(0,0);
                     return true;
             }
@@ -90,27 +89,27 @@ public class messageBoard extends AppCompatActivity implements View.OnClickListe
     }
 
     private void readPost(ArrayList<String> communities){
-        final ArrayList<createPost> createPostArrayList = new ArrayList<>();
+        final ArrayList<Post> postArrayList = new ArrayList<>();
         for (String community: communities) {
             firebase.readPostForMessageBoard(community).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    createPost post;
+                    Post post;
                     for (DataSnapshot content : snapshot.getChildren()) {
-                        post = content.getValue(createPost.class);
+                        post = content.getValue(Post.class);
                         Objects.requireNonNull(post).setPost(post.getPost());
-                        createPostArrayList.add(post);
+                        postArrayList.add(post);
                     }
 
-                    Collections.sort(createPostArrayList);
+                    Collections.sort(postArrayList);
 
-                    postAdapter = new messageBoardAdapter(createPostArrayList, context);
+                    postAdapter = new MessageBoardAdapter(postArrayList, context);
                     recyclerView.setAdapter(postAdapter);
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-                    Toast.makeText(messageBoard.this, "An error occurred: " + error.toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MessageBoard.this, "An error occurred: " + error.toString(), Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -120,12 +119,12 @@ public class messageBoard extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         int id = view.getId();
         if(id==R.id.floating_action_button){
-            Intent addPost = new Intent(messageBoard.this, posts.class);
+            Intent addPost = new Intent(MessageBoard.this, CreatePost.class);
             startActivity(addPost);
         }
     }
 
-    private void getCommunities(messageBoard.userCommunitiesI userCommunities){
+    private void getCommunities(MessageBoard.userCommunitiesI userCommunities){
         firebase.getUserCommunities().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -141,7 +140,7 @@ public class messageBoard extends AppCompatActivity implements View.OnClickListe
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(messageBoard.this, "An error occurred: " + error.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MessageBoard.this, "An error occurred: " + error.toString(), Toast.LENGTH_SHORT).show();
             }
         });
     }
