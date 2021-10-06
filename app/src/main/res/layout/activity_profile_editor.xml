@@ -37,26 +37,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.221" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/newCommunityTI"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="280dp"
-            android:layout_height="wrap_content"
-            android:hint="@string/new_community"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.18"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.36">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:ignore="TextContrastCheck" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
         <Button
             android:id="@+id/save_btn"
             android:layout_width="match_parent"
@@ -87,6 +67,8 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="280dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:textAlignment="viewStart"
             android:hint="@string/disp_name"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -106,8 +88,10 @@
             android:id="@+id/updatePassword_TV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:textAlignment="viewStart"
             android:text="@string/update_password"
-            android:textSize="20sp"
+            android:textSize="16sp"
             app:layout_constraintBottom_toTopOf="@+id/updateEmail_TV"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.094"
@@ -119,8 +103,10 @@
             android:id="@+id/updateEmail_TV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:textAlignment="viewStart"
             android:text="@string/update_email"
-            android:textSize="20sp"
+            android:textSize="16sp"
             app:layout_constraintBottom_toTopOf="@+id/save_btn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.085"
@@ -132,14 +118,31 @@
             android:id="@+id/makeRequest_TV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:textAlignment="viewStart"
             android:text="@string/make_request"
-            android:textSize="20sp"
+            android:textSize="16sp"
             app:layout_constraintBottom_toTopOf="@+id/save_btn"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.237"
+            app:layout_constraintHorizontal_bias="0.1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/display_Name_TI"
-            app:layout_constraintVertical_bias="0.539" />
+            app:layout_constraintVertical_bias="0.536" />
+
+        <TextView
+            android:id="@+id/joinCommunity_TV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="@string/join_another_community"
+            android:textSize="16sp"
+            android:textAlignment="viewStart"
+            app:layout_constraintBottom_toTopOf="@+id/save_btn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.097"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/display_Name_TI"
+            app:layout_constraintVertical_bias="0.75" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
