@@ -18,19 +18,19 @@ import java.util.Objects;
 public class LogIn extends AppCompatActivity implements View.OnClickListener {
 
     private TextInputLayout emailTI, passwordTI;
-    private validateInput validate;
+    private ValidateInput validate;
     private View progressBar;
-    private final dataBaseFirebase firebase = dataBaseFirebase.getInstance();
+    private final FirebaseConnector firebase = FirebaseConnector.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
-        //Objects.requireNonNull(getSupportActionBar()).hide();
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
         //[START] login Part
         emailTI = findViewById(R.id.email_TI);
         passwordTI = findViewById(R.id.password_TI);
-        validate = new validateInput(this,emailTI, passwordTI, null, null, null);
+        validate = new ValidateInput(this,emailTI, passwordTI, null, null, null);
         Button loginBtn = findViewById(R.id.login_btn);
         TextView signUpText = findViewById(R.id.signUp_TV);
         progressBar = findViewById(R.id.progressBar);
@@ -73,7 +73,7 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
                     if (task.isSuccessful()) {
                         //Used to get user info e.g. email, password, etc.
                         Toast.makeText(LogIn.this, "You have Logged in successfully!", Toast.LENGTH_SHORT).show();
-                        Intent post = new Intent(LogIn.this, noticeBoard.class);
+                        Intent post = new Intent(LogIn.this, NoticeBoard.class);
                         startActivity(post);
                     } else {
                         hideProgressBar();

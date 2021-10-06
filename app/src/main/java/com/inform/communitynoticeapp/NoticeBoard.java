@@ -26,18 +26,17 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Objects;
 
 
-public class noticeBoard extends AppCompatActivity implements View.OnClickListener {
+public class NoticeBoard extends AppCompatActivity implements View.OnClickListener {
 
     private RecyclerView recyclerView;
     private Context context;
-    private final dataBaseFirebase firebase = dataBaseFirebase.getInstance();
-    private noticeBoardAdapter postAdapter;
+    private final FirebaseConnector firebase = FirebaseConnector.getInstance();
+    private NoticeBoardAdapter postAdapter;
     private Chip events, recommendations, crimeInformation, lostPets, localServices, generalNews;
 
-    public noticeBoard(){
+    public NoticeBoard(){
         super(R.layout.activity_notice_board);
     }
 
@@ -81,17 +80,17 @@ public class noticeBoard extends AppCompatActivity implements View.OnClickListen
                     return true;
 
                 case nav_messageBoard:
-                    startActivity(new Intent(getApplicationContext(),messageBoard.class));
+                    startActivity(new Intent(getApplicationContext(), MessageBoard.class));
                     overridePendingTransition(0,0);
                     return true;
 
                 case nav_bookmarks:
-                    startActivity(new Intent(getApplicationContext(),bookmarks.class));
+                    startActivity(new Intent(getApplicationContext(), Bookmarks.class));
                     overridePendingTransition(0,0);
                     return true;
 
                 case R.id.nav_profile:
-                    startActivity(new Intent(getApplicationContext(),profile.class));
+                    startActivity(new Intent(getApplicationContext(), Profile.class));
                     overridePendingTransition(0,0);
                     return true;
             }
@@ -109,33 +108,33 @@ public class noticeBoard extends AppCompatActivity implements View.OnClickListen
     }
 
     private void readPost(ArrayList<String> communities){
-        final ArrayList<createPost> createPostArrayList = new ArrayList<>();
+        final ArrayList<Post> postArrayList = new ArrayList<>();
         for (String community: communities) {
             firebase.readPostForNoticeBoard(community).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    createPost post;
+                    Post post;
                     for (DataSnapshot content : snapshot.getChildren()) {
-                        post = content.getValue(createPost.class);
-                        createPostArrayList.add(post);
+                        post = content.getValue(Post.class);
+                        postArrayList.add(post);
                     }
 
-                    Collections.sort(createPostArrayList);
+                    Collections.sort(postArrayList);
 
-                    postAdapter = new noticeBoardAdapter(createPostArrayList, context);
+                    postAdapter = new NoticeBoardAdapter(postArrayList, context);
                     recyclerView.setAdapter(postAdapter);
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-                    Toast.makeText(noticeBoard.this, "Some error occurred: "+error.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(NoticeBoard.this, "Some error occurred: "+error.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         }
     }
 
 
-    private void getCommunities(noticeBoard.userCommunitiesI userCommunities){
+    private void getCommunities(NoticeBoard.userCommunitiesI userCommunities){
         firebase.getUserCommunities().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -152,7 +151,7 @@ public class noticeBoard extends AppCompatActivity implements View.OnClickListen
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(noticeBoard.this, "An error occurred: " + error.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(NoticeBoard.this, "An error occurred: " + error.toString(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -162,7 +161,7 @@ public class noticeBoard extends AppCompatActivity implements View.OnClickListen
     public void onClick(View view) {
         int id = view.getId();
         if(id==R.id.floating_action_button){
-            Intent addPost = new Intent(noticeBoard.this, posts.class);
+            Intent addPost = new Intent(NoticeBoard.this, CreatePost.class);
             startActivity(addPost);
         }
     }

@@ -19,11 +19,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Objects;
 
-public class manageCommunities extends AppCompatActivity {
+public class ManageCommunities extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private Context context;
-    private final dataBaseFirebase firebase = dataBaseFirebase.getInstance();
+    private final FirebaseConnector firebase = FirebaseConnector.getInstance();
     private TextInputLayout communityTI;
     private ValueEventListener listener;
 
@@ -65,7 +65,7 @@ public class manageCommunities extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(manageCommunities.this, "An error occurred: " + error.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ManageCommunities.this, "An error occurred: " + error.toString(), Toast.LENGTH_SHORT).show();
 
             }
         };
@@ -82,10 +82,10 @@ public class manageCommunities extends AppCompatActivity {
 
         firebase.addCommunityToFirebase(newCommunity)
                 .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(manageCommunities.this, "Community added", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ManageCommunities.this, "Community added", Toast.LENGTH_SHORT).show();
                     displayCommunities();
                 }).addOnFailureListener(e -> {
-                    Toast.makeText(manageCommunities.this, "Some error occurred: " + e.toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ManageCommunities.this, "Some error occurred: " + e.toString(), Toast.LENGTH_SHORT).show();
                 });
     }
 }

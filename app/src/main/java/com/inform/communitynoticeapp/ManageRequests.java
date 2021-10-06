@@ -13,14 +13,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Objects;
 
-public class manageRequests extends AppCompatActivity {
+public class ManageRequests extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private Context context;
-    private final dataBaseFirebase firebase = dataBaseFirebase.getInstance();
+    private final FirebaseConnector firebase = FirebaseConnector.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,19 +40,19 @@ public class manageRequests extends AppCompatActivity {
         firebase.readRequests().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                request aRequest;
-                ArrayList<request> requestsList = new ArrayList<>();
+                Request aRequest;
+                ArrayList<Request> requestsList = new ArrayList<>();
                 for(DataSnapshot content: snapshot.getChildren()){
-                    aRequest = content.getValue(request.class);
+                    aRequest = content.getValue(Request.class);
                     Objects.requireNonNull(aRequest).setReason(aRequest.getReason());
                     if (aRequest.getStatus().equals("Pending")) {
                         requestsList.add(0, aRequest);
                     }
                 }
 
-                requestsAdapter reqAdapter = new requestsAdapter(requestsList, context);
+                RequestsAdapter reqAdapter = new RequestsAdapter(requestsList, context);
                 recyclerView.setAdapter(reqAdapter);
-                requestsList=null;
+                requestsList.clear();
             }
 
             @Override

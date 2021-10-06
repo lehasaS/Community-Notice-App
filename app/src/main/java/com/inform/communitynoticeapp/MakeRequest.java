@@ -18,10 +18,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
-public class makeRequest extends AppCompatActivity {
+public class MakeRequest extends AppCompatActivity {
 
     private TextInputLayout requestTI;
-    private final dataBaseFirebase firebase = dataBaseFirebase.getInstance();
+    private final FirebaseConnector firebase = FirebaseConnector.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,24 +41,24 @@ public class makeRequest extends AppCompatActivity {
         firebase.getUserDetailsRef().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                userDetails details = snapshot.getValue(userDetails.class);
+                UserDetails details = snapshot.getValue(UserDetails.class);
                 assert details != null;
                 String requestStatus = details.getRequestStatus();
 
                 if (requestStatus.equals("None")) {
                     firebase.addRequest(reason, dateNow).addOnCompleteListener(task -> {
                         if(task.isSuccessful()){
-                            Toast.makeText(makeRequest.this, "Request submitted", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MakeRequest.this, "Request submitted", Toast.LENGTH_SHORT).show();
                         }else{
-                            Toast.makeText(makeRequest.this, "Some error occurred: "+task.getException(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MakeRequest.this, "Some error occurred: "+task.getException(), Toast.LENGTH_SHORT).show();
                         }
                     });
                 } else if (requestStatus.equals("Declined")) {
-                    Toast.makeText(makeRequest.this, "Unfortunately, your request has been declined.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MakeRequest.this, "Unfortunately, your request has been declined.", Toast.LENGTH_SHORT).show();
                 } else if (requestStatus.equals("Pending")) {
-                    Toast.makeText(makeRequest.this, "Your request is still pending. Moderators will process your request soon!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MakeRequest.this, "Your request is still pending. Moderators will process your request soon!", Toast.LENGTH_SHORT).show();
                 } else if (requestStatus.equals("Accepted")) {
-                    Toast.makeText(makeRequest.this, "You already have service provider permissions!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MakeRequest.this, "You already have service provider permissions!", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -68,7 +68,7 @@ public class makeRequest extends AppCompatActivity {
             }
         });
 
-        Intent profile = new Intent(makeRequest.this, profile.class);
+        Intent profile = new Intent(MakeRequest.this, Profile.class);
         startActivity(profile);
     }
 }

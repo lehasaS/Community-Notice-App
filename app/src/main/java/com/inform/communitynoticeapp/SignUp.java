@@ -23,17 +23,17 @@ public class SignUp extends AppCompatActivity {
 
     private TextInputLayout emailTI, passwordTI, passwordAgainTI, displayNameTI, communityTI;
     private AutoCompleteTextView textView;
-    private validateInput validate;
+    private ValidateInput validate;
     private String dispName;
-    private userDetails userCurrent;
-    private final dataBaseFirebase firebase = dataBaseFirebase.getInstance();
+    private UserDetails userCurrent;
+    private final FirebaseConnector firebase = FirebaseConnector.getInstance();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-        //Objects.requireNonNull(getSupportActionBar()).hide();
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
         //[START] Signup Part
         emailTI = findViewById(R.id.emailTI);
@@ -43,7 +43,7 @@ public class SignUp extends AppCompatActivity {
         communityTI = findViewById(R.id.communityTI);
         Button signUpBtn = findViewById(R.id.signUp_btn2);
         textView = (AutoCompleteTextView) findViewById(R.id.autoCompleteCommunity);
-        validate=new validateInput(this, emailTI, passwordTI, passwordAgainTI, displayNameTI, communityTI);
+        validate=new ValidateInput(this, emailTI, passwordTI, passwordAgainTI, displayNameTI, communityTI);
         signUpBtn.setOnClickListener(view -> handleSignUpBtnClick());
         //[END] Signup Part
 
@@ -59,7 +59,7 @@ public class SignUp extends AppCompatActivity {
         String passwordAgain = Objects.requireNonNull(passwordAgainTI.getEditText()).getText().toString().trim();
         String community = Objects.requireNonNull(communityTI.getEditText()).getText().toString().trim();
         String role = "Community Member";//default role
-        userCurrent = new userDetails(dispName, email, role);
+        userCurrent = new UserDetails(dispName, email, role);
 
         if(validate.checkEmailValid(email).equals("valid") && validate.checkPasswordValid(password, passwordAgain).equals("valid") ){
             if(validate.checkDisplayName(dispName).equals("valid") && validate.checkCommunity(community).equals("valid")) {

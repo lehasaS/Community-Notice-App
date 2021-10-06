@@ -36,11 +36,9 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.ByteArrayOutputStream;
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -50,17 +48,17 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
-public class posts extends AppCompatActivity implements View.OnClickListener {
+public class CreatePost extends AppCompatActivity implements View.OnClickListener {
 
     private EditText typeET;
-    private final dataBaseFirebase firebase = dataBaseFirebase.getInstance();
-    private final FirebaseStorage storage = FirebaseStorage.getInstance();
+    private final FirebaseConnector firebase = FirebaseConnector.getInstance();
     private ImageView profilePicIV, postPicIV;
     private Uri postPicUri = null;
     private LinearLayout linearLayout;
     private TextInputLayout communityTI;
     private AutoCompleteTextView textView;
-
+    private static final int CAMERA_PERMISSION_CODE = 112;
+    private static final int STORAGE_PERMISSION_CODE = 113;
 
     @SuppressLint("NonConstantResourceId")
     @Override
@@ -97,7 +95,7 @@ public class posts extends AppCompatActivity implements View.OnClickListener {
         firebase.getUserDetailsRef().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                userDetails details = snapshot.getValue(userDetails.class);
+                UserDetails details = snapshot.getValue(UserDetails.class);
                 assert details != null;
                 if(details.getRole().equals("Community Member")){
                     //tell user you cant post here
@@ -111,7 +109,7 @@ public class posts extends AppCompatActivity implements View.OnClickListener {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(posts.this, "Some error occurred: "+error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(CreatePost.this, "Some error occurred: "+error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -133,7 +131,7 @@ public class posts extends AppCompatActivity implements View.OnClickListener {
                 handleRemovingPhoto();
                 break;
             case R.id.categoryIV:
-                Intent choose= new Intent(posts.this, hashtag.class);
+                Intent choose= new Intent(CreatePost.this, Hashtag.class);
                 chooseHashtags.launch(choose);
                 break;
         }
@@ -161,7 +159,7 @@ public class posts extends AppCompatActivity implements View.OnClickListener {
     public void showProfilePic() {
         String photoUrl = firebase.getDisplayPicture().toString();
 
-        StorageReference photoRef = storage.getReferenceFromUrl(photoUrl);
+        StorageReference photoRef = firebase.getFBStorage().getReferenceFromUrl(photoUrl);
 
         final long ONE_MEGABYTE = 1024 * 1024;
         photoRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(bytes -> {
@@ -192,9 +190,9 @@ public class posts extends AppCompatActivity implements View.OnClickListener {
 
         firebase.addPostToMessageBoardNode(text, dateNow, pictureURI, tags, Objects.requireNonNull(communityTI.getEditText()).getText().toString()).addOnCompleteListener(task -> {
             if(task.isSuccessful()){
-                Toast.makeText(posts.this, "Post Submitted", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CreatePost.this, "Post Submitted", Toast.LENGTH_SHORT).show();
             }else{
-                Toast.makeText(posts.this, "Some error occurred: "+task.getException(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(CreatePost.this, "Some error occurred: "+task.getException(), Toast.LENGTH_SHORT).show();
             }
             typeET.setText("");
         });
@@ -203,7 +201,7 @@ public class posts extends AppCompatActivity implements View.OnClickListener {
     }
 
     private void goToMessageBoard() {
-        Intent goToMessageBoard = new Intent(posts.this, messageBoard.class);
+        Intent goToMessageBoard = new Intent(CreatePost.this, MessageBoard.class);
         startActivity(goToMessageBoard);
         overridePendingTransition(0,0);
     }
@@ -260,9 +258,9 @@ public class posts extends AppCompatActivity implements View.OnClickListener {
 
         firebase.addPostToNoticeBoardNode(text, dateNow, pictureURI, tags, Objects.requireNonNull(communityTI.getEditText()).getText().toString()).addOnCompleteListener(task -> {
             if(task.isSuccessful()){
-                Toast.makeText(posts.this, "Post Submitted", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CreatePost.this, "Post Submitted", Toast.LENGTH_SHORT).show();
             }else{
-                Toast.makeText(posts.this, "Some error occurred: "+task.getException(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(CreatePost.this, "Some error occurred: "+task.getException(), Toast.LENGTH_SHORT).show();
             }
             typeET.setText("");
         });
@@ -271,7 +269,7 @@ public class posts extends AppCompatActivity implements View.OnClickListener {
     }
 
     private void goToNoticeBoard() {
-        Intent goToNoticeBoard = new Intent(posts.this, noticeBoard.class);
+        Intent goToNoticeBoard = new Intent(CreatePost.this, NoticeBoard.class);
         startActivity(goToNoticeBoard);
         overridePendingTransition(0,0);
     }
@@ -308,11 +306,33 @@ public class posts extends AppCompatActivity implements View.OnClickListener {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[] {
                 Manifest.permission.CAMERA
-            }, 112);
+            }, CAMERA_PERMISSION_CODE);
+        } else {
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            takePicActivityResultLauncher.launch(intent);
         }
+    }
 
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        takePicActivityResultLauncher.launch(intent);
+    //source: https://www.youtube.com/watch?v=q1OLKyilp8M
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == CAMERA_PERMISSION_CODE) {
+            if (grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                handleTakingPhoto();
+                Toast.makeText(CreatePost.this, "Camera permission granted", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(CreatePost.this, "Camera permission denied. You cannot take a photo.", Toast.LENGTH_SHORT).show();
+            }
+        } else if (requestCode == STORAGE_PERMISSION_CODE) {
+            if (grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                handleAddingPhoto();
+                Toast.makeText(CreatePost.this, "Storage permission granted", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(CreatePost.this, "Storage permission denied. You cannot add a photo.", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     ActivityResultLauncher<Intent> takePicActivityResultLauncher = registerForActivityResult(
@@ -339,10 +359,16 @@ public class posts extends AppCompatActivity implements View.OnClickListener {
     }
 
     private void handleAddingPhoto() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        uploadPicActivityResultLauncher.launch(intent);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[] {
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+            }, STORAGE_PERMISSION_CODE);
+        } else {
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            uploadPicActivityResultLauncher.launch(intent);
+        }
     }
 
     ActivityResultLauncher<Intent> uploadPicActivityResultLauncher = registerForActivityResult(
@@ -377,14 +403,14 @@ public class posts extends AppCompatActivity implements View.OnClickListener {
 
                 communitiesArray = new String[communitiesList.size()];
                 communitiesArray = communitiesList.toArray(communitiesArray);
-                ArrayAdapter<String> communities = new ArrayAdapter<>(posts.this, android.R.layout.simple_dropdown_item_1line, communitiesArray);
+                ArrayAdapter<String> communities = new ArrayAdapter<>(CreatePost.this, android.R.layout.simple_dropdown_item_1line, communitiesArray);
                 textView.setAdapter(communities);
                 Objects.requireNonNull(communityTI.getEditText()).setText(communitiesArray[0]);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(posts.this, "Error occurred: " + error.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(CreatePost.this, "Error occurred: " + error.toString(), Toast.LENGTH_SHORT).show();
             }
         });
     }

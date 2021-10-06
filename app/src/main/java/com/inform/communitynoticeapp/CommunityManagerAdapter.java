@@ -17,7 +17,6 @@ public class CommunityManagerAdapter extends RecyclerView.Adapter<CommunityManag
 
     private final ArrayList<String> communitiesList;
     private final Context context;
-    private final dataBaseFirebase firebase=dataBaseFirebase.getInstance();
 
     public CommunityManagerAdapter(ArrayList<String> communitiesList, Context context) {
         this.communitiesList = communitiesList;

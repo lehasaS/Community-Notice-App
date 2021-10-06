@@ -13,7 +13,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
@@ -21,13 +20,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
-public class bookmarks extends AppCompatActivity {
+public class Bookmarks extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private final dataBaseFirebase firebase = dataBaseFirebase.getInstance();
-    private ArrayList<createPost> createPostArrayList;
+    private final FirebaseConnector firebase = FirebaseConnector.getInstance();
     private Context context;
 
     @SuppressLint("NonConstantResourceId")
@@ -48,12 +45,12 @@ public class bookmarks extends AppCompatActivity {
             switch (item.getItemId())
             {
                 case nav_noticeBoard:
-                    startActivity(new Intent(getApplicationContext(),noticeBoard.class));
+                    startActivity(new Intent(getApplicationContext(), NoticeBoard.class));
                     overridePendingTransition(0,0);
                     return true;
 
                 case nav_messageBoard:
-                    startActivity(new Intent(getApplicationContext(),messageBoard.class));
+                    startActivity(new Intent(getApplicationContext(), MessageBoard.class));
                     overridePendingTransition(0,0);
                     return true;
 
@@ -61,7 +58,7 @@ public class bookmarks extends AppCompatActivity {
                     return true;
 
                 case R.id.nav_profile:
-                    startActivity(new Intent(getApplicationContext(),profile.class));
+                    startActivity(new Intent(getApplicationContext(), Profile.class));
                     overridePendingTransition(0,0);
                     return true;
             }
@@ -79,16 +76,16 @@ public class bookmarks extends AppCompatActivity {
         firebase.readBookmarks().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                createPostArrayList = new ArrayList<>();
-                createPost post;
+                ArrayList<Post> postArrayList = new ArrayList<>();
+                Post post;
                 for(DataSnapshot content: snapshot.getChildren()){
-                    post = content.getValue(createPost.class);
-                    createPostArrayList.add(0,post);
+                    post = content.getValue(Post.class);
+                    postArrayList.add(0,post);
                 }
 
-                bookmarkAdapter postAdapter = new bookmarkAdapter(createPostArrayList, context);
+                BookmarkAdapter postAdapter = new BookmarkAdapter(postArrayList, context);
                 recyclerView.setAdapter(postAdapter);
-                createPostArrayList=null;
+                postArrayList.clear();
             }
 
             @Override

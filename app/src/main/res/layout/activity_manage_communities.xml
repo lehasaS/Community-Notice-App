@@ -13,7 +13,7 @@
         android:id="@+id/communities"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".manageCommunities">
+        tools:context=".ManageCommunities">
 
 
         <com.google.android.material.textfield.TextInputLayout

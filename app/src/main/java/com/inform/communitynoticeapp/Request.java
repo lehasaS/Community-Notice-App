@@ -2,7 +2,7 @@ package com.inform.communitynoticeapp;
 
 import com.google.firebase.database.DatabaseReference;
 
-public class request {
+public class Request {
 
     private DatabaseReference requestRef;
     private String requestID;
@@ -13,9 +13,9 @@ public class request {
     private String dateTime;
     private String status;
 
-    public request() {}
+    public Request() {}
 
-    public request(String userID, String displayName, String emailAddress, String reason, String dateTime, String requestID) {
+    public Request(String userID, String displayName, String emailAddress, String reason, String dateTime, String requestID) {
         this.userID = userID;
         this.displayName = displayName;
         this.emailAddress = emailAddress;

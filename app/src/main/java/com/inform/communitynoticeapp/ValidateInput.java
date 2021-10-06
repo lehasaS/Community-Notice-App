@@ -2,7 +2,6 @@ package com.inform.communitynoticeapp;
 
 import android.content.Context;
 import android.util.Patterns;
-import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -13,9 +12,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
-public class validateInput {
+public class ValidateInput {
 
     private TextInputLayout displayNameTI;
     private TextInputLayout passwordAgainTI;
@@ -25,16 +23,16 @@ public class validateInput {
     private TextInputLayout passwordTI;
     private TextInputLayout emailAgainTI;
     private final ArrayList<String> communities = new ArrayList<String>();
-    private final dataBaseFirebase firebase = dataBaseFirebase.getInstance();
+    private final FirebaseConnector firebase = FirebaseConnector.getInstance();
 
-    public validateInput(Context context, TextInputLayout emailTI, TextInputLayout emailAgainTI){
+    public ValidateInput(Context context, TextInputLayout emailTI, TextInputLayout emailAgainTI){
         this.context = context;
         this.emailTI =emailTI;
         this.emailAgainTI =emailAgainTI;
     }
 
 
-    public validateInput(Context context,TextInputLayout emailTI, TextInputLayout passwordTI, TextInputLayout passwordAgainTI, TextInputLayout displayNameTI, TextInputLayout communityTI){
+    public ValidateInput(Context context, TextInputLayout emailTI, TextInputLayout passwordTI, TextInputLayout passwordAgainTI, TextInputLayout displayNameTI, TextInputLayout communityTI){
         this.context=context;
         this.displayNameTI=displayNameTI;
         this.emailTI = emailTI;

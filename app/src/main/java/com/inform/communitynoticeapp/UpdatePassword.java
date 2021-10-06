@@ -10,9 +10,9 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Objects;
 
-public class updatePassword extends AppCompatActivity {
+public class UpdatePassword extends AppCompatActivity {
     private TextInputLayout newPassword, newPasswordAgain;
-    private validateInput validate;
+    private ValidateInput validate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,18 +21,18 @@ public class updatePassword extends AppCompatActivity {
         newPassword = findViewById(R.id.newPasswordTI);
         newPasswordAgain = findViewById(R.id.newPasswordAgainTI);
         Button saveChanges = findViewById(R.id.saveChanges_Btn);
-        validate = new validateInput(this,null, newPassword, newPasswordAgain, null, null);
+        validate = new ValidateInput(this,null, newPassword, newPasswordAgain, null, null);
 
         saveChanges.setOnClickListener(view -> handleSaveChangesClick());
     }
 
     private void handleSaveChangesClick() {
-        dataBaseFirebase firebase = dataBaseFirebase.getInstance();
+        FirebaseConnector firebase = FirebaseConnector.getInstance();
         String password = Objects.requireNonNull(newPassword.getEditText()).getText().toString();
         String passwordAgain = Objects.requireNonNull(newPasswordAgain.getEditText()).getText().toString();
 
         if(validate.checkPasswordValid(password, passwordAgain).equals("valid")){
-            firebase.updatePassword(password).addOnCompleteListener(task -> Toast.makeText(updatePassword.this, "Password successfully updated!", Toast.LENGTH_SHORT).show());
+            firebase.updatePassword(password).addOnCompleteListener(task -> Toast.makeText(UpdatePassword.this, "Password successfully updated!", Toast.LENGTH_SHORT).show());
         }
 
     }

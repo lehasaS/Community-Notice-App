@@ -22,7 +22,7 @@ public class JoinCommunitiesAdapter extends RecyclerView.Adapter<JoinCommunities
 
     private final ArrayList<String> communitiesList;
     private final Context context;
-    private final dataBaseFirebase firebase=dataBaseFirebase.getInstance();
+    private final FirebaseConnector firebase= FirebaseConnector.getInstance();
 
     public JoinCommunitiesAdapter(ArrayList<String> communitiesList, Context context) {
         this.communitiesList = communitiesList;

@@ -1,6 +1,5 @@
 package com.inform.communitynoticeapp;
 
-import static com.inform.communitynoticeapp.R.id.fade;
 import static com.inform.communitynoticeapp.R.id.nav_bookmarks;
 import static com.inform.communitynoticeapp.R.id.nav_messageBoard;
 import static com.inform.communitynoticeapp.R.id.nav_noticeBoard;
@@ -18,7 +17,6 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.Menu;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,27 +25,34 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 
-public class profile extends AppCompatActivity {
+public class Profile extends AppCompatActivity {
 
-    private final dataBaseFirebase firebase=dataBaseFirebase.getInstance();
-    private final FirebaseStorage storage = FirebaseStorage.getInstance();
+    private final FirebaseConnector firebase= FirebaseConnector.getInstance();
     private Context context;
     private ImageView profilePicture;
     private TextView communityTV, roleTV;
-    private Menu menu;
 
-
-    @SuppressLint({"SetTextI18n", "NonConstantResourceId"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        init();
+    }
+
+    @Override
+    public void onRestart() {
+        super.onRestart();
+        //When BACK BUTTON is pressed, the activity on the stack is restarted
+        init();
+    }
+
+    @SuppressLint({"SetTextI18n", "NonConstantResourceId"})
+    public void init() {
         setContentView(R.layout.activity_profile);
         roleTV = findViewById(R.id.roleTV);
         profilePicture = findViewById(R.id.displayPicture_IV);
@@ -62,18 +67,14 @@ public class profile extends AppCompatActivity {
         firebase.getUserDetailsRef().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                userDetails details = snapshot.getValue(userDetails.class);
+                UserDetails details = snapshot.getValue(UserDetails.class);
                 assert details != null;
                 roleTV.setText(details.getRole());
-                if (!details.getRole().equals("Moderator")) {
-                    //findViewById(R.id.manageRequests).setVisibility(View.GONE);
-                    //findViewById(R.id.manageCommunities).setVisibility(View.GONE);
-                }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(profile.this, "Error has occurred" + error.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(Profile.this, "Error has occurred" + error.toString(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -91,17 +92,17 @@ public class profile extends AppCompatActivity {
             switch (item.getItemId())
             {
                 case nav_noticeBoard:
-                    startActivity(new Intent(getApplicationContext(),noticeBoard.class));
+                    startActivity(new Intent(getApplicationContext(), NoticeBoard.class));
                     overridePendingTransition(0,0);
                     return true;
 
                 case nav_messageBoard:
-                    startActivity(new Intent(getApplicationContext(),messageBoard.class));
+                    startActivity(new Intent(getApplicationContext(), MessageBoard.class));
                     overridePendingTransition(0,0);
                     return true;
 
                 case nav_bookmarks:
-                    startActivity(new Intent(getApplicationContext(),bookmarks.class));
+                    startActivity(new Intent(getApplicationContext(), Bookmarks.class));
                     overridePendingTransition(0,0);
                     return true;
 
@@ -110,7 +111,6 @@ public class profile extends AppCompatActivity {
             }
             return false;
         });
-
     }
 
 
@@ -133,13 +133,13 @@ public class profile extends AppCompatActivity {
         if(id==R.id.logout){
             showLogoutDialog();
         }else if(id==R.id.editProfile){
-            Intent editProfile = new Intent(profile.this, profileEditor.class);
+            Intent editProfile = new Intent(Profile.this, EditProfile.class);
             startActivity(editProfile);
         }else if(id==R.id.manageRequests){
-            Intent manage_Requests = new Intent(profile.this, manageRequests.class);
+            Intent manage_Requests = new Intent(Profile.this, ManageRequests.class);
             startActivity(manage_Requests);
         }else if(id==R.id.manageCommunities){
-            Intent manageCommunities = new Intent(profile.this, manageCommunities.class);
+            Intent manageCommunities = new Intent(Profile.this, ManageCommunities.class);
             startActivity(manageCommunities);
         }else{
             return super.onOptionsItemSelected(item);
@@ -153,7 +153,7 @@ public class profile extends AppCompatActivity {
         builder.setPositiveButton("Yes", (dialog, id) -> {
             firebase.getUserAuth().signOut();
             ((Activity) context).finish();
-            Intent login = new Intent(profile.this, LogIn.class);
+            Intent login = new Intent(Profile.this, LogIn.class);
             startActivity(login);
 
         });
@@ -165,7 +165,7 @@ public class profile extends AppCompatActivity {
     public void showProfilePic() {
         String photoUrl = firebase.getDisplayPicture().toString();
 
-        StorageReference photoRef = storage.getReferenceFromUrl(photoUrl);
+        StorageReference photoRef = firebase.getFBStorage().getReferenceFromUrl(photoUrl);
 
         final long ONE_MEGABYTE = 1024 * 1024;
         photoRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(bytes -> {
@@ -192,7 +192,7 @@ public class profile extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(profile.this, "Error occurred: " + error.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(Profile.this, "Error occurred: " + error.toString(), Toast.LENGTH_SHORT).show();
             }
         });
 
