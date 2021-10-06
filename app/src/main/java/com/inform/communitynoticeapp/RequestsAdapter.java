@@ -25,6 +25,10 @@ public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.ViewHo
         this.context = context;
     }
 
+    public Context getContext() {
+        return context;
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView displayNameTV, emailTV, dateTimeTV, reasonTV;
         MaterialCardView cardView;

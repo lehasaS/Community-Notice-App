@@ -2,6 +2,7 @@ package com.inform.communitynoticeapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,13 +10,16 @@ import android.os.Handler;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.Objects;
+
+@SuppressLint("CustomSplashScreen")
 public class SplashActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        //Objects.requireNonNull(getSupportActionBar()).hide();
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance(); //auth object;
 
@@ -25,23 +29,19 @@ public class SplashActivity extends AppCompatActivity {
 
         Handler handler = new Handler();
 
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if(currentUser!=null) {
-                    //user is already logged in.
-
-                    Intent homeIntent = new Intent(SplashActivity.this, NoticeBoard.class);
-                    startActivity(homeIntent);
-                }
-                else {
-                    //user is not logged in, then show login activity.
-                    Intent loginIntent = new Intent(SplashActivity.this, LogIn.class);
-                    startActivity(loginIntent);
-                }
-
+        handler.postDelayed(() -> {
+            if(currentUser!=null) {
+                //user is already logged in.
+                Intent homeIntent = new Intent(SplashActivity.this, NoticeBoard.class);
+                startActivity(homeIntent);
             }
-        },3000); //1.5 sec
+            else {
+                //user is not logged in, then show login activity.
+                Intent loginIntent = new Intent(SplashActivity.this, LogIn.class);
+                startActivity(loginIntent);
+            }
+
+        },3000); //3 sec
 
     }
 }

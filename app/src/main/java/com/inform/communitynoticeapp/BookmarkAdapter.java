@@ -1,7 +1,6 @@
 package com.inform.communitynoticeapp;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
@@ -15,9 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
@@ -44,35 +40,7 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.ViewHo
         holder.dispName.setText(postList.get(position).getUser());
         holder.dateTime.setText(postList.get(position).getDateTime());
         holder.community.setText(postList.get(position).getCommunity());
-        //holder.postID.setText(postList.get(position).getPostID());
 
-        /*
-        SharedPreferences preferences = getSharedPreferences();
-        String state = preferences.getString(position +"pressed", "Yes");
-
-        if(state.equals("yes")){
-            holder.bookmark.setBackgroundDrawable(ContextCompat.getDrawable(holder.bookmark.getContext(), R.drawable.clicked_bookmark));
-        }
-
-        holder.bookmark.setOnCheckedChangeListener((compoundButton, isChecked) -> {
-            SharedPreferences.Editor editor = getSharedPreferences().edit();
-            if (isChecked && state.equals("yes")) {
-                editor.putString(position + "pressed", "no");
-                editor.apply();
-                holder.bookmark.setBackgroundDrawable(ContextCompat.getDrawable(holder.bookmark.getContext(), R.drawable.ic_baseline_bookmark));
-                removePostBookmark(holder.postID.getText().toString());
-            } else  if (!isChecked && state.equals("no")) {
-                editor.putString(position + "pressed", "no");
-                editor.apply();
-                holder.bookmark.setBackgroundDrawable(ContextCompat.getDrawable(holder.bookmark.getContext(), R.drawable.ic_baseline_bookmark));
-                removePostBookmark(holder.postID.getText().toString());
-            }
-
-        });
-
-        preferences.getString(position + "pressed", "no");
-
-         */
         if (!postList.get(position).getPost().equals("")) {
             holder.post.setText(postList.get(position).getPost());
         } else {
@@ -89,7 +57,7 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.ViewHo
                 holder.postPicIV.setImageBitmap(bmp);
             }).addOnFailureListener(e -> {
                 //handle failure
-                Toast.makeText((Bookmarks)context, "An error occurred: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "An error occurred: "+e.getMessage(), Toast.LENGTH_SHORT).show();
             });
         } else {
             holder.postPicIV.getLayoutParams().height = 0;
@@ -98,34 +66,13 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.ViewHo
 
     }
 
-    private void removePostBookmark(String postID) {
-        firebase.removeBookmark(postID).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot dataSnapshot: snapshot.getChildren()){
-                    dataSnapshot.getRef().removeValue();
-                }
-                Toast.makeText((Bookmarks)context, "Bookmark removed", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText((Bookmarks)context, "An error occurred: "+error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private SharedPreferences getSharedPreferences() {
-        return context.getSharedPreferences("BookmarkButton", Context.MODE_PRIVATE);
-    }
-
     @Override
     public int getItemCount() {
         return postList.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
-        TextView dispName, post, dateTime, postID, community;
+        TextView dispName, post, dateTime, community;
         ImageView postPicIV;
         MaterialCardView cardView;
         public ViewHolder(@NonNull View itemView) {
@@ -136,7 +83,6 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.ViewHo
             community=itemView.findViewById(R.id.community_TVThree);
             postPicIV=itemView.findViewById(R.id.postPic_IVThree);
             cardView=itemView.findViewById(R.id.cardviewThree);
-            //postID=itemView.findViewById(R.id.postIDThree);
         }
     }
 }

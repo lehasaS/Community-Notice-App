@@ -104,8 +104,8 @@ public class NoticeBoardAdapter extends RecyclerView.Adapter<NoticeBoardAdapter.
             cardView=itemView.findViewById(R.id.cardviewTwo);
             bookmark=itemView.findViewById(R.id.bookmark_BtnTwo);
             postID=itemView.findViewById(R.id.postIDTwo);
-            like_button = itemView.findViewById(R.id.like_btn2);
-            like_Textview = itemView.findViewById(R.id.likes_textview2);
+            like_button = itemView.findViewById(R.id.like_btn);
+            like_Textview = itemView.findViewById(R.id.likes_textview);
         }
 
     }
@@ -153,14 +153,15 @@ public class NoticeBoardAdapter extends RecyclerView.Adapter<NoticeBoardAdapter.
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("likes")
                 .child(postId);
         reference.addValueEventListener(new ValueEventListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                likes.setText(snapshot.getChildrenCount()+"likes");
+                likes.setText(snapshot.getChildrenCount()+" likes");
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Toast.makeText(context, "An error occurred: " + error.toString(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -231,13 +232,13 @@ public class NoticeBoardAdapter extends RecyclerView.Adapter<NoticeBoardAdapter.
             photoRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(bytes -> {
                 Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                 holder.postPicIV.setImageBitmap(bmp);
+                holder.postPicIV.setVisibility(View.VISIBLE);
             }).addOnFailureListener(e -> {
                 //handle failure
-                Toast.makeText((NoticeBoard)context, "An error occurred: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "An error occurred: "+e.getMessage(), Toast.LENGTH_SHORT).show();
             });
         } else {
-            holder.postPicIV.getLayoutParams().height = 0;
-            holder.postPicIV.requestLayout();
+            holder.postPicIV.setVisibility(View.GONE);
         }
 
         //Uterlizing the like/dislike and the likes increment methods
@@ -269,12 +270,12 @@ public class NoticeBoardAdapter extends RecyclerView.Adapter<NoticeBoardAdapter.
                 for(DataSnapshot dataSnapshot: snapshot.getChildren()){
                     dataSnapshot.getRef().removeValue();
                 }
-                Toast.makeText((NoticeBoard)context, "Bookmark removed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Bookmark removed", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText((NoticeBoard)context, "An error occurred: "+error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "An error occurred: "+error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -282,9 +283,9 @@ public class NoticeBoardAdapter extends RecyclerView.Adapter<NoticeBoardAdapter.
     private void addPostToBookmarks(Post post) {
         firebase.addPostToBookmarks(Objects.requireNonNull(post)).addOnCompleteListener(task -> {
             if(task.isSuccessful()){
-                Toast.makeText((NoticeBoard)context, "Bookmark added", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Bookmark added", Toast.LENGTH_SHORT).show();
             }else{
-                Toast.makeText((NoticeBoard)context, "An error occurred: "+task.getException(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "An error occurred: "+task.getException(), Toast.LENGTH_SHORT).show();
             }
         });
     }

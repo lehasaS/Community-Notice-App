@@ -55,7 +55,7 @@ public class MessageBoardAdapter extends RecyclerView.Adapter<MessageBoardAdapte
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference()
                 .child("likes")
                 .child(postid);
-        reference.addValueEventListener(new ValueEventListener() {
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.child(firebaseUser.getUid()).exists())
@@ -73,7 +73,7 @@ public class MessageBoardAdapter extends RecyclerView.Adapter<MessageBoardAdapte
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Toast.makeText(context, "An error occurred: " + error.toString(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -85,9 +85,10 @@ public class MessageBoardAdapter extends RecyclerView.Adapter<MessageBoardAdapte
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("likes")
                 .child(postId);
         reference.addValueEventListener(new ValueEventListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                likes.setText(snapshot.getChildrenCount()+"likes");
+                likes.setText(snapshot.getChildrenCount()+" likes");
             }
 
             @Override
@@ -104,6 +105,7 @@ public class MessageBoardAdapter extends RecyclerView.Adapter<MessageBoardAdapte
         return new MessageBoardAdapter.ViewHolder(postView);
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.dispName.setText(postList.get(position).getUser());
@@ -163,41 +165,32 @@ public class MessageBoardAdapter extends RecyclerView.Adapter<MessageBoardAdapte
             photoRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(bytes -> {
                 Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                 holder.postPicIV.setImageBitmap(bmp);
+                holder.postPicIV.setVisibility(View.VISIBLE);
             }).addOnFailureListener(e -> {
                 //handle failure
-                Toast.makeText((MessageBoard)context, "An error occurred: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "An error occurred: "+e.getMessage(), Toast.LENGTH_SHORT).show();
             });
         } else {
-            holder.postPicIV.getLayoutParams().height = 0;
-            holder.postPicIV.requestLayout();
+            holder.postPicIV.setVisibility(View.GONE);
         }
 
-        //Uterlizing the like/dislike and the likes increment methods
+        //Utilizing the like/dislike and the likes increment methods
         isLikes(postList.get(position).getPostID(),holder.like_button);
         nrLikes(holder.like_Textview,postList.get(position).getPostID());
 
         holder.like_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(holder.like_button.getTag().equals("like"))
-                {
-                    FirebaseDatabase.getInstance().getReference().child("likes").child(postList.get(position).getPostID())
-                            .child(firebaseUser.getUid()).setValue(true);
+                if(holder.like_button.getTag().equals("like")) {
+                    firebase.likePost(position,postList);
 
                 }
                 else{
-                    FirebaseDatabase.getInstance().getReference().child("likes").child(postList.get(position).getPostID())
-                            .child(firebaseUser.getUid()).removeValue();
-
+                    firebase.unlikePost(position,postList);
                 }
             }
+
         });
-
-
-
-
-
-
     }
 
     private void removePostBookmark(String postID) {
@@ -207,12 +200,12 @@ public class MessageBoardAdapter extends RecyclerView.Adapter<MessageBoardAdapte
                 for(DataSnapshot dataSnapshot: snapshot.getChildren()){
                     dataSnapshot.getRef().removeValue();
                 }
-                Toast.makeText((MessageBoard)context, "Bookmark removed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Bookmark removed", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText((MessageBoard)context, "An error occurred: "+error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "An error occurred: "+error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -220,9 +213,9 @@ public class MessageBoardAdapter extends RecyclerView.Adapter<MessageBoardAdapte
     private void addPostToBookmarks(Post post) {
         firebase.addPostToBookmarks(post).addOnCompleteListener(task -> {
             if(task.isSuccessful()){
-                Toast.makeText((MessageBoard)context, "Bookmark added", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Bookmark added", Toast.LENGTH_SHORT).show();
             }else{
-                Toast.makeText((MessageBoard)context, "An error occurred: "+task.getException(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "An error occurred: "+task.getException(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -289,8 +282,8 @@ public class MessageBoardAdapter extends RecyclerView.Adapter<MessageBoardAdapte
             bookmark=itemView.findViewById(R.id.bookmark_Btn);
             postID=itemView.findViewById(R.id.postID);
             linearLayout=itemView.findViewById(R.id.linear_LL);
-            like_button = itemView.findViewById(R.id.like_btn2);
-            like_Textview = itemView.findViewById(R.id.likes_textview2);
+            like_button = itemView.findViewById(R.id.like_btn);
+            like_Textview = itemView.findViewById(R.id.likes_textview);
         }
     }
 }

@@ -60,7 +60,6 @@ public class Profile extends AppCompatActivity {
         TextView welcomeMessageTV = findViewById(R.id.welcomeMessage_TV);
         TextView displayName = findViewById(R.id.usernameTV);
         displayName.setText(firebase.getUser().getDisplayName());
-        //menu=get
         welcomeMessageTV.setText(getString(R.string.Greeting)+ firebase.getUser().getDisplayName()+"!");
         context=this;
 

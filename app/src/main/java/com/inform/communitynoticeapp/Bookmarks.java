@@ -13,6 +13,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
@@ -85,16 +87,13 @@ public class Bookmarks extends AppCompatActivity {
 
                 BookmarkAdapter postAdapter = new BookmarkAdapter(postArrayList, context);
                 recyclerView.setAdapter(postAdapter);
-                postArrayList.clear();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Toast.makeText(Bookmarks.this, "An error occurred: "+error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
-
-
 
 }

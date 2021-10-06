@@ -26,6 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.Objects;
 
 public class MessageBoard extends AppCompatActivity implements View.OnClickListener{
@@ -90,7 +91,9 @@ public class MessageBoard extends AppCompatActivity implements View.OnClickListe
 
     private void readPost(ArrayList<String> communities){
         final ArrayList<Post> postArrayList = new ArrayList<>();
-        for (String community: communities) {
+        Iterator<String> iterator = communities.iterator();
+        while (iterator.hasNext()) {
+            String community = iterator.next();
             firebase.readPostForMessageBoard(community).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -103,8 +106,10 @@ public class MessageBoard extends AppCompatActivity implements View.OnClickListe
 
                     Collections.sort(postArrayList);
 
-                    postAdapter = new MessageBoardAdapter(postArrayList, context);
-                    recyclerView.setAdapter(postAdapter);
+                    if (!iterator.hasNext()) {
+                        postAdapter = new MessageBoardAdapter(postArrayList, context);
+                        recyclerView.setAdapter(postAdapter);
+                    }
                 }
 
                 @Override
@@ -148,49 +153,53 @@ public class MessageBoard extends AppCompatActivity implements View.OnClickListe
     @SuppressLint("NonConstantResourceId")
     public void OnCheckedChangeListener(View view) {
         boolean isChecked = ((CheckBox) view).isChecked();
-        switch (view.getId()) {
-            case R.id.EventsChip:
-                if (isChecked) {
-                    postAdapter.getFilter().filter(events.getText().toString().toLowerCase());
-                } else {
-                    postAdapter.getFilter().filter("");
-                }
-                break;
-            case R.id.RecommendationsChip:
-                if (isChecked) {
-                    postAdapter.getFilter().filter(recommendations.getText().toString().toLowerCase());
-                } else {
-                    postAdapter.getFilter().filter("");
-                }
-                break;
-            case R.id.CrimeInfoChip:
-                if (isChecked) {
-                    postAdapter.getFilter().filter(crimeInformation.getText().toString().toLowerCase());
-                } else {
-                    postAdapter.getFilter().filter("");
-                }
-                break;
-            case R.id.lostPetsChip:
-                if (isChecked) {
-                    postAdapter.getFilter().filter(lostPets.getText().toString().toLowerCase());
-                } else {
-                    postAdapter.getFilter().filter("");
-                }
-                break;
-            case R.id.localServicesChip:
-                if (isChecked) {
-                    postAdapter.getFilter().filter(localServices.getText().toString().toLowerCase());
-                } else {
-                    postAdapter.getFilter().filter("");
-                }
-                break;
-            case R.id.GeneralPostChip:
-                if (isChecked) {
-                    postAdapter.getFilter().filter(generalNews.getText().toString().toLowerCase());
-                } else {
-                    postAdapter.getFilter().filter("");
-                }
-                break;
+        if(postAdapter!=null){
+            switch (view.getId()) {
+                case R.id.EventsChip:
+                    if (isChecked) {
+                        postAdapter.getFilter().filter(events.getText().toString().toLowerCase());
+                    } else {
+                        postAdapter.getFilter().filter("");
+                    }
+                    break;
+                case R.id.RecommendationsChip:
+                    if (isChecked) {
+                        postAdapter.getFilter().filter(recommendations.getText().toString().toLowerCase());
+                    } else {
+                        postAdapter.getFilter().filter("");
+                    }
+                    break;
+                case R.id.CrimeInfoChip:
+                    if (isChecked) {
+                        postAdapter.getFilter().filter(crimeInformation.getText().toString().toLowerCase());
+                    } else {
+                        postAdapter.getFilter().filter("");
+                    }
+                    break;
+                case R.id.lostPetsChip:
+                    if (isChecked) {
+                        postAdapter.getFilter().filter(lostPets.getText().toString().toLowerCase());
+                    } else {
+                        postAdapter.getFilter().filter("");
+                    }
+                    break;
+                case R.id.localServicesChip:
+                    if (isChecked) {
+                        postAdapter.getFilter().filter(localServices.getText().toString().toLowerCase());
+                    } else {
+                        postAdapter.getFilter().filter("");
+                    }
+                    break;
+                case R.id.GeneralPostChip:
+                    if (isChecked) {
+                        postAdapter.getFilter().filter(generalNews.getText().toString().toLowerCase());
+                    } else {
+                        postAdapter.getFilter().filter("");
+                    }
+                    break;
+            }
+        }else{
+            Toast.makeText(MessageBoard.this, "Posts still loading! ", Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -5,7 +5,7 @@
     android:id="@+id/cardviewTwo"
     app:cardElevation="4dp"
     android:clipChildren="true"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:layout_marginLeft="10dp"
@@ -125,7 +125,7 @@
             app:layout_constraintVertical_bias="0.483">
 
             <ImageButton
-                android:id="@+id/like_btn2"
+                android:id="@+id/like_btn"
                 android:layout_width="47dp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="20dp"
@@ -133,7 +133,7 @@
                 tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
             <TextView
-                android:id="@+id/likes_textview2"
+                android:id="@+id/likes_textview"
                 android:layout_width="83dp"
                 android:layout_marginStart="10dp"
                 android:layout_height="wrap_content"

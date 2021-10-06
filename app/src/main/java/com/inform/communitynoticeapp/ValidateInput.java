@@ -22,7 +22,7 @@ public class ValidateInput {
     private final TextInputLayout emailTI;
     private TextInputLayout passwordTI;
     private TextInputLayout emailAgainTI;
-    private final ArrayList<String> communities = new ArrayList<String>();
+    private final ArrayList<String> communities = new ArrayList<>();
     private final FirebaseConnector firebase = FirebaseConnector.getInstance();
 
     public ValidateInput(Context context, TextInputLayout emailTI, TextInputLayout emailAgainTI){

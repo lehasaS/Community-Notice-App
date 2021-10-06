@@ -84,8 +84,6 @@ public class ManageCommunities extends AppCompatActivity {
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(ManageCommunities.this, "Community added", Toast.LENGTH_SHORT).show();
                     displayCommunities();
-                }).addOnFailureListener(e -> {
-                    Toast.makeText(ManageCommunities.this, "Some error occurred: " + e.toString(), Toast.LENGTH_SHORT).show();
-                });
+                }).addOnFailureListener(e -> Toast.makeText(ManageCommunities.this, "Some error occurred: " + e.toString(), Toast.LENGTH_SHORT).show());
     }
 }

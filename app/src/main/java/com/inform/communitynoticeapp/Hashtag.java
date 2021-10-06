@@ -33,7 +33,7 @@ public class Hashtag extends AppCompatActivity implements View.OnClickListener {
         Button doneB = findViewById(R.id.doneB);
         Button clear = findViewById(R.id.clearB);
         checked = new HashMap<>();
-        hashtags = new ArrayList<String>();
+        hashtags = new ArrayList<>();
 
         doneB.setOnClickListener(this);
         clear.setOnClickListener(view -> {
