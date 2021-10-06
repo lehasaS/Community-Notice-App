@@ -8,14 +8,11 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/post_ET"
+        android:id="@+id/postET"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/bottom_navigation"
+        android:layout_above="@id/bottom_navigationNotice"
         tools:context=".noticeBoard">
-
-
-        <!-- Main content -->
 
         <HorizontalScrollView
             android:id="@+id/horizontalScrollView"
@@ -31,7 +28,9 @@
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/chipGroup"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:singleSelection="true"
+                tools:ignore="UsingOnClickInXml">
 
                 <!-- Chips can be declared here, or added dynamically. -->
                 <com.google.android.material.chip.Chip
@@ -41,6 +40,7 @@
                     android:layout_height="wrap_content"
                     android:clickable="true"
                     android:focusable="true"
+                    android:onClick="OnCheckedChangeListener"
                     android:text="@string/events" />
 
                 <com.google.android.material.chip.Chip
@@ -50,6 +50,7 @@
                     android:layout_height="wrap_content"
                     android:clickable="true"
                     android:focusable="true"
+                    android:onClick="OnCheckedChangeListener"
                     android:text="@string/recommendations" />
 
 
@@ -60,6 +61,7 @@
                     android:layout_height="wrap_content"
                     android:clickable="true"
                     android:focusable="true"
+                    android:onClick="OnCheckedChangeListener"
                     android:text="@string/crime_information" />
 
                 <com.google.android.material.chip.Chip
@@ -69,6 +71,7 @@
                     android:layout_height="wrap_content"
                     android:clickable="true"
                     android:focusable="true"
+                    android:onClick="OnCheckedChangeListener"
                     android:text="@string/lost_pets" />
 
                 <com.google.android.material.chip.Chip
@@ -78,6 +81,7 @@
                     android:layout_height="wrap_content"
                     android:clickable="true"
                     android:focusable="true"
+                    android:onClick="OnCheckedChangeListener"
                     android:text="@string/local_services" />
 
                 <com.google.android.material.chip.Chip
@@ -87,8 +91,8 @@
                     android:layout_height="wrap_content"
                     android:clickable="true"
                     android:focusable="true"
+                    android:onClick="OnCheckedChangeListener"
                     android:text="@string/general_post" />
-
             </com.google.android.material.chip.ChipGroup>
 
         </HorizontalScrollView>
@@ -104,7 +108,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView"
-            app:layout_constraintVertical_bias="0" />
+            app:layout_constraintVertical_bias="0.0" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/floating_action_button"
@@ -115,21 +119,22 @@
             android:layout_marginBottom="16dp"
             android:background="?android:attr/windowBackground"
             android:contentDescription="@string/button_fab"
-            app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
+            app:layout_constraintBottom_toTopOf="@+id/bottom_navigationNotice"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.954"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.995"
             app:srcCompat="@drawable/floating_action_button"
             tools:ignore="MissingConstraints,RedundantDescriptionCheck" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottom_navigation"
+            android:id="@+id/bottom_navigationNotice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:background="?android:attr/windowBackground"
             app:layout_constraintBottom_toBottomOf="parent"
-
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"

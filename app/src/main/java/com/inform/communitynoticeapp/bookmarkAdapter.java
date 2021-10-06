@@ -47,6 +47,7 @@ public class bookmarkAdapter extends RecyclerView.Adapter<bookmarkAdapter.ViewHo
     public void onBindViewHolder(@NonNull bookmarkAdapter.ViewHolder holder, int position) {
         holder.dispName.setText(postList.get(position).getUser());
         holder.dateTime.setText(postList.get(position).getDateTime());
+        holder.community.setText(postList.get(position).getCommunity());
         //holder.postID.setText(postList.get(position).getPostID());
 
         /*
@@ -128,18 +129,17 @@ public class bookmarkAdapter extends RecyclerView.Adapter<bookmarkAdapter.ViewHo
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
-        TextView dispName, post, dateTime, postID;
+        TextView dispName, post, dateTime, postID, community;
         ImageView postPicIV;
         MaterialCardView cardView;
-        ToggleButton bookmark;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             post=itemView.findViewById(R.id.post_contentThree);
             dispName =itemView.findViewById(R.id.display_nameThree);
             dateTime=itemView.findViewById(R.id.dateTime_TVThree);
+            community=itemView.findViewById(R.id.community_TVThree);
             postPicIV=itemView.findViewById(R.id.postPic_IVThree);
             cardView=itemView.findViewById(R.id.cardviewThree);
-            bookmark=itemView.findViewById(R.id.bookmark_BtnThree);
             //postID=itemView.findViewById(R.id.postIDThree);
         }
     }

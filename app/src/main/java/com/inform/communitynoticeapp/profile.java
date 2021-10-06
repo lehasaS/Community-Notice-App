@@ -87,7 +87,7 @@ public class profile extends AppCompatActivity implements View.OnClickListener {
         showProfilePic();
 
         //initialize And Assign Variable
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigationProfile);
 
         //set posts selected
         bottomNavigationView.setSelectedItemId(R.id.nav_profile);
