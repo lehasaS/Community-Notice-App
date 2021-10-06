@@ -216,7 +216,7 @@ public class FirebaseConnector implements Cloneable, Serializable {
      * @param community
      */
     public Query readPostForNoticeBoard(String community){
-        return this.getRootRef().child("Posts").child("NoticeBoard").orderByChild("community").equalTo(community);
+        return this.getRootRef().child("Posts").child("NoticeBoard").orderByChild("community").equalTo(community).limitToFirst(100);
     }
 
     /**
@@ -224,7 +224,7 @@ public class FirebaseConnector implements Cloneable, Serializable {
      * @param community
      */
     public Query readPostForMessageBoard(String community){
-        return this.getRootRef().child("Posts").child("MessageBoard").orderByChild("community").equalTo(community);
+        return this.getRootRef().child("Posts").child("MessageBoard").orderByChild("community").equalTo(community).limitToFirst(100);
     }
 
     /**
@@ -348,7 +348,7 @@ public class FirebaseConnector implements Cloneable, Serializable {
     public DatabaseReference getUserCommunities(){
         return this.getRootRef().child("Users").child(Objects.requireNonNull(userAuth.getUid())).child("Communities").getRef();
     }
-    
+
     /**
      * like post
      * @param position
