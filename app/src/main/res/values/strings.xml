@@ -72,4 +72,5 @@
     <string name="join">Join</string>
     <string name="leave">Leave</string>
     <string name="join_another_community">Join Another Community</string>
+    <string name="want_more_permissions_n_tell_us_why">Want more permissions? \n Tell us why</string>
 </resources>
