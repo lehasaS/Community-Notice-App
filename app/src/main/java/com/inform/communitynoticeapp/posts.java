@@ -186,6 +186,9 @@ public class posts extends AppCompatActivity implements View.OnClickListener {
         String dateNow = dateFormat.format(date);
         String text = typeET.getText().toString();
         ArrayList<String> tags = getHashtags();
+        if(tags.size()==0) {
+            tags.add("General Post");
+        }
 
         firebase.addPostToMessageBoardNode(text, dateNow, pictureURI, tags, Objects.requireNonNull(communityTI.getEditText()).getText().toString()).addOnCompleteListener(task -> {
             if(task.isSuccessful()){
@@ -202,6 +205,7 @@ public class posts extends AppCompatActivity implements View.OnClickListener {
     private void goToMessageBoard() {
         Intent goToMessageBoard = new Intent(posts.this, messageBoard.class);
         startActivity(goToMessageBoard);
+        overridePendingTransition(0,0);
     }
 
     private void postToMessageBoard() {
@@ -250,6 +254,9 @@ public class posts extends AppCompatActivity implements View.OnClickListener {
         String dateNow = dateFormat.format(date);
         String text = typeET.getText().toString();
         ArrayList<String> tags = getHashtags();
+        if(tags.size()==0) {
+            tags.add("General Post");
+        }
 
         firebase.addPostToNoticeBoardNode(text, dateNow, pictureURI, tags, Objects.requireNonNull(communityTI.getEditText()).getText().toString()).addOnCompleteListener(task -> {
             if(task.isSuccessful()){
@@ -266,6 +273,7 @@ public class posts extends AppCompatActivity implements View.OnClickListener {
     private void goToNoticeBoard() {
         Intent goToNoticeBoard = new Intent(posts.this, noticeBoard.class);
         startActivity(goToNoticeBoard);
+        overridePendingTransition(0,0);
     }
 
     private void postToNoticeBoard() {
@@ -300,7 +308,7 @@ public class posts extends AppCompatActivity implements View.OnClickListener {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[] {
                 Manifest.permission.CAMERA
-            }, 100);
+            }, 112);
         }
 
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);

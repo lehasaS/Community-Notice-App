@@ -61,9 +61,7 @@ public class dataBaseFirebase implements Cloneable, Serializable {
     }
 
     public FirebaseUser getUser(){
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        assert user != null;
-        return user;
+        return FirebaseAuth.getInstance().getCurrentUser();
     }
 
     public StorageReference getStorageRef() {
@@ -188,8 +186,8 @@ public class dataBaseFirebase implements Cloneable, Serializable {
         return this.getRootRef().child("Posts").child("MessageBoard").orderByChild("community").equalTo(community);
     }
 
-    public DatabaseReference readBookmarks(){
-        return this.getRootRef().child("Users").child(this.getUser().getUid()).child("Bookmarks").getRef();
+    public Query readBookmarks(){
+        return this.getRootRef().child("Bookmarks").child(this.getUser().getUid()).orderByChild("dateTime").getRef();
     }
 
     public Task<Void> addPostToNoticeBoardNode(String text, String dateNow, String imageUri, ArrayList<String> hashtags, String community){
@@ -207,13 +205,13 @@ public class dataBaseFirebase implements Cloneable, Serializable {
     }
 
     public Task<Void> addPostToBookmarks(@NonNull createPost post){
-        DatabaseReference bookmarkRef = this.getRootRef().child("Users").child(this.getUser().getUid()).child("Bookmarks").getRef();
+        DatabaseReference bookmarkRef = this.getRootRef().child("Bookmarks").child(this.getUser().getUid()).getRef();
         DatabaseReference newRef = bookmarkRef.push();
         return newRef.setValue(post);
     }
 
     public Query removeBookmark(String postID){
-        return this.getRootRef().child("Users").child(this.getUser().getUid()).child("Bookmarks").orderByChild("postID").equalTo(postID);
+        return this.getRootRef().child("Bookmarks").child(this.getUser().getUid()).orderByChild("postID").equalTo(postID);
     }
 
     public void uploadPicture(Uri imgUri) {

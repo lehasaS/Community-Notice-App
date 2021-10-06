@@ -15,22 +15,8 @@
     app:cardCornerRadius="30dp"
     android:background="?attr/selectableItemBackgroundBorderless">
 
-    <ToggleButton
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:id="@+id/bookmark_BtnThree"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="290dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:checkable="true"
-        android:textOn=""
-        android:textOff=""
-        android:background="@drawable/ic_baseline_bookmark"
-        />
-
     <LinearLayout
-        android:layout_width="343dp"
+        android:layout_width="335dp"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
@@ -56,6 +42,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="@string/date"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:textColor="?android:attr/textColorSecondary" />
+
+            <TextView
+                android:id="@+id/community_TVThree"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/community"
                 android:textAppearance="?attr/textAppearanceBody2"
                 android:textColor="?android:attr/textColorSecondary" />
 

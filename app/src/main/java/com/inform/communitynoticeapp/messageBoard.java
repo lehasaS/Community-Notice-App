@@ -14,9 +14,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.chip.Chip;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,15 +34,23 @@ public class messageBoard extends AppCompatActivity implements View.OnClickListe
     private RecyclerView recyclerView;
     private Context context;
     private final dataBaseFirebase firebase = dataBaseFirebase.getInstance();
+    private messageBoardAdapter postAdapter;
+    private Chip events, recommendations, crimeInformation, lostPets, localServices, generalNews;
 
     @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_board);
+        events = findViewById(R.id.EventsChip);
+        recommendations = findViewById(R.id.RecommendationsChip);
+        crimeInformation = findViewById(R.id.CrimeInfoChip);
+        lostPets = findViewById(R.id.lostPetsChip);
+        localServices = findViewById(R.id.localServicesChip);
+        generalNews = findViewById(R.id.GeneralPostChip);
 
         //initialize And Assign Variable
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigationMessage);
 
         //set posts selected
         bottomNavigationView.setSelectedItemId(nav_messageBoard);
@@ -93,7 +104,7 @@ public class messageBoard extends AppCompatActivity implements View.OnClickListe
 
                     Collections.sort(createPostArrayList);
 
-                    messageBoardAdapter postAdapter = new messageBoardAdapter(createPostArrayList, context);
+                    postAdapter = new messageBoardAdapter(createPostArrayList, context);
                     recyclerView.setAdapter(postAdapter);
                 }
 
@@ -103,7 +114,6 @@ public class messageBoard extends AppCompatActivity implements View.OnClickListe
                 }
             });
         }
-
     }
 
     @Override
@@ -134,6 +144,55 @@ public class messageBoard extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(messageBoard.this, "An error occurred: " + error.toString(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @SuppressLint("NonConstantResourceId")
+    public void OnCheckedChangeListener(View view) {
+        boolean isChecked = ((CheckBox) view).isChecked();
+        switch (view.getId()) {
+            case R.id.EventsChip:
+                if (isChecked) {
+                    postAdapter.getFilter().filter(events.getText().toString().toLowerCase());
+                } else {
+                    postAdapter.getFilter().filter("");
+                }
+                break;
+            case R.id.RecommendationsChip:
+                if (isChecked) {
+                    postAdapter.getFilter().filter(recommendations.getText().toString().toLowerCase());
+                } else {
+                    postAdapter.getFilter().filter("");
+                }
+                break;
+            case R.id.CrimeInfoChip:
+                if (isChecked) {
+                    postAdapter.getFilter().filter(crimeInformation.getText().toString().toLowerCase());
+                } else {
+                    postAdapter.getFilter().filter("");
+                }
+                break;
+            case R.id.lostPetsChip:
+                if (isChecked) {
+                    postAdapter.getFilter().filter(lostPets.getText().toString().toLowerCase());
+                } else {
+                    postAdapter.getFilter().filter("");
+                }
+                break;
+            case R.id.localServicesChip:
+                if (isChecked) {
+                    postAdapter.getFilter().filter(localServices.getText().toString().toLowerCase());
+                } else {
+                    postAdapter.getFilter().filter("");
+                }
+                break;
+            case R.id.GeneralPostChip:
+                if (isChecked) {
+                    postAdapter.getFilter().filter(generalNews.getText().toString().toLowerCase());
+                } else {
+                    postAdapter.getFilter().filter("");
+                }
+                break;
+        }
     }
 
     private interface userCommunitiesI {

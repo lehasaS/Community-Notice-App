@@ -1,5 +1,6 @@
 package com.inform.communitynoticeapp;
 
+import static com.inform.communitynoticeapp.R.id.fade;
 import static com.inform.communitynoticeapp.R.id.nav_bookmarks;
 import static com.inform.communitynoticeapp.R.id.nav_messageBoard;
 import static com.inform.communitynoticeapp.R.id.nav_noticeBoard;
@@ -15,9 +16,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.Menu;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,13 +34,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 
-public class profile extends AppCompatActivity implements View.OnClickListener {
+public class profile extends AppCompatActivity {
 
     private final dataBaseFirebase firebase=dataBaseFirebase.getInstance();
     private final FirebaseStorage storage = FirebaseStorage.getInstance();
     private Context context;
-    ImageView profilePicture;
-    private TextView communityTV;
+    private ImageView profilePicture;
+    private TextView communityTV, roleTV;
+    private Menu menu;
 
 
     @SuppressLint({"SetTextI18n", "NonConstantResourceId"})
@@ -47,20 +49,13 @@ public class profile extends AppCompatActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        TextView roleTV = findViewById(R.id.roleTV);
+        roleTV = findViewById(R.id.roleTV);
         profilePicture = findViewById(R.id.displayPicture_IV);
         communityTV = findViewById(R.id.communityTV);
         TextView welcomeMessageTV = findViewById(R.id.welcomeMessage_TV);
         TextView displayName = findViewById(R.id.usernameTV);
-        Button logoutBtn = findViewById(R.id.logout_Btn);
-        Button manageRequests = findViewById(R.id.manage_requests_btn);
-        Button manageCommunities = findViewById(R.id.manage_communities_btn);
-        Button editProfile = findViewById(R.id.editProfile_Btn2);
-        logoutBtn.setOnClickListener(this);
-        manageRequests.setOnClickListener(this);
-        editProfile.setOnClickListener(this);
-        manageCommunities.setOnClickListener(this);
         displayName.setText(firebase.getUser().getDisplayName());
+        //menu=get
         welcomeMessageTV.setText(getString(R.string.Greeting)+ firebase.getUser().getDisplayName()+"!");
         context=this;
 
@@ -70,10 +65,9 @@ public class profile extends AppCompatActivity implements View.OnClickListener {
                 userDetails details = snapshot.getValue(userDetails.class);
                 assert details != null;
                 roleTV.setText(details.getRole());
-
                 if (!details.getRole().equals("Moderator")) {
-                    manageRequests.setVisibility(View.GONE);
-                    manageCommunities.setVisibility(View.GONE);
+                    //findViewById(R.id.manageRequests).setVisibility(View.GONE);
+                    //findViewById(R.id.manageCommunities).setVisibility(View.GONE);
                 }
             }
 
@@ -87,7 +81,7 @@ public class profile extends AppCompatActivity implements View.OnClickListener {
         showProfilePic();
 
         //initialize And Assign Variable
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigationProfile);
 
         //set posts selected
         bottomNavigationView.setSelectedItemId(R.id.nav_profile);
@@ -120,28 +114,37 @@ public class profile extends AppCompatActivity implements View.OnClickListener {
     }
 
 
-    @SuppressLint("NonConstantResourceId")
-    public void onClick(View view) {
-        int id = view.getId();
-
-        switch (id){
-            case R.id.logout_Btn:
-                showLogoutDialog();
-                break;
-            case R.id.editProfile_Btn2:
-                Intent editProfile = new Intent(profile.this, profileEditor.class);
-                startActivity(editProfile);
-                break;
-            case R.id.manage_requests_btn:
-                Intent manage_Requests = new Intent(profile.this, manageRequests.class);
-                startActivity(manage_Requests);
-                break;
-            case R.id.manage_communities_btn:
-                Intent manageCommunities = new Intent(profile.this, manageCommunities.class);
-                startActivity(manageCommunities);
-                break;
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.hamburger_menu, menu);
+        MenuItem itemOne = menu.findItem(R.id.manageRequests);
+        MenuItem itemTwo = menu.findItem(R.id.manageCommunities);
+        if (!roleTV.getText().toString().equals("Moderator")) {
+            itemOne.setVisible(false);
+            itemTwo.setVisible(false);
         }
+        return true;
+    }
+
+    @SuppressLint("NonConstantResourceId")
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if(id==R.id.logout){
+            showLogoutDialog();
+        }else if(id==R.id.editProfile){
+            Intent editProfile = new Intent(profile.this, profileEditor.class);
+            startActivity(editProfile);
+        }else if(id==R.id.manageRequests){
+            Intent manage_Requests = new Intent(profile.this, manageRequests.class);
+            startActivity(manage_Requests);
+        }else if(id==R.id.manageCommunities){
+            Intent manageCommunities = new Intent(profile.this, manageCommunities.class);
+            startActivity(manageCommunities);
+        }else{
+            return super.onOptionsItemSelected(item);
+        }
+        return true;
     }
 
     private void showLogoutDialog() {
@@ -176,7 +179,7 @@ public class profile extends AppCompatActivity implements View.OnClickListener {
         firebase.getUserCommunities().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                ArrayList<String> communitiesList = new ArrayList<String>();
+                ArrayList<String> communitiesList = new ArrayList<>();
                 Community aCommunity;
                 for(DataSnapshot content: snapshot.getChildren()){
                     aCommunity = content.getValue(Community.class);

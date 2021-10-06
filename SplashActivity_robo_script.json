@@ -1,7 +1,7 @@
 [
   {
     "eventType": "VIEW_TEXT_CHANGED",
-    "timestamp": 1633124944045,
+    "timestamp": 1633466956147,
     "replacementText": "lehasaseoe77@gmail.com",
     "actionCode": -1,
     "delayTime": 0,
@@ -14,7 +14,7 @@
         "groupViewChildPosition": 0,
         "resourceId": "",
         "contentDescription": "",
-        "text": "lehasaseoe77@gmail.co"
+        "text": ""
       },
       {
         "className": "android.widget.FrameLayout",
@@ -38,7 +38,7 @@
   },
   {
     "eventType": "VIEW_TEXT_CHANGED",
-    "timestamp": 1633124979529,
+    "timestamp": 1633467013350,
     "replacementText": "1999lehasa",
     "actionCode": -1,
     "delayTime": 0,
@@ -75,7 +75,7 @@
   },
   {
     "eventType": "PRESSED_EDITOR_ACTION",
-    "timestamp": 1633125037501,
+    "timestamp": 1633467060663,
     "replacementText": "1999lehasa",
     "actionCode": 6,
     "delayTime": 0,
@@ -112,7 +112,7 @@
   },
   {
     "eventType": "VIEW_CLICKED",
-    "timestamp": 1633125044971,
+    "timestamp": 1633467067127,
     "replacementText": "LOGIN",
     "actionCode": -1,
     "delayTime": 0,
@@ -142,117 +142,6 @@
         "adapterViewChildPosition": -1,
         "groupViewChildPosition": 0,
         "resourceId": "android:id/content",
-        "contentDescription": "",
-        "text": ""
-      }
-    ]
-  },
-  {
-    "eventType": "VIEW_CLICKED",
-    "timestamp": 1633125066771,
-    "replacementText": "",
-    "actionCode": -1,
-    "delayTime": 0,
-    "canScrollTo": false,
-    "elementDescriptors": [
-      {
-        "className": "com.google.android.material.bottomnavigation.BottomNavigationItemView",
-        "recyclerViewChildPosition": -1,
-        "adapterViewChildPosition": -1,
-        "groupViewChildPosition": 0,
-        "resourceId": "com.inform.communitynoticeapp:id/nav_noticeBoard",
-        "contentDescription": "Notice Board",
-        "text": ""
-      },
-      {
-        "className": "com.google.android.material.bottomnavigation.BottomNavigationMenuView",
-        "recyclerViewChildPosition": -1,
-        "adapterViewChildPosition": -1,
-        "groupViewChildPosition": 0,
-        "resourceId": "",
-        "contentDescription": "",
-        "text": ""
-      },
-      {
-        "className": "com.google.android.material.bottomnavigation.BottomNavigationView",
-        "recyclerViewChildPosition": -1,
-        "adapterViewChildPosition": -1,
-        "groupViewChildPosition": 3,
-        "resourceId": "com.inform.communitynoticeapp:id/bottom_navigation",
-        "contentDescription": "",
-        "text": ""
-      }
-    ]
-  },
-  {
-    "eventType": "VIEW_CLICKED",
-    "timestamp": 1633125075498,
-    "replacementText": "",
-    "actionCode": -1,
-    "delayTime": 0,
-    "canScrollTo": false,
-    "elementDescriptors": [
-      {
-        "className": "com.google.android.material.bottomnavigation.BottomNavigationItemView",
-        "recyclerViewChildPosition": -1,
-        "adapterViewChildPosition": -1,
-        "groupViewChildPosition": 1,
-        "resourceId": "com.inform.communitynoticeapp:id/nav_messageBoard",
-        "contentDescription": "Message Board",
-        "text": ""
-      },
-      {
-        "className": "com.google.android.material.bottomnavigation.BottomNavigationMenuView",
-        "recyclerViewChildPosition": -1,
-        "adapterViewChildPosition": -1,
-        "groupViewChildPosition": 0,
-        "resourceId": "",
-        "contentDescription": "",
-        "text": ""
-      },
-      {
-        "className": "com.google.android.material.bottomnavigation.BottomNavigationView",
-        "recyclerViewChildPosition": -1,
-        "adapterViewChildPosition": -1,
-        "groupViewChildPosition": 3,
-        "resourceId": "com.inform.communitynoticeapp:id/bottom_navigation",
-        "contentDescription": "",
-        "text": ""
-      }
-    ]
-  },
-  {
-    "eventType": "VIEW_CLICKED",
-    "timestamp": 1633125080246,
-    "replacementText": "",
-    "actionCode": -1,
-    "delayTime": 0,
-    "canScrollTo": false,
-    "elementDescriptors": [
-      {
-        "className": "com.google.android.material.floatingactionbutton.FloatingActionButton",
-        "recyclerViewChildPosition": -1,
-        "adapterViewChildPosition": -1,
-        "groupViewChildPosition": 2,
-        "resourceId": "com.inform.communitynoticeapp:id/floating_action_button",
-        "contentDescription": "Fab button",
-        "text": ""
-      },
-      {
-        "className": "androidx.constraintlayout.widget.ConstraintLayout",
-        "recyclerViewChildPosition": -1,
-        "adapterViewChildPosition": -1,
-        "groupViewChildPosition": 0,
-        "resourceId": "com.inform.communitynoticeapp:id/post_ET",
-        "contentDescription": "",
-        "text": ""
-      },
-      {
-        "className": "androidx.coordinatorlayout.widget.CoordinatorLayout",
-        "recyclerViewChildPosition": -1,
-        "adapterViewChildPosition": -1,
-        "groupViewChildPosition": 0,
-        "resourceId": "com.inform.communitynoticeapp:id/board",
         "contentDescription": "",
         "text": ""
       }

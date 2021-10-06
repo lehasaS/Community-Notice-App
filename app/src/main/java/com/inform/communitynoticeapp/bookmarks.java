@@ -13,6 +13,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -37,7 +39,7 @@ public class bookmarks extends AppCompatActivity {
 
 
         //initialize And Assign Variable
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigationBookmark);
 
         //set posts selected
         bottomNavigationView.setSelectedItemId(nav_bookmarks);
@@ -66,24 +68,21 @@ public class bookmarks extends AppCompatActivity {
             return false;
         });
 
-        recyclerView= findViewById(R.id.recyclerViewNotice);
+        recyclerView= findViewById(R.id.recyclerViewBookmark);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
-
-        createPostArrayList = new ArrayList<>();
         displayBookmarks();
-
     }
 
     private void displayBookmarks() {
         firebase.readBookmarks().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                createPostArrayList = new ArrayList<>();
                 createPost post;
                 for(DataSnapshot content: snapshot.getChildren()){
                     post = content.getValue(createPost.class);
-                    Objects.requireNonNull(post).setPost(post.getPost());
                     createPostArrayList.add(0,post);
                 }
 

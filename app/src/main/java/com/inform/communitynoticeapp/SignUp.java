@@ -33,7 +33,7 @@ public class SignUp extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-        Objects.requireNonNull(getSupportActionBar()).hide();
+        //Objects.requireNonNull(getSupportActionBar()).hide();
 
         //[START] Signup Part
         emailTI = findViewById(R.id.emailTI);
@@ -53,11 +53,11 @@ public class SignUp extends AppCompatActivity {
 
 
     private void handleSignUpBtnClick() {
-        dispName = Objects.requireNonNull(displayNameTI.getEditText()).getText().toString();
-        String email = Objects.requireNonNull(emailTI.getEditText()).getText().toString();
-        String password = Objects.requireNonNull(passwordTI.getEditText()).getText().toString();
-        String passwordAgain = Objects.requireNonNull(passwordAgainTI.getEditText()).getText().toString();
-        String community = Objects.requireNonNull(communityTI.getEditText()).getText().toString();
+        dispName = Objects.requireNonNull(displayNameTI.getEditText()).getText().toString().trim();
+        String email = Objects.requireNonNull(emailTI.getEditText()).getText().toString().trim();
+        String password = Objects.requireNonNull(passwordTI.getEditText()).getText().toString().trim();
+        String passwordAgain = Objects.requireNonNull(passwordAgainTI.getEditText()).getText().toString().trim();
+        String community = Objects.requireNonNull(communityTI.getEditText()).getText().toString().trim();
         String role = "Community Member";//default role
         userCurrent = new userDetails(dispName, email, role);
 
