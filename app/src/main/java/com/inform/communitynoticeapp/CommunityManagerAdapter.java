@@ -23,6 +23,10 @@ public class CommunityManagerAdapter extends RecyclerView.Adapter<CommunityManag
         this.context = context;
     }
 
+    public Context getContext() {
+        return context;
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView communityTV;
         MaterialCardView cardView;

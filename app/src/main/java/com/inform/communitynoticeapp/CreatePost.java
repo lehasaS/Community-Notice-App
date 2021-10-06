@@ -77,7 +77,7 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
         profilePicIV = findViewById(R.id.displayPicture_IV);
         postPicIV = findViewById(R.id.picPreview_IV);
         linearLayout= findViewById(R.id.tagsLL);
-        textView = (AutoCompleteTextView) findViewById(R.id.autoCompleteCommunity);
+        textView = findViewById(R.id.autoCompleteCommunity);
 
         showProfilePic();
         takePhoto.setOnClickListener(this);
@@ -220,15 +220,13 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
             }).addOnFailureListener(e -> {
                 progressDialog.dismiss();
                 Toast.makeText(this, "Upload failed. Error occurred: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-            }).addOnSuccessListener(taskSnapshot -> {
-                pictureRef.getDownloadUrl().addOnSuccessListener(pictureUri -> {
-                    progressDialog.dismiss();
-                    postToMessageBoard(pictureUri.toString());
-                }).addOnFailureListener(e -> {
-                    progressDialog.dismiss();
-                    Toast.makeText(this, "An error occurred: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                });
-            });
+            }).addOnSuccessListener(taskSnapshot -> pictureRef.getDownloadUrl().addOnSuccessListener(pictureUri -> {
+                progressDialog.dismiss();
+                postToMessageBoard(pictureUri.toString());
+            }).addOnFailureListener(e -> {
+                progressDialog.dismiss();
+                Toast.makeText(this, "An error occurred: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }));
         } else {
             postToMessageBoard("");
         }
@@ -288,15 +286,13 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
             }).addOnFailureListener(e -> {
                 progressDialog.dismiss();
                 Toast.makeText(this, "Upload failed. Error occurred: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-            }).addOnSuccessListener(taskSnapshot -> {
-                pictureRef.getDownloadUrl().addOnSuccessListener(pictureUri -> {
-                    progressDialog.dismiss();
-                    postToNoticeBoard(pictureUri.toString());
-                }).addOnFailureListener(e -> {
-                    progressDialog.dismiss();
-                    Toast.makeText(this, "An error occurred: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                });
-            });
+            }).addOnSuccessListener(taskSnapshot -> pictureRef.getDownloadUrl().addOnSuccessListener(pictureUri -> {
+                progressDialog.dismiss();
+                postToNoticeBoard(pictureUri.toString());
+            }).addOnFailureListener(e -> {
+                progressDialog.dismiss();
+                Toast.makeText(this, "An error occurred: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }));
         } else {
             postToNoticeBoard("");
         }
@@ -392,7 +388,7 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
         firebase.getUserCommunities().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                ArrayList<String> communitiesList = new ArrayList<String>();
+                ArrayList<String> communitiesList = new ArrayList<>();
                 String[] communitiesArray;
                 Community aCommunity;
                 for (DataSnapshot content : snapshot.getChildren()) {

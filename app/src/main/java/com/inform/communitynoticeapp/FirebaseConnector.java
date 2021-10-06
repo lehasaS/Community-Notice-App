@@ -19,7 +19,6 @@ import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.UUID;
 
 public class FirebaseConnector implements Cloneable, Serializable {
 
@@ -81,11 +80,6 @@ public class FirebaseConnector implements Cloneable, Serializable {
         return this.getRootRef().child("Communities").getRef();
     }
 
-    public void saveNameInFirebase(UserDetails userCurrent){
-        DatabaseReference nameRef = this.getRootRef().child("Users").child(Objects.requireNonNull(userAuth.getUid()));
-        nameRef.setValue(userCurrent);
-    }
-
     public void saveNameInFirebase(UserDetails userCurrent, String community){
         DatabaseReference nameRef = this.getRootRef().child("Users").child(Objects.requireNonNull(userAuth.getUid()));
         nameRef.setValue(userCurrent);
@@ -132,18 +126,10 @@ public class FirebaseConnector implements Cloneable, Serializable {
         return Objects.requireNonNull(userAuth.getCurrentUser()).updatePassword(password);
     }
 
-    public void updateDisplayPicture(Uri photoUri){
-        UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder().setPhotoUri(photoUri).build();
-        this.getUser().updateProfile(profileChangeRequest);
-    }
-
     public Uri getDisplayPicture() {
         return getUser().getPhotoUrl();
     }
 
-    public void updateCommunity(String community) {
-        getRootRef().child("Users").child(getUser().getUid()).child("community").setValue(community);
-    }
 
     public Query readPostForNoticeBoard(String community){
         return this.getRootRef().child("Posts").child("NoticeBoard").orderByChild("community").equalTo(community);
@@ -179,12 +165,6 @@ public class FirebaseConnector implements Cloneable, Serializable {
 
     public Query removeBookmark(String postID){
         return this.getRootRef().child("Bookmarks").child(this.getUser().getUid()).orderByChild("postID").equalTo(postID);
-    }
-
-    public void uploadPicture(Uri imgUri) {
-        final String randomKey = UUID.randomUUID().toString();
-        StorageReference pictureRef = getStorageRef().child("images/" + randomKey);
-        pictureRef.putFile(imgUri);
     }
 
     public DatabaseReference readRequests(){

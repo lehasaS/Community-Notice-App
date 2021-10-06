@@ -33,7 +33,7 @@ public class SignUp extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-        //Objects.requireNonNull(getSupportActionBar()).hide();
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
         //[START] Signup Part
         emailTI = findViewById(R.id.emailTI);
@@ -42,7 +42,7 @@ public class SignUp extends AppCompatActivity {
         passwordAgainTI = findViewById(R.id.passwordAgainTI);
         communityTI = findViewById(R.id.communityTI);
         Button signUpBtn = findViewById(R.id.signUp_btn2);
-        textView = (AutoCompleteTextView) findViewById(R.id.autoCompleteCommunity);
+        textView = findViewById(R.id.autoCompleteCommunity);
         validate=new ValidateInput(this, emailTI, passwordTI, passwordAgainTI, displayNameTI, communityTI);
         signUpBtn.setOnClickListener(view -> handleSignUpBtnClick());
         //[END] Signup Part
@@ -103,7 +103,7 @@ public class SignUp extends AppCompatActivity {
         firebase.readCommunities().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                ArrayList<String> communitiesList = new ArrayList<String>();
+                ArrayList<String> communitiesList = new ArrayList<>();
                 String[] communitiesArray;
                 Community aCommunity;
                 for(DataSnapshot content: snapshot.getChildren()){

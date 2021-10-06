@@ -14,7 +14,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -53,20 +52,6 @@ public class NoticeBoard extends AppCompatActivity implements View.OnClickListen
         localServices = findViewById(R.id.localServices_chip);
         generalNews = findViewById(R.id.GeneralPost_chip);
 
-        CompoundButton.OnCheckedChangeListener checkedChangeListener = (compoundButton, isChecked) -> {
-            if(isChecked){
-                postAdapter.getFilter().filter(compoundButton.getText().toString().toLowerCase());
-            }else{
-                postAdapter.getFilter().filter("");
-            }
-        };
-
-        events.setOnCheckedChangeListener(checkedChangeListener);
-        recommendations.setOnCheckedChangeListener(checkedChangeListener);
-        crimeInformation.setOnCheckedChangeListener(checkedChangeListener);
-        lostPets.setOnCheckedChangeListener(checkedChangeListener);
-        localServices.setOnCheckedChangeListener(checkedChangeListener);
-        generalNews.setOnCheckedChangeListener(checkedChangeListener);
         //initialize And Assign Variable
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigationNotice);
 
@@ -174,50 +159,55 @@ public class NoticeBoard extends AppCompatActivity implements View.OnClickListen
     @SuppressLint("NonConstantResourceId")
     public void OnCheckedChangeListener(View view) {
         boolean isChecked = ((CheckBox) view).isChecked();
-        switch (view.getId()) {
-            case R.id.Events_chip:
-                if (isChecked) {
-                    postAdapter.getFilter().filter(events.getText().toString().toLowerCase());
-                } else {
-                    postAdapter.getFilter().filter("");
-                }
-                break;
-            case R.id.Recommendations_chip:
-                if (isChecked) {
-                    postAdapter.getFilter().filter(recommendations.getText().toString().toLowerCase());
-                } else {
-                    postAdapter.getFilter().filter("");
-                }
-                break;
-            case R.id.CrimeInfo_chip:
-                if (isChecked) {
-                    postAdapter.getFilter().filter(crimeInformation.getText().toString().toLowerCase());
-                } else {
-                    postAdapter.getFilter().filter("");
-                }
-                break;
-            case R.id.lostPets_chip:
-                if (isChecked) {
-                    postAdapter.getFilter().filter(lostPets.getText().toString().toLowerCase());
-                } else {
-                    postAdapter.getFilter().filter("");
-                }
-                break;
-            case R.id.localServices_chip:
-                if (isChecked) {
-                    postAdapter.getFilter().filter(localServices.getText().toString().toLowerCase());
-                } else {
-                    postAdapter.getFilter().filter("");
-                }
-                break;
-            case R.id.GeneralPost_chip:
-                if (isChecked) {
-                    postAdapter.getFilter().filter(generalNews.getText().toString().toLowerCase());
-                } else {
-                    postAdapter.getFilter().filter("");
-                }
-                break;
+        if(postAdapter!=null){
+            switch (view.getId()) {
+                case R.id.Events_chip:
+                    if (isChecked) {
+                        postAdapter.getFilter().filter(events.getText().toString().toLowerCase());
+                    } else {
+                        postAdapter.getFilter().filter("");
+                    }
+                    break;
+                case R.id.Recommendations_chip:
+                    if (isChecked) {
+                        postAdapter.getFilter().filter(recommendations.getText().toString().toLowerCase());
+                    } else {
+                        postAdapter.getFilter().filter("");
+                    }
+                    break;
+                case R.id.CrimeInfo_chip:
+                    if (isChecked) {
+                        postAdapter.getFilter().filter(crimeInformation.getText().toString().toLowerCase());
+                    } else {
+                        postAdapter.getFilter().filter("");
+                    }
+                    break;
+                case R.id.lostPets_chip:
+                    if (isChecked) {
+                        postAdapter.getFilter().filter(lostPets.getText().toString().toLowerCase());
+                    } else {
+                        postAdapter.getFilter().filter("");
+                    }
+                    break;
+                case R.id.localServices_chip:
+                    if (isChecked) {
+                        postAdapter.getFilter().filter(localServices.getText().toString().toLowerCase());
+                    } else {
+                        postAdapter.getFilter().filter("");
+                    }
+                    break;
+                case R.id.GeneralPost_chip:
+                    if (isChecked) {
+                        postAdapter.getFilter().filter(generalNews.getText().toString().toLowerCase());
+                    } else {
+                        postAdapter.getFilter().filter("");
+                    }
+                    break;
+            }
+        }else{
+            Toast.makeText(NoticeBoard.this, "Posts still loading!", Toast.LENGTH_SHORT).show();
         }
+
     }
 
     private interface userCommunitiesI {

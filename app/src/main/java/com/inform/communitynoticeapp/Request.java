@@ -1,10 +1,8 @@
 package com.inform.communitynoticeapp;
 
-import com.google.firebase.database.DatabaseReference;
 
 public class Request {
 
-    private DatabaseReference requestRef;
     private String requestID;
     private String userID;
     private String displayName;

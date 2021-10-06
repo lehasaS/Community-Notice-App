@@ -64,7 +64,7 @@ public class MakeRequest extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Toast.makeText(MakeRequest.this, "Some error occurred: "+error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 

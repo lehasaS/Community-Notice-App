@@ -235,7 +235,7 @@ public class NoticeBoardAdapter extends RecyclerView.Adapter<NoticeBoardAdapter.
                 holder.postPicIV.setVisibility(View.VISIBLE);
             }).addOnFailureListener(e -> {
                 //handle failure
-                Toast.makeText((NoticeBoard)context, "An error occurred: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "An error occurred: "+e.getMessage(), Toast.LENGTH_SHORT).show();
             });
         } else {
             holder.postPicIV.setVisibility(View.GONE);
@@ -245,20 +245,17 @@ public class NoticeBoardAdapter extends RecyclerView.Adapter<NoticeBoardAdapter.
         isLikes(postList.get(position).getPostID(),holder.like_button);
         nrLikes(holder.like_Textview,postList.get(position).getPostID());
 
-        holder.like_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(holder.like_button.getTag().equals("like"))
-                {
-                    FirebaseDatabase.getInstance().getReference().child("likes").child(postList.get(position).getPostID())
-                            .child(firebaseUser.getUid()).setValue(true);
+        holder.like_button.setOnClickListener(view -> {
+            if(holder.like_button.getTag().equals("like"))
+            {
+                FirebaseDatabase.getInstance().getReference().child("likes").child(postList.get(position).getPostID())
+                        .child(firebaseUser.getUid()).setValue(true);
 
-                }
-                else{
-                    FirebaseDatabase.getInstance().getReference().child("likes").child(postList.get(position).getPostID())
-                            .child(firebaseUser.getUid()).removeValue();
+            }
+            else{
+                FirebaseDatabase.getInstance().getReference().child("likes").child(postList.get(position).getPostID())
+                        .child(firebaseUser.getUid()).removeValue();
 
-                }
             }
         });
 
@@ -273,12 +270,12 @@ public class NoticeBoardAdapter extends RecyclerView.Adapter<NoticeBoardAdapter.
                 for(DataSnapshot dataSnapshot: snapshot.getChildren()){
                     dataSnapshot.getRef().removeValue();
                 }
-                Toast.makeText((NoticeBoard)context, "Bookmark removed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Bookmark removed", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText((NoticeBoard)context, "An error occurred: "+error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "An error occurred: "+error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -286,9 +283,9 @@ public class NoticeBoardAdapter extends RecyclerView.Adapter<NoticeBoardAdapter.
     private void addPostToBookmarks(Post post) {
         firebase.addPostToBookmarks(Objects.requireNonNull(post)).addOnCompleteListener(task -> {
             if(task.isSuccessful()){
-                Toast.makeText((NoticeBoard)context, "Bookmark added", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Bookmark added", Toast.LENGTH_SHORT).show();
             }else{
-                Toast.makeText((NoticeBoard)context, "An error occurred: "+task.getException(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "An error occurred: "+task.getException(), Toast.LENGTH_SHORT).show();
             }
         });
     }

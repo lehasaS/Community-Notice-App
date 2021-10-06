@@ -168,7 +168,7 @@ public class MessageBoardAdapter extends RecyclerView.Adapter<MessageBoardAdapte
                 holder.postPicIV.setVisibility(View.VISIBLE);
             }).addOnFailureListener(e -> {
                 //handle failure
-                Toast.makeText((MessageBoard)context, "An error occurred: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "An error occurred: "+e.getMessage(), Toast.LENGTH_SHORT).show();
             });
         } else {
             holder.postPicIV.setVisibility(View.GONE);
@@ -203,12 +203,12 @@ public class MessageBoardAdapter extends RecyclerView.Adapter<MessageBoardAdapte
                 for(DataSnapshot dataSnapshot: snapshot.getChildren()){
                     dataSnapshot.getRef().removeValue();
                 }
-                Toast.makeText((MessageBoard)context, "Bookmark removed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Bookmark removed", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText((MessageBoard)context, "An error occurred: "+error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "An error occurred: "+error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -216,9 +216,9 @@ public class MessageBoardAdapter extends RecyclerView.Adapter<MessageBoardAdapte
     private void addPostToBookmarks(Post post) {
         firebase.addPostToBookmarks(post).addOnCompleteListener(task -> {
             if(task.isSuccessful()){
-                Toast.makeText((MessageBoard)context, "Bookmark added", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Bookmark added", Toast.LENGTH_SHORT).show();
             }else{
-                Toast.makeText((MessageBoard)context, "An error occurred: "+task.getException(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "An error occurred: "+task.getException(), Toast.LENGTH_SHORT).show();
             }
         });
     }

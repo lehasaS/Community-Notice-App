@@ -133,18 +133,6 @@ public class EditProfile extends AppCompatActivity implements View.OnClickListen
             }
         }
     }
-
-    /*@Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode==1 && resultCode==RESULT_OK && data!=null && data.getData()!=null) {
-            Uri imageUri = data.getData();
-            profilePicIV.setImageURI(imageUri);
-            Toast.makeText(this, "Image URI: " + imageUri.toString(), Toast.LENGTH_SHORT).show();
-            firebase.updateDisplayPicture(imageUri);
-        }
-    }*/
-
     ActivityResultLauncher<Intent> uploadPicActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -157,14 +145,9 @@ public class EditProfile extends AppCompatActivity implements View.OnClickListen
                 }
             });
 
-    /*public void openSomeActivityForResult() {
-        Intent intent = new Intent(this, SomeActivity.class);
-        uploadPicActivityResultLauncher.launch(intent);
-    }*/
+
 
     public void setProfilePic(Uri photoUri) {
-        //Toast.makeText(this, "Photo URI: " + photoUri.toString(), Toast.LENGTH_SHORT).show();
-
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Uploading image...");
         progressDialog.show();
@@ -185,9 +168,7 @@ public class EditProfile extends AppCompatActivity implements View.OnClickListen
                 firebase.getUser().updateProfile(profileChangeRequest);
                 profilePicIV.setImageURI(photoUri);
                 Toast.makeText(this, "Image uploaded successfully!", Toast.LENGTH_SHORT).show();
-            }).addOnFailureListener(e -> {
-                Toast.makeText(this, "An error occurred: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-            });
+            }).addOnFailureListener(e -> Toast.makeText(this, "An error occurred: " + e.getMessage(), Toast.LENGTH_SHORT).show());
             progressDialog.dismiss();
         });
     }

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cardviewThree"
     app:cardElevation="4dp"
     android:clipChildren="true"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:layout_marginLeft="10dp"
@@ -16,73 +17,65 @@
     android:background="?attr/selectableItemBackgroundBorderless">
 
     <LinearLayout
-        android:layout_width="335dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="16dp">
 
 
-        <!-- Buttons -->
-        <LinearLayout
+        <TextView
+            android:id="@+id/display_nameThree"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title"
+            android:textAppearance="?attr/textAppearanceHeadline6" />
+
+        <TextView
+            android:id="@+id/dateTime_TVThree"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/date"
+            android:textAppearance="?attr/textAppearanceBody2"
+            android:textColor="?android:attr/textColorSecondary" />
+
+        <TextView
+            android:id="@+id/community_TVThree"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/community"
+            android:textAppearance="?attr/textAppearanceBody2"
+            android:textColor="?android:attr/textColorSecondary" />
+
+        <TextView
+            android:id="@+id/post_contentThree"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/post_content"
+            android:textAppearance="?attr/textAppearanceBody2"
+            android:textColor="?android:attr/textColorSecondary" />
+
+        <TextView
+            android:id="@+id/postIDThree"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/post_id"
+            android:textAppearance="?attr/textAppearanceBody2"
+            android:textColor="?android:attr/textColorSecondary"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/postPic_IVThree"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-
-            <TextView
-                android:id="@+id/display_nameThree"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/title"
-                android:textAppearance="?attr/textAppearanceHeadline6" />
-
-            <TextView
-                android:id="@+id/dateTime_TVThree"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/date"
-                android:textAppearance="?attr/textAppearanceBody2"
-                android:textColor="?android:attr/textColorSecondary" />
-
-            <TextView
-                android:id="@+id/community_TVThree"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/community"
-                android:textAppearance="?attr/textAppearanceBody2"
-                android:textColor="?android:attr/textColorSecondary" />
-
-            <TextView
-                android:id="@+id/post_contentThree"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/post_content"
-                android:textAppearance="?attr/textAppearanceBody2"
-                android:textColor="?android:attr/textColorSecondary" />
-
-            <TextView
-                android:id="@+id/postIDThree"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/post_id"
-                android:textAppearance="?attr/textAppearanceBody2"
-                android:visibility="gone"
-                android:textColor="?android:attr/textColorSecondary" />
-
-            <ImageView
-                android:id="@+id/postPic_IVThree"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:srcCompat="@android:drawable/ic_menu_gallery" />
-        </LinearLayout>
-
+            android:layout_marginTop="16dp"
+            app:srcCompat="@android:drawable/ic_menu_gallery"
+            tools:ignore="ImageContrastCheck"
+            android:contentDescription="@string/todo" />
     </LinearLayout>
-
 
 
 </com.google.android.material.card.MaterialCardView>

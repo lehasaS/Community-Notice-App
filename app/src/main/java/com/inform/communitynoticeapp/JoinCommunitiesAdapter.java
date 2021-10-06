@@ -55,67 +55,63 @@ public class JoinCommunitiesAdapter extends RecyclerView.Adapter<JoinCommunities
         holder.communityTV.setText(communitiesList.get(position));
         final String thisCommunity = communitiesList.get(position);
 
-        holder.joinBtn.setOnClickListener(view -> {
-            firebase.getUserCommunities().addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    boolean alreadyIn = false;
-                    Community aCommunity;
-                    for(DataSnapshot content: snapshot.getChildren()){
-                        aCommunity = content.getValue(Community.class);
-                        assert aCommunity != null;
-                        if (aCommunity.getName().equals(thisCommunity)) {
-                            alreadyIn = true;
-                        }
+        holder.joinBtn.setOnClickListener(view -> firebase.getUserCommunities().addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                boolean alreadyIn = false;
+                Community aCommunity;
+                for(DataSnapshot content: snapshot.getChildren()){
+                    aCommunity = content.getValue(Community.class);
+                    assert aCommunity != null;
+                    if (aCommunity.getName().equals(thisCommunity)) {
+                        alreadyIn = true;
                     }
+                }
 
-                    if (!alreadyIn) {
-                        firebase.joinCommunity(thisCommunity);
-                        Toast.makeText(context, "You have joined " + thisCommunity, Toast.LENGTH_SHORT).show();
+                if (!alreadyIn) {
+                    firebase.joinCommunity(thisCommunity);
+                    Toast.makeText(context, "You have joined " + thisCommunity, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(context, "You are already in this community.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(context, "An error occurred: " + error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        }));
+
+        holder.leaveBtn.setOnClickListener(view -> firebase.getUserCommunities().addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String communityKey = null;
+                Community aCommunity;
+                for (DataSnapshot content : snapshot.getChildren()) {
+                    aCommunity = content.getValue(Community.class);
+                    assert aCommunity != null;
+                    if (aCommunity.getName().equals(thisCommunity)) {
+                        communityKey = content.getKey();
+                    }
+                }
+
+                if (communityKey != null) {
+                    if (snapshot.getChildrenCount()>1) {
+                        firebase.leaveCommunity(communityKey);
+                        Toast.makeText(context, "You have left " + thisCommunity, Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(context, "You are already in this community.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "You must be in at least one community.", Toast.LENGTH_SHORT).show();
                     }
+                } else {
+                    Toast.makeText(context, "You cannot leave a community you are not part of.", Toast.LENGTH_SHORT).show();
                 }
+            }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    Toast.makeText(context, "An error occurred: " + error.toString(), Toast.LENGTH_SHORT).show();
-                }
-            });
-        });
-
-        holder.leaveBtn.setOnClickListener(view -> {
-            firebase.getUserCommunities().addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    String communityKey = null;
-                    Community aCommunity;
-                    for (DataSnapshot content : snapshot.getChildren()) {
-                        aCommunity = content.getValue(Community.class);
-                        assert aCommunity != null;
-                        if (aCommunity.getName().equals(thisCommunity)) {
-                            communityKey = content.getKey();
-                        }
-                    }
-
-                    if (communityKey != null) {
-                        if (snapshot.getChildrenCount()>1) {
-                            firebase.leaveCommunity(communityKey);
-                            Toast.makeText(context, "You have left " + thisCommunity, Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(context, "You must be in at least one community.", Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        Toast.makeText(context, "You cannot leave a community you are not part of.", Toast.LENGTH_SHORT).show();
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    Toast.makeText(context, "An error occurred: " + error.toString(), Toast.LENGTH_SHORT).show();
-                }
-            });
-        });
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(context, "An error occurred: " + error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        }));
     }
 
     @Override
