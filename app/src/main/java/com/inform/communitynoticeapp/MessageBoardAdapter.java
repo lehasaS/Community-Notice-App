@@ -21,82 +21,88 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * @author Lehasa Seoe (SXXLEH001) Rea Keebine (KBNREA001) Dineo Magakwe (MGKDIN001)
+ * 06 October 2021
+ * The adapter takes an object of view holder class, we make our own view holder class
+ * instead of using RecyclerView.ViewHolder we want to define our own text view.
+ */
+@SuppressWarnings("JavaDoc")
 public class MessageBoardAdapter extends RecyclerView.Adapter<MessageBoardAdapter.ViewHolder> implements Filterable {
     private final ArrayList<Post> postList;
     private final ArrayList<Post> postListFull;
     private final Context context;
     private final FirebaseConnector firebase= FirebaseConnector.getInstance();
-    private final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
+    /**
+     * Constructor used to make object of class
+     * @param postList
+     * @param context
+     */
     public MessageBoardAdapter(ArrayList<Post> postList, Context context) {
         this.postList = postList;
         this.context = context;
         postListFull=new ArrayList<>(postList);
     }
-
+    /**
+     * Handles liking post
+     * @param postID
+     * @param imageView
+     */
     //method for liking/disliking
-
-    private void isLikes(String postid , ImageView imageView)
-    {
-
-
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference()
-                .child("likes")
-                .child(postid);
-        reference.addValueEventListener(new ValueEventListener() {
+    private void likePost(String postID , ImageView imageView) {
+        firebase.like(postID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.child(firebaseUser.getUid()).exists())
-                {
+                if(snapshot.child(firebase.getUser().getUid()).exists()){
                     imageView.setImageResource(R.drawable.like);
                     imageView.setTag("liked");
-
                 }
-                else
-                {
+                else {
                     imageView.setImageResource(R.drawable.dislike);
                     imageView.setTag("like");
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Toast.makeText(context, "An error occurred: " + error.toString(), Toast.LENGTH_SHORT).show();
             }
         });
-
-
     }
+
+    /**
+     * Maintains number of likes
+     * @param likes
+     * @param postId
+     */
     //method to increment likes
-    private void nrLikes(TextView likes , String postId)
-    {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("likes")
-                .child(postId);
-        reference.addValueEventListener(new ValueEventListener() {
+    private void numberOfLikes(TextView likes , String postId) {
+        firebase.like(postId).addValueEventListener(new ValueEventListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                likes.setText(snapshot.getChildrenCount()+"likes");
+                likes.setText(snapshot.getChildrenCount()+" likes");
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Toast.makeText(context, "An error occurred: " + error.toString(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+    /**
+     * This method is used to inflate the layout
+     * @param parent
+     * @param viewType
+     */
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -104,6 +110,12 @@ public class MessageBoardAdapter extends RecyclerView.Adapter<MessageBoardAdapte
         return new MessageBoardAdapter.ViewHolder(postView);
     }
 
+    /**
+     * This method is used to bind the view, displays post cards and their properties
+     * @param holder
+     * @param position
+     */
+    @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.dispName.setText(postList.get(position).getUser());
@@ -163,43 +175,34 @@ public class MessageBoardAdapter extends RecyclerView.Adapter<MessageBoardAdapte
             photoRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(bytes -> {
                 Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                 holder.postPicIV.setImageBitmap(bmp);
+                holder.postPicIV.setVisibility(View.VISIBLE);
             }).addOnFailureListener(e -> {
                 //handle failure
-                Toast.makeText((MessageBoard)context, "An error occurred: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "An error occurred: "+e.getMessage(), Toast.LENGTH_SHORT).show();
             });
         } else {
-            holder.postPicIV.getLayoutParams().height = 0;
-            holder.postPicIV.requestLayout();
+            holder.postPicIV.setVisibility(View.GONE);
         }
 
-        //Uterlizing the like/dislike and the likes increment methods
-        isLikes(postList.get(position).getPostID(),holder.like_button);
-        nrLikes(holder.like_Textview,postList.get(position).getPostID());
+        //Utilizing the like/dislike and the likes increment methods
+        likePost(postList.get(position).getPostID(),holder.like_button);
+        numberOfLikes(holder.like_Textview,postList.get(position).getPostID());
 
-        holder.like_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(holder.like_button.getTag().equals("like"))
-                {
-                    FirebaseDatabase.getInstance().getReference().child("likes").child(postList.get(position).getPostID())
-                            .child(firebaseUser.getUid()).setValue(true);
+        holder.like_button.setOnClickListener(view -> {
+            if(holder.like_button.getTag().equals("like")) {
+                firebase.likePost(position,postList);
 
-                }
-                else{
-                    FirebaseDatabase.getInstance().getReference().child("likes").child(postList.get(position).getPostID())
-                            .child(firebaseUser.getUid()).removeValue();
-
-                }
+            }
+            else{
+                firebase.unlikePost(position,postList);
             }
         });
-
-
-
-
-
-
     }
 
+    /**
+     * This method is used to remove bookmarks
+     * @param postID
+     */
     private void removePostBookmark(String postID) {
         firebase.removeBookmark(postID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -207,41 +210,58 @@ public class MessageBoardAdapter extends RecyclerView.Adapter<MessageBoardAdapte
                 for(DataSnapshot dataSnapshot: snapshot.getChildren()){
                     dataSnapshot.getRef().removeValue();
                 }
-                Toast.makeText((MessageBoard)context, "Bookmark removed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Bookmark removed", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText((MessageBoard)context, "An error occurred: "+error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "An error occurred: "+error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+    /**
+     * This method is used to add bookmarks
+     * @param post
+     */
     private void addPostToBookmarks(Post post) {
         firebase.addPostToBookmarks(post).addOnCompleteListener(task -> {
             if(task.isSuccessful()){
-                Toast.makeText((MessageBoard)context, "Bookmark added", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Bookmark added", Toast.LENGTH_SHORT).show();
             }else{
-                Toast.makeText((MessageBoard)context, "An error occurred: "+task.getException(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "An error occurred: "+task.getException(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+    /**
+     * Gets shared preferences
+     */
     private SharedPreferences getSharedPreferences() {
         return context.getSharedPreferences("MessageBoardButton", Context.MODE_PRIVATE);
     }
 
+    /**
+     * Gets postList size
+     */
     @Override
     public int getItemCount() {
         return postList.size();
     }
 
+    /**
+     * Gets filter object
+     */
     @Override
     public Filter getFilter() {
         return postFilter;
     }
 
     private final Filter postFilter = new Filter() {
+        /**
+         * This method is used to filter posts
+         * @param charSequence
+         */
         @Override
         protected FilterResults performFiltering(CharSequence charSequence) {
             List<Post> filteredList = new ArrayList<>();
@@ -262,6 +282,11 @@ public class MessageBoardAdapter extends RecyclerView.Adapter<MessageBoardAdapte
             return results;
         }
 
+        /**
+         * Shows results of filtering
+         * @param charSequence
+         * @param filterResults
+         */
         @SuppressWarnings("unchecked")
         @SuppressLint("NotifyDataSetChanged")
         @Override
@@ -272,12 +297,19 @@ public class MessageBoardAdapter extends RecyclerView.Adapter<MessageBoardAdapte
         }
     };
 
+    /**
+     * Inner class holding the post cards
+     */
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView dispName, post, dateTime, postID, like_Textview, community;
         ImageView postPicIV,like_button;
         MaterialCardView cardView;
         ToggleButton bookmark;
         LinearLayout linearLayout;
+        /**
+         * Constructor for community card view
+         * @param itemView
+         */
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             post=itemView.findViewById(R.id.post_content);
@@ -289,8 +321,8 @@ public class MessageBoardAdapter extends RecyclerView.Adapter<MessageBoardAdapte
             bookmark=itemView.findViewById(R.id.bookmark_Btn);
             postID=itemView.findViewById(R.id.postID);
             linearLayout=itemView.findViewById(R.id.linear_LL);
-            like_button = itemView.findViewById(R.id.like_btn2);
-            like_Textview = itemView.findViewById(R.id.likes_textview2);
+            like_button = itemView.findViewById(R.id.like_btn);
+            like_Textview = itemView.findViewById(R.id.likes_textview);
         }
     }
 }

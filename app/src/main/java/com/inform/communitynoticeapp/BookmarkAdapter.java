@@ -1,7 +1,6 @@
 package com.inform.communitynoticeapp;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
@@ -15,23 +14,36 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
-
+/**
+ * @author Lehasa Seoe (SXXLEH001) Rea Keebine (KBNREA001) Dineo Magakwe (MGKDIN001)
+ * 06 October 2021
+ * The adapter takes an object of view holder class, we make our own view holder class
+ * instead of using RecyclerView.ViewHolder we want to define our own text view.
+ */
+@SuppressWarnings("JavaDoc")
 public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.ViewHolder>{
     private final ArrayList<Post> postList;
     private final Context context;
     private final FirebaseConnector firebase= FirebaseConnector.getInstance();
 
+    /**
+     * Constructor used to make object of class
+     * @param postList
+     * @param context
+     */
     public BookmarkAdapter(ArrayList<Post> postList, Context context) {
         this.postList = postList;
         this.context = context;
     }
 
+    /**
+     * This method is used to inflate the layout
+     * @param parent
+     * @param viewType
+     */
     @NonNull
     @Override
     public BookmarkAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -39,40 +51,17 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.ViewHo
         return new BookmarkAdapter.ViewHolder(postView);
     }
 
+    /**
+     * This method is used to bind the view, displays bookmark cards and their properties
+     * @param holder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(@NonNull BookmarkAdapter.ViewHolder holder, int position) {
         holder.dispName.setText(postList.get(position).getUser());
         holder.dateTime.setText(postList.get(position).getDateTime());
         holder.community.setText(postList.get(position).getCommunity());
-        //holder.postID.setText(postList.get(position).getPostID());
 
-        /*
-        SharedPreferences preferences = getSharedPreferences();
-        String state = preferences.getString(position +"pressed", "Yes");
-
-        if(state.equals("yes")){
-            holder.bookmark.setBackgroundDrawable(ContextCompat.getDrawable(holder.bookmark.getContext(), R.drawable.clicked_bookmark));
-        }
-
-        holder.bookmark.setOnCheckedChangeListener((compoundButton, isChecked) -> {
-            SharedPreferences.Editor editor = getSharedPreferences().edit();
-            if (isChecked && state.equals("yes")) {
-                editor.putString(position + "pressed", "no");
-                editor.apply();
-                holder.bookmark.setBackgroundDrawable(ContextCompat.getDrawable(holder.bookmark.getContext(), R.drawable.ic_baseline_bookmark));
-                removePostBookmark(holder.postID.getText().toString());
-            } else  if (!isChecked && state.equals("no")) {
-                editor.putString(position + "pressed", "no");
-                editor.apply();
-                holder.bookmark.setBackgroundDrawable(ContextCompat.getDrawable(holder.bookmark.getContext(), R.drawable.ic_baseline_bookmark));
-                removePostBookmark(holder.postID.getText().toString());
-            }
-
-        });
-
-        preferences.getString(position + "pressed", "no");
-
-         */
         if (!postList.get(position).getPost().equals("")) {
             holder.post.setText(postList.get(position).getPost());
         } else {
@@ -89,7 +78,7 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.ViewHo
                 holder.postPicIV.setImageBitmap(bmp);
             }).addOnFailureListener(e -> {
                 //handle failure
-                Toast.makeText((Bookmarks)context, "An error occurred: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "An error occurred: "+e.getMessage(), Toast.LENGTH_SHORT).show();
             });
         } else {
             holder.postPicIV.getLayoutParams().height = 0;
@@ -98,36 +87,25 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.ViewHo
 
     }
 
-    private void removePostBookmark(String postID) {
-        firebase.removeBookmark(postID).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot dataSnapshot: snapshot.getChildren()){
-                    dataSnapshot.getRef().removeValue();
-                }
-                Toast.makeText((Bookmarks)context, "Bookmark removed", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText((Bookmarks)context, "An error occurred: "+error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private SharedPreferences getSharedPreferences() {
-        return context.getSharedPreferences("BookmarkButton", Context.MODE_PRIVATE);
-    }
-
+    /**
+     * This method is used to get the size of the bookmark list
+     */
     @Override
     public int getItemCount() {
         return postList.size();
     }
 
+    /**
+     * Inner class holding the bookmark cards
+     */
     public static class ViewHolder extends RecyclerView.ViewHolder{
-        TextView dispName, post, dateTime, postID, community;
+        TextView dispName, post, dateTime, community;
         ImageView postPicIV;
         MaterialCardView cardView;
+        /**
+         * Constructor for bookmark card view
+         * @param itemView
+         */
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             post=itemView.findViewById(R.id.post_contentThree);
@@ -136,7 +114,6 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.ViewHo
             community=itemView.findViewById(R.id.community_TVThree);
             postPicIV=itemView.findViewById(R.id.postPic_IVThree);
             cardView=itemView.findViewById(R.id.cardviewThree);
-            //postID=itemView.findViewById(R.id.postIDThree);
         }
     }
 }

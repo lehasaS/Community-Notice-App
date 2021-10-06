@@ -15,11 +15,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author Lehasa Seoe (SXXLEH001) Rea Keebine (KBNREA001) Dineo Magakwe (MGKDIN001)
+ * 06 October 2021
+ * Gets hashtags user selects for post
+ */
+@SuppressWarnings("JavaDoc")
 public class Hashtag extends AppCompatActivity implements View.OnClickListener {
 
     private CheckBox eventsCB, recommendationsCB, crimeInfoCB, lostPetsCB, localServicesCB, generalNewsCB;
     private Map<String, Object> checked;
     private List<String> hashtags;
+
+    /**
+     * Creates the hashtag layout
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +44,7 @@ public class Hashtag extends AppCompatActivity implements View.OnClickListener {
         Button doneB = findViewById(R.id.doneB);
         Button clear = findViewById(R.id.clearB);
         checked = new HashMap<>();
-        hashtags = new ArrayList<String>();
+        hashtags = new ArrayList<>();
 
         doneB.setOnClickListener(this);
         clear.setOnClickListener(view -> {
@@ -54,6 +65,10 @@ public class Hashtag extends AppCompatActivity implements View.OnClickListener {
         });
     }
 
+    /**
+     * Click listener
+     * @param view
+     */
     @Override
     public void onClick(View view) {
         checked.put("Hashtags",hashtags);
@@ -66,6 +81,10 @@ public class Hashtag extends AppCompatActivity implements View.OnClickListener {
         }
     }
 
+    /**
+     * Click listener
+     * @param view
+     */
     @SuppressLint("NonConstantResourceId")
     public void onCheckBoxClicked(View view) {
         boolean isChecked = ((CheckBox) view).isChecked();

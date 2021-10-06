@@ -19,6 +19,12 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Objects;
 
+/**
+ * @author Lehasa Seoe (SXXLEH001) Rea Keebine (KBNREA001) Dineo Magakwe (MGKDIN001)
+ * 06 October 2021
+ * Class for the signup layout
+ */
+@SuppressWarnings("JavaDoc")
 public class SignUp extends AppCompatActivity {
 
     private TextInputLayout emailTI, passwordTI, passwordAgainTI, displayNameTI, communityTI;
@@ -28,13 +34,15 @@ public class SignUp extends AppCompatActivity {
     private UserDetails userCurrent;
     private final FirebaseConnector firebase = FirebaseConnector.getInstance();
 
-
+    /**
+     * Creates the sign up layout
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-        //Objects.requireNonNull(getSupportActionBar()).hide();
-
+        Objects.requireNonNull(getSupportActionBar()).hide();
         //[START] Signup Part
         emailTI = findViewById(R.id.emailTI);
         displayNameTI = findViewById(R.id.displayNameTI);
@@ -42,7 +50,7 @@ public class SignUp extends AppCompatActivity {
         passwordAgainTI = findViewById(R.id.passwordAgainTI);
         communityTI = findViewById(R.id.communityTI);
         Button signUpBtn = findViewById(R.id.signUp_btn2);
-        textView = (AutoCompleteTextView) findViewById(R.id.autoCompleteCommunity);
+        textView = findViewById(R.id.autoCompleteCommunity);
         validate=new ValidateInput(this, emailTI, passwordTI, passwordAgainTI, displayNameTI, communityTI);
         signUpBtn.setOnClickListener(view -> handleSignUpBtnClick());
         //[END] Signup Part
@@ -51,7 +59,9 @@ public class SignUp extends AppCompatActivity {
 
     }
 
-
+    /**
+     * Handles the signup of user
+     */
     private void handleSignUpBtnClick() {
         dispName = Objects.requireNonNull(displayNameTI.getEditText()).getText().toString().trim();
         String email = Objects.requireNonNull(emailTI.getEditText()).getText().toString().trim();
@@ -89,7 +99,9 @@ public class SignUp extends AppCompatActivity {
 
     }
 
-
+    /**
+     * Sets default profile pic
+     */
     public void setDefaultPic() {
         firebase.getStorageRef().child("profilePics/defaultPic.jpg").getDownloadUrl().addOnSuccessListener(defaultPicUri -> {
             UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder()
@@ -99,11 +111,14 @@ public class SignUp extends AppCompatActivity {
         });
     }
 
+    /**
+     * Reads communities
+     */
     private void readCommunities() {
         firebase.readCommunities().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                ArrayList<String> communitiesList = new ArrayList<String>();
+                ArrayList<String> communitiesList = new ArrayList<>();
                 String[] communitiesArray;
                 Community aCommunity;
                 for(DataSnapshot content: snapshot.getChildren()){

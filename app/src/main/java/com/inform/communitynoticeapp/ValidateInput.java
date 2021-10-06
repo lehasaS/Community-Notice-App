@@ -13,8 +13,13 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+/**
+ * @author Lehasa Seoe (SXXLEH001) Rea Keebine (KBNREA001) Dineo Magakwe (MGKDIN001)
+ * 06 October 2021
+ * Validator class
+ */
+@SuppressWarnings("JavaDoc")
 public class ValidateInput {
-
     private TextInputLayout displayNameTI;
     private TextInputLayout passwordAgainTI;
     private TextInputLayout communityTI;
@@ -22,16 +27,30 @@ public class ValidateInput {
     private final TextInputLayout emailTI;
     private TextInputLayout passwordTI;
     private TextInputLayout emailAgainTI;
-    private final ArrayList<String> communities = new ArrayList<String>();
+    private final ArrayList<String> communities = new ArrayList<>();
     private final FirebaseConnector firebase = FirebaseConnector.getInstance();
 
+    /**
+     * Constructor
+     * @param context
+     * @param emailAgainTI
+     * @param emailTI
+     */
     public ValidateInput(Context context, TextInputLayout emailTI, TextInputLayout emailAgainTI){
         this.context = context;
         this.emailTI =emailTI;
         this.emailAgainTI =emailAgainTI;
     }
 
-
+    /**
+     * Constructor
+     * @param context
+     * @param displayNameTI
+     * @param emailTI
+     * @param communityTI
+     * @param passwordAgainTI
+     * @param passwordTI
+     */
     public ValidateInput(Context context, TextInputLayout emailTI, TextInputLayout passwordTI, TextInputLayout passwordAgainTI, TextInputLayout displayNameTI, TextInputLayout communityTI){
         this.context=context;
         this.displayNameTI=displayNameTI;
@@ -41,6 +60,10 @@ public class ValidateInput {
         this.communityTI=communityTI;
     }
 
+    /**
+     * Check display name
+     * @param displayName
+     */
     public CharSequence checkDisplayName(String displayName) {
         CharSequence val="valid";
         if(displayName.equals("")){
@@ -52,6 +75,10 @@ public class ValidateInput {
         return val;
     }
 
+    /**
+     * Check email
+     * @param email
+     */
     public CharSequence checkEmailValid(String email){
         if(email.length()==0){
             emailTI.setEndIconActivated(true);
@@ -67,6 +94,11 @@ public class ValidateInput {
         }
     }
 
+    /**
+     * Check email
+     * @param email
+     * @param emailAgain
+     */
     public CharSequence checkEmailValid(String email, String emailAgain){
         if(email.length()==0){
             emailTI.setEndIconActivated(true);
@@ -87,6 +119,11 @@ public class ValidateInput {
         }
     }
 
+    /**
+     * Check password
+     * @param password
+     * @param passwordAgain
+     */
     public CharSequence checkPasswordValid(@NonNull String password, @NonNull String passwordAgain){
         if(password.length()==0){
             passwordTI.setEndIconActivated(true);
@@ -106,6 +143,10 @@ public class ValidateInput {
         }
     }
 
+    /**
+     * Check password
+     * @param password
+     */
     public CharSequence checkEnteredPasswordValid(@NonNull String password){
         if(password.length()==0){
             passwordTI.setEndIconActivated(true);
@@ -120,6 +161,10 @@ public class ValidateInput {
         }
     }
 
+    /**
+     * Check community
+     * @param community
+     */
     public CharSequence checkCommunity(@NonNull String community){
         readCommunities();
         if(community.equals("")){
@@ -134,10 +179,16 @@ public class ValidateInput {
         return "valid";
     }
 
+    /**
+     * Get context
+     */
     public Context getContext() {
         return context;
     }
 
+    /**
+     * Read communities in database
+     */
     private void readCommunities() {
         firebase.readCommunities().addValueEventListener(new ValueEventListener() {
             @Override

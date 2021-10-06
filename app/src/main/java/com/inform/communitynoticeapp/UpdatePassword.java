@@ -10,10 +10,20 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Objects;
 
+/**
+ * @author Lehasa Seoe (SXXLEH001) Rea Keebine (KBNREA001) Dineo Magakwe (MGKDIN001)
+ * 06 October 2021
+ * Class for updating password
+ */
+@SuppressWarnings("JavaDoc")
 public class UpdatePassword extends AppCompatActivity {
     private TextInputLayout newPassword, newPasswordAgain;
     private ValidateInput validate;
 
+    /**
+     * Creates the update password layout
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +36,9 @@ public class UpdatePassword extends AppCompatActivity {
         saveChanges.setOnClickListener(view -> handleSaveChangesClick());
     }
 
+    /**
+     * Save user changes
+     */
     private void handleSaveChangesClick() {
         FirebaseConnector firebase = FirebaseConnector.getInstance();
         String password = Objects.requireNonNull(newPassword.getEditText()).getText().toString();

@@ -11,10 +11,20 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Objects;
 
+/**
+ * @author Lehasa Seoe (SXXLEH001) Rea Keebine (KBNREA001) Dineo Magakwe (MGKDIN001)
+ * 06 October 2021
+ * Class for updating email
+ */
+@SuppressWarnings("JavaDoc")
 public class UpdateEmail extends AppCompatActivity {
     private TextInputLayout newEmail, newEmailAgain;
     private ValidateInput validate;
 
+    /**
+     * Creates the update email layout
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +36,9 @@ public class UpdateEmail extends AppCompatActivity {
         saveChanges.setOnClickListener(view -> handleSaveChangesClick());
     }
 
+    /**
+     * Save user changes
+     */
     private void handleSaveChangesClick() {
         FirebaseConnector firebase = FirebaseConnector.getInstance();
         String email = Objects.requireNonNull(newEmail.getEditText()).getText().toString();

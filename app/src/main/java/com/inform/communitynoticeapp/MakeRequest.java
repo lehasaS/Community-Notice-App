@@ -18,11 +18,22 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
+/**
+ * @author Lehasa Seoe (SXXLEH001) Rea Keebine (KBNREA001) Dineo Magakwe (MGKDIN001)
+ * 06 October 2021
+ * Class for making requests
+ */
+@SuppressWarnings("JavaDoc")
 public class MakeRequest extends AppCompatActivity {
 
     private TextInputLayout requestTI;
     private final FirebaseConnector firebase = FirebaseConnector.getInstance();
 
+
+    /**
+     * Creates the make request layout
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +43,9 @@ public class MakeRequest extends AppCompatActivity {
         submitRequest.setOnClickListener(view -> handleSubmitRequestClick());
     }
 
+    /**
+     * Handles the submission of requests
+     */
     private void handleSubmitRequestClick() {
         Date date = new Date();
         @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM 'at' HH:mm");
@@ -64,7 +78,7 @@ public class MakeRequest extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Toast.makeText(MakeRequest.this, "Some error occurred: "+error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 

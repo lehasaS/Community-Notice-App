@@ -19,6 +19,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Objects;
 
+/**
+ * @author Lehasa Seoe (SXXLEH001) Rea Keebine (KBNREA001) Dineo Magakwe (MGKDIN001)
+ * 06 October 2021
+ * Class for the management of communities
+ */
+@SuppressWarnings("JavaDoc")
 public class ManageCommunities extends AppCompatActivity {
 
     private RecyclerView recyclerView;
@@ -27,6 +33,10 @@ public class ManageCommunities extends AppCompatActivity {
     private TextInputLayout communityTI;
     private ValueEventListener listener;
 
+    /**
+     * Creates the manage requests layout
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +55,9 @@ public class ManageCommunities extends AppCompatActivity {
         addBtn.setOnClickListener(view -> handleAddBtnClick());
     }
 
+    /**
+     * Displays communities in database
+     */
     private void displayCommunities() {
         listener = new ValueEventListener() {
             @Override
@@ -74,6 +87,9 @@ public class ManageCommunities extends AppCompatActivity {
 
     }
 
+    /**
+     * Handles the click of add community button
+     */
     private void handleAddBtnClick () {
         String newCommunity = Objects.requireNonNull(communityTI.getEditText()).getText().toString().trim();
 
@@ -84,8 +100,6 @@ public class ManageCommunities extends AppCompatActivity {
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(ManageCommunities.this, "Community added", Toast.LENGTH_SHORT).show();
                     displayCommunities();
-                }).addOnFailureListener(e -> {
-                    Toast.makeText(ManageCommunities.this, "Some error occurred: " + e.toString(), Toast.LENGTH_SHORT).show();
-                });
+                }).addOnFailureListener(e -> Toast.makeText(ManageCommunities.this, "Some error occurred: " + e.toString(), Toast.LENGTH_SHORT).show());
     }
 }

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -15,12 +16,22 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Objects;
 
+/**
+ * @author Lehasa Seoe (SXXLEH001) Rea Keebine (KBNREA001) Dineo Magakwe (MGKDIN001)
+ * 06 October 2021
+ * This class handles the mangement of requests
+ */
+@SuppressWarnings("JavaDoc")
 public class ManageRequests extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private Context context;
     private final FirebaseConnector firebase = FirebaseConnector.getInstance();
 
+    /**
+     * Creates the manage requests layout
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +47,10 @@ public class ManageRequests extends AppCompatActivity {
         displayPendingRequests();
     }
 
+
+    /**
+     * Displays pending requests
+     */
     private void displayPendingRequests() {
         firebase.readRequests().addValueEventListener(new ValueEventListener() {
             @Override
@@ -57,7 +72,7 @@ public class ManageRequests extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Toast.makeText(ManageRequests.this, "Some error occurred: "+error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 

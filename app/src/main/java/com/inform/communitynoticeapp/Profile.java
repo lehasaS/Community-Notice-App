@@ -30,7 +30,12 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.Collections;
 
-
+/**
+ * @author Lehasa Seoe (SXXLEH001) Rea Keebine (KBNREA001) Dineo Magakwe (MGKDIN001)
+ * 06 October 2021
+ * This class handles the profile page
+ */
+@SuppressWarnings("JavaDoc")
 public class Profile extends AppCompatActivity {
 
     private final FirebaseConnector firebase= FirebaseConnector.getInstance();
@@ -38,12 +43,19 @@ public class Profile extends AppCompatActivity {
     private ImageView profilePicture;
     private TextView communityTV, roleTV;
 
+    /**
+     * Creates the edit profile layout
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         init();
     }
 
+    /**
+     * Creates restarts the page
+     */
     @Override
     public void onRestart() {
         super.onRestart();
@@ -51,6 +63,9 @@ public class Profile extends AppCompatActivity {
         init();
     }
 
+    /**
+     * Creates the page in restart
+     */
     @SuppressLint({"SetTextI18n", "NonConstantResourceId"})
     public void init() {
         setContentView(R.layout.activity_profile);
@@ -60,7 +75,6 @@ public class Profile extends AppCompatActivity {
         TextView welcomeMessageTV = findViewById(R.id.welcomeMessage_TV);
         TextView displayName = findViewById(R.id.usernameTV);
         displayName.setText(firebase.getUser().getDisplayName());
-        //menu=get
         welcomeMessageTV.setText(getString(R.string.Greeting)+ firebase.getUser().getDisplayName()+"!");
         context=this;
 
@@ -114,6 +128,10 @@ public class Profile extends AppCompatActivity {
     }
 
 
+    /**
+     * Creates hamburger menu
+     * @param menu
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.hamburger_menu, menu);
@@ -126,6 +144,10 @@ public class Profile extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Click listener
+     * @param item
+     */
     @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -147,6 +169,9 @@ public class Profile extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Shows logout dialog
+     */
     private void showLogoutDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Are you sure you want to logout?");
@@ -162,6 +187,9 @@ public class Profile extends AppCompatActivity {
         alertDialog.show();
     }
 
+    /**
+     * SHows profile picture
+     */
     public void showProfilePic() {
         String photoUrl = firebase.getDisplayPicture().toString();
 
@@ -175,6 +203,9 @@ public class Profile extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "No Such file or Path found!!", Toast.LENGTH_LONG).show());
     }
 
+    /**
+     * Reads users community
+     */
     private void readCommunities() {
         firebase.getUserCommunities().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

@@ -30,6 +30,12 @@ import com.google.firebase.storage.StorageReference;
 import java.util.Objects;
 import java.util.UUID;
 
+/**
+ * @author Lehasa Seoe (SXXLEH001) Rea Keebine (KBNREA001) Dineo Magakwe (MGKDIN001)
+ * 06 October 2021
+ * This class handles the the editing of the user profile
+ */
+@SuppressWarnings("JavaDoc")
 public class EditProfile extends AppCompatActivity implements View.OnClickListener {
 
     private TextInputLayout dispNameTI;
@@ -38,8 +44,12 @@ public class EditProfile extends AppCompatActivity implements View.OnClickListen
     private ValidateInput validate;
     private static final int STORAGE_PERMISSION_CODE = 113;
 
+    /**
+     * Creates the edit profile layout
+     * @param savedInstanceState
+     */
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_editor);
         validate = new ValidateInput(this,null, null, null, dispNameTI, null);
@@ -66,6 +76,10 @@ public class EditProfile extends AppCompatActivity implements View.OnClickListen
 
     }
 
+    /**
+     * Click listener
+     * @param view
+     */
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
@@ -95,6 +109,9 @@ public class EditProfile extends AppCompatActivity implements View.OnClickListen
 
     }
 
+    /**
+     * Saves users changes
+     */
     private void handleSaveBtnClick() {
         String dispName = Objects.requireNonNull(dispNameTI.getEditText()).getText().toString();
         if (validate.checkDisplayName(dispName).equals("valid")) {
@@ -105,6 +122,9 @@ public class EditProfile extends AppCompatActivity implements View.OnClickListen
         startActivity(profile);
     }
 
+    /**
+     * Handle user uploading profile picture
+     */
     private void handlePicBtnClick() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[] {
@@ -119,6 +139,12 @@ public class EditProfile extends AppCompatActivity implements View.OnClickListen
         }
     }
 
+    /**
+     * Get user permissions for user phone storage
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
     //source: https://www.youtube.com/watch?v=q1OLKyilp8M
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -133,18 +159,6 @@ public class EditProfile extends AppCompatActivity implements View.OnClickListen
             }
         }
     }
-
-    /*@Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode==1 && resultCode==RESULT_OK && data!=null && data.getData()!=null) {
-            Uri imageUri = data.getData();
-            profilePicIV.setImageURI(imageUri);
-            Toast.makeText(this, "Image URI: " + imageUri.toString(), Toast.LENGTH_SHORT).show();
-            firebase.updateDisplayPicture(imageUri);
-        }
-    }*/
-
     ActivityResultLauncher<Intent> uploadPicActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -157,14 +171,13 @@ public class EditProfile extends AppCompatActivity implements View.OnClickListen
                 }
             });
 
-    /*public void openSomeActivityForResult() {
-        Intent intent = new Intent(this, SomeActivity.class);
-        uploadPicActivityResultLauncher.launch(intent);
-    }*/
 
+
+    /**
+     * Sets profile picture
+     * @param photoUri
+     */
     public void setProfilePic(Uri photoUri) {
-        //Toast.makeText(this, "Photo URI: " + photoUri.toString(), Toast.LENGTH_SHORT).show();
-
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Uploading image...");
         progressDialog.show();
@@ -185,13 +198,14 @@ public class EditProfile extends AppCompatActivity implements View.OnClickListen
                 firebase.getUser().updateProfile(profileChangeRequest);
                 profilePicIV.setImageURI(photoUri);
                 Toast.makeText(this, "Image uploaded successfully!", Toast.LENGTH_SHORT).show();
-            }).addOnFailureListener(e -> {
-                Toast.makeText(this, "An error occurred: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-            });
+            }).addOnFailureListener(e -> Toast.makeText(this, "An error occurred: " + e.getMessage(), Toast.LENGTH_SHORT).show());
             progressDialog.dismiss();
         });
     }
 
+    /**
+     * Displays profile picture
+     */
     public void showProfilePic() {
         String photoUrl = firebase.getDisplayPicture().toString();
 

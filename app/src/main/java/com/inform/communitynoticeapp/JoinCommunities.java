@@ -16,12 +16,21 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * @author Lehasa Seoe (SXXLEH001) Rea Keebine (KBNREA001) Dineo Magakwe (MGKDIN001)
+ * 06 October 2021
+ * Handles the joining of multiple communities
+ */
+@SuppressWarnings("JavaDoc")
 public class JoinCommunities extends AppCompatActivity {
-
     private RecyclerView recyclerView;
     private Context context;
     private final FirebaseConnector firebase = FirebaseConnector.getInstance();
 
+    /**
+     * Creates the edit profile layout
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +46,9 @@ public class JoinCommunities extends AppCompatActivity {
         displayCommunities();
     }
 
+    /**
+     * Displays list of communities
+     */
     private void displayCommunities() {
         firebase.readCommunities().addValueEventListener(new ValueEventListener() {
             @Override

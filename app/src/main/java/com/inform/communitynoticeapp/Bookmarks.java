@@ -13,6 +13,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
@@ -20,13 +22,21 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-
+/**
+ * @author Lehasa Seoe (SXXLEH001) Rea Keebine (KBNREA001) Dineo Magakwe (MGKDIN001)
+ * 06 October 2021
+ * This class is used to display bookmarks
+ */
+@SuppressWarnings("JavaDoc")
 public class Bookmarks extends AppCompatActivity {
-
     private RecyclerView recyclerView;
     private final FirebaseConnector firebase = FirebaseConnector.getInstance();
     private Context context;
 
+    /**
+     * Creates the bookmark page layout
+     * @param savedInstanceState
+     */
     @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +82,9 @@ public class Bookmarks extends AppCompatActivity {
         displayBookmarks();
     }
 
+    /**
+     * Reads bookmarks from database to be displayed
+     */
     private void displayBookmarks() {
         firebase.readBookmarks().addValueEventListener(new ValueEventListener() {
             @Override
@@ -85,16 +98,13 @@ public class Bookmarks extends AppCompatActivity {
 
                 BookmarkAdapter postAdapter = new BookmarkAdapter(postArrayList, context);
                 recyclerView.setAdapter(postAdapter);
-                postArrayList.clear();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Toast.makeText(Bookmarks.this, "An error occurred: "+error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
-
-
 
 }

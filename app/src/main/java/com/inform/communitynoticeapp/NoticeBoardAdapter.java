@@ -20,45 +20,51 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
+/**
+ * @author Lehasa Seoe (SXXLEH001) Rea Keebine (KBNREA001) Dineo Magakwe (MGKDIN001)
+ * 06 October 2021
+ * The adapter takes an object of view holder class, we make our own view holder class
+ * instead of using RecyclerView.ViewHolder we want to define our own text view.
+ */
+@SuppressWarnings("JavaDoc")
 public class NoticeBoardAdapter extends RecyclerView.Adapter<NoticeBoardAdapter.ViewHolder> implements Filterable {
     private final ArrayList<Post> postList;
     private final ArrayList<Post> postListFull;
     private final Context context;
     private final FirebaseConnector firebase= FirebaseConnector.getInstance();
-    private final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-    //adapter takes an object of view holder class, we make our own view holder class
-    //instead of using RecyclerView.ViewHolder
-    //We want to define our own text view in the posts.
 
+    /**
+     * Constructor used to make object of class
+     * @param posts
+     * @param context
+     */
     public NoticeBoardAdapter(ArrayList<Post> posts, Context context){
         this.postList=posts;
         this.context=context;
         postListFull=new ArrayList<>(posts);
     }
 
-    public FirebaseConnector getFirebase() {
-        return firebase;
-    }
-
+    /**
+     * Gets filter object
+     */
     @Override
     public Filter getFilter() {
         return postFilter;
     }
 
     private final Filter postFilter = new Filter() {
+        /**
+         * This method is used to filter posts
+         * @param charSequence
+         */
         @Override
         protected FilterResults performFiltering(CharSequence charSequence) {
             List<Post> filteredList = new ArrayList<>();
@@ -79,6 +85,11 @@ public class NoticeBoardAdapter extends RecyclerView.Adapter<NoticeBoardAdapter.
             return results;
         }
 
+        /**
+         * Shows results of filtering
+         * @param charSequence
+         * @param filterResults
+         */
         @SuppressWarnings("unchecked")
         @SuppressLint("NotifyDataSetChanged")
         @Override
@@ -89,11 +100,18 @@ public class NoticeBoardAdapter extends RecyclerView.Adapter<NoticeBoardAdapter.
         }
     };
 
+    /**
+     * Inner class holding the post cards
+     */
     public static class ViewHolder extends RecyclerView.ViewHolder{
         TextView dispName, post, dateTime, postID, like_Textview, community;
         ImageView postPicIV,like_button;
         MaterialCardView cardView;
         ToggleButton bookmark;
+        /**
+         * Constructor for community card view
+         * @param itemView
+         */
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             post=itemView.findViewById(R.id.post_contentTwo);
@@ -104,75 +122,76 @@ public class NoticeBoardAdapter extends RecyclerView.Adapter<NoticeBoardAdapter.
             cardView=itemView.findViewById(R.id.cardviewTwo);
             bookmark=itemView.findViewById(R.id.bookmark_BtnTwo);
             postID=itemView.findViewById(R.id.postIDTwo);
-            like_button = itemView.findViewById(R.id.like_btn2);
-            like_Textview = itemView.findViewById(R.id.likes_textview2);
+            like_button = itemView.findViewById(R.id.like_btn);
+            like_Textview = itemView.findViewById(R.id.likes_textview);
         }
 
     }
 
-
-
-
-
-//method for liking/disliking
-
-   private void isLikes(String postid , ImageView imageView)
-    {
-
-
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference()
-                .child("likes")
-                .child(postid);
-        reference.addValueEventListener(new ValueEventListener() {
+    /**
+     * Handles liking post
+     * @param postID
+     * @param imageView
+     */
+    //method for liking/disliking
+    private void likePost(String postID , ImageView imageView){
+        firebase.like(postID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.child(firebaseUser.getUid()).exists())
-                {
+                if(snapshot.child(firebase.getUser().getUid()).exists()){
                     imageView.setImageResource(R.drawable.like);
                     imageView.setTag("liked");
-
                 }
-                else
-                {
+                else {
                     imageView.setImageResource(R.drawable.dislike);
                     imageView.setTag("like");
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Toast.makeText(context, "An error occurred: " + error.toString(), Toast.LENGTH_SHORT).show();
             }
         });
-
-
     }
+
+    /**
+     * Maintains number of likes
+     * @param likes
+     * @param postId
+     */
     //method to increment likes
-    private void nrLikes(TextView likes , String postId)
-    {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("likes")
-                .child(postId);
-        reference.addValueEventListener(new ValueEventListener() {
+    private void numberOfLikes(TextView likes , String postId){
+        firebase.like(postId).addValueEventListener(new ValueEventListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                likes.setText(snapshot.getChildrenCount()+"likes");
+                likes.setText(snapshot.getChildrenCount()+" likes");
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Toast.makeText(context, "An error occurred: " + error.toString(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+    /**
+     * This method is used to inflate the layout
+     * @param parent
+     * @param viewType
+     */
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View postView = LayoutInflater.from(parent.getContext()).inflate(R.layout.notice_card, parent, false);
         return new ViewHolder(postView);
-
     }
 
+    /**
+     * This method is used to bind the view, displays post cards and their properties
+     * @param holder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.dispName.setText(postList.get(position).getUser());
@@ -231,37 +250,32 @@ public class NoticeBoardAdapter extends RecyclerView.Adapter<NoticeBoardAdapter.
             photoRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(bytes -> {
                 Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                 holder.postPicIV.setImageBitmap(bmp);
+                holder.postPicIV.setVisibility(View.VISIBLE);
             }).addOnFailureListener(e -> {
                 //handle failure
-                Toast.makeText((NoticeBoard)context, "An error occurred: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "An error occurred: "+e.getMessage(), Toast.LENGTH_SHORT).show();
             });
         } else {
-            holder.postPicIV.getLayoutParams().height = 0;
-            holder.postPicIV.requestLayout();
+            holder.postPicIV.setVisibility(View.GONE);
         }
 
-        //Uterlizing the like/dislike and the likes increment methods
-        isLikes(postList.get(position).getPostID(),holder.like_button);
-        nrLikes(holder.like_Textview,postList.get(position).getPostID());
-
-        holder.like_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(holder.like_button.getTag().equals("like")) {
-                    firebase.likePost(position,postList);
-
-                }
-                else{
-                    firebase.unlikePost(position,postList);
-                }
+        //Utilising the like/dislike and the likes increment methods
+        likePost(postList.get(position).getPostID(),holder.like_button);
+        numberOfLikes(holder.like_Textview,postList.get(position).getPostID());
+        holder.like_button.setOnClickListener(view -> {
+            if(holder.like_button.getTag().equals("like")) {
+                firebase.likePost(position,postList);
             }
-
+            else{
+                firebase.unlikePost(position,postList);
+            }
         });
-
-
-
     }
 
+    /**
+     * This method is used to remove bookmarks
+     * @param postID
+     */
     private void removePostBookmark(String postID) {
         firebase.removeBookmark(postID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -269,30 +283,40 @@ public class NoticeBoardAdapter extends RecyclerView.Adapter<NoticeBoardAdapter.
                 for(DataSnapshot dataSnapshot: snapshot.getChildren()){
                     dataSnapshot.getRef().removeValue();
                 }
-                Toast.makeText((NoticeBoard)context, "Bookmark removed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Bookmark removed", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText((NoticeBoard)context, "An error occurred: "+error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "An error occurred: "+error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+    /**
+     * This method is used to add bookmarks
+     * @param post
+     */
     private void addPostToBookmarks(Post post) {
         firebase.addPostToBookmarks(Objects.requireNonNull(post)).addOnCompleteListener(task -> {
             if(task.isSuccessful()){
-                Toast.makeText((NoticeBoard)context, "Bookmark added", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Bookmark added", Toast.LENGTH_SHORT).show();
             }else{
-                Toast.makeText((NoticeBoard)context, "An error occurred: "+task.getException(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "An error occurred: "+task.getException(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+    /**
+     * Gets shared preferences
+     */
     private SharedPreferences getSharedPreferences() {
         return context.getSharedPreferences("NoticeBoardButton", Context.MODE_PRIVATE);
     }
 
+    /**
+     * Gets postList size
+     */
     @Override
     public int getItemCount() {
         return postList.size();

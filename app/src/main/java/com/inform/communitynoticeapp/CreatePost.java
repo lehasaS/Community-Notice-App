@@ -48,6 +48,12 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
+/**
+ * @author Lehasa Seoe (SXXLEH001) Rea Keebine (KBNREA001) Dineo Magakwe (MGKDIN001)
+ * 06 October 2021
+ * This class handles the posting of posts to the boards
+ */
+@SuppressWarnings("JavaDoc")
 public class CreatePost extends AppCompatActivity implements View.OnClickListener {
 
     private EditText typeET;
@@ -60,11 +66,15 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
     private static final int CAMERA_PERMISSION_CODE = 112;
     private static final int STORAGE_PERMISSION_CODE = 113;
 
+    /**
+     * Creates the post page layout
+     * @param savedInstanceState
+     */
     @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_posts);
+        setContentView(R.layout.activity_create_post);
         TextView displayNameTV = findViewById(R.id.displayName_TV);
         displayNameTV.setText(firebase.getUser().getDisplayName());
         communityTI = findViewById(R.id.commGroup_TI);
@@ -77,7 +87,7 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
         profilePicIV = findViewById(R.id.displayPicture_IV);
         postPicIV = findViewById(R.id.picPreview_IV);
         linearLayout= findViewById(R.id.tagsLL);
-        textView = (AutoCompleteTextView) findViewById(R.id.autoCompleteCommunity);
+        textView = findViewById(R.id.autoCompleteCommunity);
 
         showProfilePic();
         takePhoto.setOnClickListener(this);
@@ -91,6 +101,9 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
 
     }
 
+    /**
+     * Checks users role to confirm permission to post
+     */
     private void checkRole(){
         firebase.getUserDetailsRef().addValueEventListener(new ValueEventListener() {
             @Override
@@ -115,6 +128,10 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
     }
 
 
+    /**
+     * Click listener
+     * @param view
+     */
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
@@ -156,6 +173,9 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
             });
 
 
+    /**
+     * Displays users profile pic
+     */
     public void showProfilePic() {
         String photoUrl = firebase.getDisplayPicture().toString();
 
@@ -169,6 +189,10 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
                 Toast.makeText(getApplicationContext(), "No Such file or Path found!!", Toast.LENGTH_LONG).show());
     }
 
+    /**
+     * If users is not a community member, this method
+     * determines where the user wants to post
+     */
     private void askWhereToPost() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Post To?");
@@ -178,6 +202,10 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
         alertDialog.show();
     }
 
+    /**
+     * Post to message board
+     * @param pictureURI
+     */
     private void postToMessageBoard(String pictureURI) {
         Date date = new Date();
         @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM 'at' HH:mm");
@@ -200,12 +228,18 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
         goToMessageBoard();
     }
 
+    /**
+     * Finish posting and go to message board
+     */
     private void goToMessageBoard() {
         Intent goToMessageBoard = new Intent(CreatePost.this, MessageBoard.class);
         startActivity(goToMessageBoard);
         overridePendingTransition(0,0);
     }
 
+    /**
+     * Post to message board
+     */
     private void postToMessageBoard() {
         if (postPicUri!=null) {
             final ProgressDialog progressDialog = new ProgressDialog(this);
@@ -220,15 +254,13 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
             }).addOnFailureListener(e -> {
                 progressDialog.dismiss();
                 Toast.makeText(this, "Upload failed. Error occurred: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-            }).addOnSuccessListener(taskSnapshot -> {
-                pictureRef.getDownloadUrl().addOnSuccessListener(pictureUri -> {
-                    progressDialog.dismiss();
-                    postToMessageBoard(pictureUri.toString());
-                }).addOnFailureListener(e -> {
-                    progressDialog.dismiss();
-                    Toast.makeText(this, "An error occurred: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                });
-            });
+            }).addOnSuccessListener(taskSnapshot -> pictureRef.getDownloadUrl().addOnSuccessListener(pictureUri -> {
+                progressDialog.dismiss();
+                postToMessageBoard(pictureUri.toString());
+            }).addOnFailureListener(e -> {
+                progressDialog.dismiss();
+                Toast.makeText(this, "An error occurred: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }));
         } else {
             postToMessageBoard("");
         }
@@ -246,6 +278,9 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
         return hash;
     }
 
+    /**
+     * Creates post to notice board
+     */
     private void postToNoticeBoard(String pictureURI) {
         Date date = new Date();
         @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM 'at' HH:mm");
@@ -268,12 +303,18 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
        goToNoticeBoard();
     }
 
+    /**
+     * After posting go to notice board
+     */
     private void goToNoticeBoard() {
         Intent goToNoticeBoard = new Intent(CreatePost.this, NoticeBoard.class);
         startActivity(goToNoticeBoard);
         overridePendingTransition(0,0);
     }
 
+    /**
+     * Post to notice board
+     */
     private void postToNoticeBoard() {
         if (postPicUri!=null) {
             final ProgressDialog progressDialog = new ProgressDialog(this);
@@ -288,20 +329,21 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
             }).addOnFailureListener(e -> {
                 progressDialog.dismiss();
                 Toast.makeText(this, "Upload failed. Error occurred: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-            }).addOnSuccessListener(taskSnapshot -> {
-                pictureRef.getDownloadUrl().addOnSuccessListener(pictureUri -> {
-                    progressDialog.dismiss();
-                    postToNoticeBoard(pictureUri.toString());
-                }).addOnFailureListener(e -> {
-                    progressDialog.dismiss();
-                    Toast.makeText(this, "An error occurred: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                });
-            });
+            }).addOnSuccessListener(taskSnapshot -> pictureRef.getDownloadUrl().addOnSuccessListener(pictureUri -> {
+                progressDialog.dismiss();
+                postToNoticeBoard(pictureUri.toString());
+            }).addOnFailureListener(e -> {
+                progressDialog.dismiss();
+                Toast.makeText(this, "An error occurred: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }));
         } else {
             postToNoticeBoard("");
         }
     }
 
+    /**
+     * Handle user taking pictures
+     */
     private void handleTakingPhoto() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[] {
@@ -313,6 +355,12 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
         }
     }
 
+    /**
+     * Get user permissions for camera
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
     //source: https://www.youtube.com/watch?v=q1OLKyilp8M
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -350,6 +398,10 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
                 }
             });
 
+    /**
+     * Get image uri
+     * @param inImage
+     */
     //source: https://colinyeoh.wordpress.com/2012/05/18/android-getting-image-uri-from-bitmap/
     public Uri getImageUri(Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
@@ -358,6 +410,9 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
         return Uri.parse(path);
     }
 
+    /**
+     * Handle taking pictures
+     */
     private void handleAddingPhoto() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[] {
@@ -383,16 +438,22 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
                 }
             });
 
+    /**
+     * Handle discarding picture
+     */
     private void handleRemovingPhoto() {
         postPicIV.setImageResource(R.drawable.ic_baseline_image_24);
         postPicUri = null;
     }
 
+    /**
+     * read communities
+     */
     private void readCommunities() {
         firebase.getUserCommunities().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                ArrayList<String> communitiesList = new ArrayList<String>();
+                ArrayList<String> communitiesList = new ArrayList<>();
                 String[] communitiesArray;
                 Community aCommunity;
                 for (DataSnapshot content : snapshot.getChildren()) {
